@@ -1,0 +1,25 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="ppic_size">68dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="padding_normal">5dp</dimen>
+    <dimen name="text_size_title">12sp</dimen>
+    <dimen name="text_size_listing">15sp</dimen>
+    <dimen name="text_size_medium">11sp</dimen>
+    <dimen name="text_size_biggest">20sp</dimen>
+    <dimen name="text_size_small">11sp</dimen>
+    <dimen name="text_size_smallest">10sp</dimen>
+    <dimen name="small_icon_size">24dp</dimen>
+    <dimen name="padding_edittext">10dp</dimen>
+    <dimen name="padding_layout">18dp</dimen>
+    <dimen name="button_min_width">100dp</dimen>
+    <dimen name="dashboard_icon">38dp</dimen>
+    <dimen name="actinbar_height">48dp</dimen>
+    <dimen name="home_image_size">78dp</dimen>
+    <dimen name="eatery_detail_image_size">200dp</dimen>
+    <dimen name="smallest_icon_size">18dp</dimen>
+</resources>
