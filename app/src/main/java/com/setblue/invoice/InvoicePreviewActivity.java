@@ -691,8 +691,6 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject c = jsonArray.optJSONObject(i);
                                 stMail = c.optString("Email");
-
-
                             }
                         }
                     }
