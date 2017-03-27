@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.AbstractAQuery;
@@ -55,6 +56,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.setblue.invoice.adapter.InvoiceDetailItemListAdapter;
+import com.setblue.invoice.mail.Mail;
 import com.setblue.invoice.model.InvoiceItem;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
@@ -113,6 +115,9 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private String stNote;
     private String stMobile;
     private String stComapany;
+    private ImageView mail;
+    private int stClientID = 0;
+    private String stMail;
 
 
     @Override
@@ -156,11 +161,33 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
         back = (ImageView) tb.findViewById(R.id.iv_back);
         back.setOnClickListener(this);
+        mail = (ImageView) tb.findViewById(R.id.iv_mail);
+        mail.setOnClickListener(this);
 
+    }
+    @Override
+    public void onClick(View v) {
+        if(v == back){
+            finish();
+            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+
+
+
+        }
+        else  if(v == mail){
+
+            new SendMail().execute();
+
+
+           /* fragment = new CustomerFragment();
+            replaceFragment(fragment);*/
+
+        }
     }
     private void init(){
 
         pdfView = (PDFView)findViewById(R.id.pdfView);
+
 
     }
 
@@ -184,6 +211,57 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         Log.d(CommonVariables.TAG,"Url: "+url);
         aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
 
+    }
+    public void  clientDetail(){
+        String url = Apis.ClientDetails+"id="+stClientID;
+        Log.d(CommonVariables.TAG,"Url: "+url);
+        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+
+    }
+
+    private class SendMail extends AsyncTask<String, String, String> {
+        private Mail m;
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(InvoicePreviewActivity.this,
+                    "Setblue Invoice",
+                    "Sending Mail..");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String[] toArr = {stMail};
+            m = new Mail("pusptl776@gmail.com","pflptl1010",toArr);
+            try {
+                m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf",stInvoiceNo+".pdf");
+
+
+            } catch(Exception e) {
+                //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
+                Log.e("MailApp", "Could not send email", e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+
+            try {
+                if(m.send()) {
+                    Toast.makeText(InvoicePreviewActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(InvoicePreviewActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     private class AsyncTaskpdf extends AsyncTask<String, String, String> {
         ProgressDialog progressDialog;
@@ -518,22 +596,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if(v == back){
-            finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
 
-
-
-        }
-        else  if(v == editClient){
-
-           /* fragment = new CustomerFragment();
-            replaceFragment(fragment);*/
-
-        }
-    }
 
     private void requestPermissionSMSReceive() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
@@ -590,6 +653,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                         JSONArray jsonArray = object.optJSONArray("resData");
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject c = jsonArray.optJSONObject(i);
+                            stClientID = c.optInt("ClientId");
                             stMobile = c.optString("MobileNo");
                             stInvoiceNo = c.optString("InvoiceNo");
                             stInvoiceDate = c.optString("InvoiceDate");
@@ -605,6 +669,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                             stNote = c.optString("Note");
                             stComapany = c.optString("Company");
                             ItemList();
+                            clientDetail();
 
 
                         }
@@ -617,6 +682,17 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
                             } else {
                                 //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                    if(object.optString("api").equalsIgnoreCase("ClientDetails")) {
+                        if(object.optInt("resid")>0) {
+                            JSONArray jsonArray = object.optJSONArray("resData");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.optJSONObject(i);
+                                stMail = c.optString("Email");
+
+
                             }
                         }
                     }

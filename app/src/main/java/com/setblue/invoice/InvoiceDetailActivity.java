@@ -210,7 +210,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    Mail m = new Mail("pusptl776@gmail.com","pflptl1010");
+                    /*Mail m = new Mail("pusptl776@gmail.com","pflptl1010");
                     String[] toArr = {"pflptl776@gmail.com"};
                     try {
                         m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf");
@@ -223,7 +223,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                     } catch(Exception e) {
                         //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
                         Log.e("MailApp", "Could not send email", e);
-                    }
+                    }*/
 
                     /*String url = Apis.SendEmail+"InvoiceId="+getIntent().getIntExtra("invoiceID",0);
                     Log.d(CommonVariables.TAG,url);

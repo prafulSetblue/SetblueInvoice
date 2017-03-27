@@ -58,7 +58,8 @@
                 android:layout_height="wrap_content"
                 android:background="@mipmap/ic_mail"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:layout_toLeftOf="@+id/iv_preview"/>
+                android:layout_toLeftOf="@+id/iv_preview"
+                android:visibility="gone"/>
 
             <ImageView
                 android:id="@+id/iv_preview"

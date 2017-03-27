@@ -72,9 +72,9 @@ public class Mail extends javax.mail.Authenticator {
         CommandMap.setDefaultCommandMap(mc);
     }
 
-    public Mail(String user, String pass) {
+    public Mail(String user, String pass, String[] to) {
         this();
-
+        _to = to;
         _user = user;
         _pass = pass;
     }
@@ -115,11 +115,11 @@ public class Mail extends javax.mail.Authenticator {
         }
     }
 
-    public void addAttachment(String filename) throws Exception {
+    public void addAttachment(String filename, String name) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
         DataSource source = new FileDataSource(filename);
         messageBodyPart.setDataHandler(new DataHandler(source));
-        messageBodyPart.setFileName(filename);
+        messageBodyPart.setFileName(name);
 
         _multipart.addBodyPart(messageBodyPart);
     }
