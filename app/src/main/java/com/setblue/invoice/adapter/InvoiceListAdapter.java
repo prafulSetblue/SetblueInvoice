@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.InvoiceHolder> {
 
 	private final ArrayList<Invoice> listInvoice;
+	private ArrayList<Invoice> searchlistInvoice;
 	private Context context;
 	AppCompatActivity activity = (AppCompatActivity) context;
 	private AdapterView.OnItemClickListener  onItemClickListener;
@@ -33,6 +35,8 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 	public InvoiceListAdapter(Context context, ArrayList<Invoice> listInvoice) {
 		this.listInvoice = listInvoice;
 		this.context = context;
+		this.searchlistInvoice = new ArrayList<Invoice>();
+		this.searchlistInvoice.addAll(listInvoice);
 	}
 
 	@Override
@@ -116,6 +120,26 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 			invoice_date.setText(item.getDate().toString());
 
 		}
+	}
+
+	// Filter Class
+	public void filter(String charText) {
+		charText = charText.toLowerCase(Locale.getDefault());
+		listInvoice.clear();
+		if (charText.length() == 0) {
+			listInvoice.addAll(searchlistInvoice);
+		}
+		else
+		{
+			for (Invoice wp : searchlistInvoice)
+			{
+				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText))
+				{
+					listInvoice.add(wp);
+				}
+			}
+		}
+		notifyDataSetChanged();
 	}
 
 }

@@ -81,8 +81,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
 
-                Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
-                        Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -93,8 +92,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
             public boolean onQueryTextSubmit(String query) {
                 // TODO Auto-generated method stub
 
-                Toast.makeText(getBaseContext(), query,
-                        Toast.LENGTH_SHORT).show();
+
 
                 return false;
             }
@@ -103,7 +101,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
             public boolean onQueryTextChange(String newText) {
                 // TODO Auto-generated method stub
 
-                //	Toast.makeText(getBaseContext(), newText,Toast.LENGTH_SHORT).show();
+                clientListAdapter.filter(newText);
                 return false;
             }
         });

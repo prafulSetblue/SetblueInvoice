@@ -85,8 +85,8 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             public void onFocusChange(View v, boolean hasFocus) {
                 // TODO Auto-generated method stub
 
-                Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
-                        Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getBaseContext(), String.valueOf(hasFocus),
+                        Toast.LENGTH_SHORT).show();*/
             }
         });
 
@@ -97,8 +97,8 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             public boolean onQueryTextSubmit(String query) {
                 // TODO Auto-generated method stub
 
-                Toast.makeText(getBaseContext(), query,
-                        Toast.LENGTH_SHORT).show();
+
+
 
                 return false;
             }
@@ -107,7 +107,8 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             public boolean onQueryTextChange(String newText) {
                 // TODO Auto-generated method stub
 
-                //	Toast.makeText(getBaseContext(), newText,Toast.LENGTH_SHORT).show();
+
+                    invoiceListAdapter.filter(newText);
                 return false;
             }
         });

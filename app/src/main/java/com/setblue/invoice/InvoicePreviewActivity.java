@@ -235,6 +235,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         @Override
         protected String doInBackground(String... params) {
             String[] toArr = {stMail};
+           // m = new Mail("praful@setblue.com","pflptl1010",toArr);
             m = new Mail("pusptl776@gmail.com","pflptl1010",toArr);
             try {
                 m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf",stInvoiceNo+".pdf");

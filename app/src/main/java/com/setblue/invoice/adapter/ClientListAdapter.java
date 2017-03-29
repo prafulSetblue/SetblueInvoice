@@ -15,12 +15,15 @@ import android.widget.TextView;
 import com.setblue.invoice.ClientDetailActivity;
 import com.setblue.invoice.R;
 import com.setblue.invoice.model.Clients;
+import com.setblue.invoice.model.Invoice;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.ClientHolder> {
 
 	private final ArrayList<Clients> listClient;
+	private ArrayList<Clients> searchlistInvoice;
 	private AppCompatActivity context;
 	private AdapterView.OnItemClickListener  onItemClickListener;
 	String from;
@@ -29,6 +32,8 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 		this.listClient = listClient;
 		this.context = context;
 		this.from = from;
+		this.searchlistInvoice = new ArrayList<Clients>();
+		this.searchlistInvoice.addAll(listClient);
 	}
 
 	@Override
@@ -120,5 +125,26 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 
 
 	}
+	// Filter Class
+	public void filter(String charText) {
+		charText = charText.toLowerCase(Locale.getDefault());
+		listClient.clear();
+		if (charText.length() == 0) {
+			listClient.addAll(searchlistInvoice);
+		}
+		else
+		{
+			for (Clients wp : searchlistInvoice)
+			{
+				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText))
+				{
+					listClient.add(wp);
+				}
+			}
+		}
+		notifyDataSetChanged();
+	}
+
+
 
 }

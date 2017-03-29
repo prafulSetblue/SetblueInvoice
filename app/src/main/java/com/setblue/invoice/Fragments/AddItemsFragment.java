@@ -108,7 +108,7 @@ public class AddItemsFragment extends Fragment implements View.OnClickListener {
             }
             else {
 
-               String url = Apis.AddInvoiceItem+"InvoiceId="+InvoiceId+"&"+"ItemName="+ URLEncoder.encode(stName)+"&"+"Term="+URLEncoder.encode(stTerm)+"&"+"Qty="+stQty+"&"+"Rate="+stRate;
+               String url = Apis.AddInvoiceItem+"InvoiceId="+InvoiceId+"&"+"ItemName="+ URLEncoder.encode(stName)+"&"+"Term="+Integer.parseInt(stTerm)+"&"+"Qty="+stQty+"&"+"Rate="+stRate;
                 Log.d(CommonVariables.TAG,"Url: "+url);
                 //Make Asynchronous call using AJAX method
                 aq.progress(new ProgressDialog(getActivity(),R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
