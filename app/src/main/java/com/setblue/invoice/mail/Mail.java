@@ -47,8 +47,8 @@ public class Mail extends javax.mail.Authenticator {
 
     public Mail() {
         _host = "smtp.gmail.com"; // default smtp server
-        _port = "465"; // default smtp port
-        _sport = "465"; // default socketfactory port
+        _port = "587";//465 for gmail // default smtp port
+        _sport = "587"; // default socketfactory port
 
         _user = "praful@setblue.com"; // username
         _pass = "pflptl1010"; // password
@@ -72,11 +72,13 @@ public class Mail extends javax.mail.Authenticator {
         CommandMap.setDefaultCommandMap(mc);
     }
 
-    public Mail(String user, String pass, String[] to) {
+    public Mail(String user, String pass, String[] to, String subject, String body) {
         this();
         _to = to;
         _user = user;
         _pass = pass;
+        _subject = subject;
+        _body = body;
     }
 
     public boolean send() throws Exception {
@@ -143,9 +145,10 @@ public class Mail extends javax.mail.Authenticator {
         }
 
         props.put("mail.smtp.port", _port);
-        props.put("mail.smtp.socketFactory.port", _sport);
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
+        props.put("mail.smtp.starttls.enable", "true");
+        //props.put("mail.smtp.socketFactory.port", _sport);
+        //props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        //props.put("mail.smtp.socketFactory.fallback", "false");
 
         return props;
     }

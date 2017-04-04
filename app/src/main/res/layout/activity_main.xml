@@ -45,6 +45,12 @@
                     android:gravity="center"
                     android:background="@color/blue"
                     android:layout_weight="1">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/xml_round_green"
+                        android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -52,18 +58,7 @@
                         android:gravity="center"
                         android:adjustViewBounds="true"
                         android:background="@mipmap/setblue_logo"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_marginTop="@dimen/padding_normal"
-                        android:text="Invoice"
-                        android:textSize="@dimen/text_size_biggest"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:id="@+id/textView" />
-
+                    </LinearLayout>
 
                 </LinearLayout>
                 <LinearLayout

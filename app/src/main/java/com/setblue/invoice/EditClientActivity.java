@@ -127,6 +127,7 @@ public class EditClientActivity extends AppCompatActivity implements View.OnClic
             stLname = et_lname.getText().toString().trim();
             stCompany = et_company.getText().toString().trim();
             stMobile = et_mobile.getText().toString().trim();
+            stEmail = et_email.getText().toString().trim();
             stAddress = et_address.getText().toString().trim();
             stCity = et_city.getText().toString().trim();
             stState = et_state.getText().toString().trim();

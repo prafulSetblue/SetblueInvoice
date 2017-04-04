@@ -118,6 +118,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private ImageView mail;
     private int stClientID = 0;
     private String stMail;
+    private String stClientName;
+    String stBody;
 
 
     @Override
@@ -222,6 +224,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private class SendMail extends AsyncTask<String, String, String> {
         private Mail m;
         private ProgressDialog progressDialog;
+        ; //Please pay the balance of "+stTotalAmount+" by "+stDuedate+".";
+
 
         @Override
         protected void onPreExecute() {
@@ -236,11 +240,10 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... params) {
             String[] toArr = {stMail};
            // m = new Mail("praful@setblue.com","pflptl1010",toArr);
-            m = new Mail("pusptl776@gmail.com","pflptl1010",toArr);
+            stBody = "Dear "+stClientName+"\nWe are contacting you in regard to a new invoice #"+stInvoiceNo+" that has been created. You may find the invoice attached.";
+            m = new Mail("noreply@setblue.com","Setblue@123",toArr,"Invoice",stBody);
             try {
                 m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf",stInvoiceNo+".pdf");
-
-
             } catch(Exception e) {
                 //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
                 Log.e("MailApp", "Could not send email", e);
@@ -251,8 +254,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
 
+            progressDialog.dismiss();
             try {
                 if(m.send()) {
                     Toast.makeText(InvoicePreviewActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
@@ -654,6 +657,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                         JSONArray jsonArray = object.optJSONArray("resData");
                         for (int i = 0; i<jsonArray.length(); i++) {
                             JSONObject c = jsonArray.optJSONObject(i);
+                            stClientName = c.optString("ClientName");
                             stClientID = c.optInt("ClientId");
                             stMobile = c.optString("MobileNo");
                             stInvoiceNo = c.optString("InvoiceNo");
