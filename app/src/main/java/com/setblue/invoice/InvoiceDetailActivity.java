@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -84,8 +85,9 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
     private InvoiceDetailItemListAdapter itemListAdapter;
     private int invoiceID;
     private int clientId;
-    private ImageView preview;
+    private Button preview;
     private AlertDialog.Builder builder;
+    private EditText email;
 
 
     @Override
@@ -110,8 +112,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
 
             setUpActionBar();
             init();
-            setData();
-            ItemList();
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -129,7 +130,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         back.setOnClickListener(this);
         mail = (ImageView) tb.findViewById(R.id.iv_mail);
         mail.setOnClickListener(this);
-        preview = (ImageView) tb.findViewById(R.id.iv_preview);
+        preview = (Button) findViewById(R.id.iv_preview);
         preview.setOnClickListener(this);
         editClient = (ImageView) tb.findViewById(R.id.iv_edit);
         editClient.setOnClickListener(this);
@@ -141,6 +142,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         clientCompany = (TextView)findViewById(R.id.tv_client_company);
         invoiceNumber = (TextView)findViewById(R.id.tv_invoice_number);
         invoiceDate = (EditText)findViewById(R.id.edt_invoice_date);
+        email = (EditText)findViewById(R.id.edt_mail);
         dueDate = (EditText)findViewById(R.id.edt_due_date);
         billingAddress = (TextView)findViewById(R.id.edt_billing_address);
         subTotal = (TextView)findViewById(R.id.tv_subtotal);
@@ -267,6 +269,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                             tvTotal.setText("\u20b9 "+c.optInt("TotalAmount"));
                             notes.setText(c.optString("Note"));
 
+
                         }
                     }
                     if(object.optString("api").equalsIgnoreCase("InvoiceList")) {
@@ -313,6 +316,9 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         super.onResume();
         if(!CommonMethods.knowInternetOn(this)){
             CommonMethods.showInternetAlert(this);
+        }else {
+            setData();
+            ItemList();
         }
     }
 }

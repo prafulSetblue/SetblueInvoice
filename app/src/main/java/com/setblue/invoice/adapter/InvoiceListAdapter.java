@@ -114,7 +114,13 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 		}
 
 		public void setDateToView(Invoice item, int position) throws Exception {
-			title.setText(item.getClient_name());
+			if(item.getCompany().equalsIgnoreCase("") || item.getCompany().equalsIgnoreCase("null")){
+				title.setText(item.getClient_name());
+
+			}else {
+				title.setText(item.getClient_name() + " (" + item.getCompany() + ")");
+			}
+			//title.setText(item.getClient_name());
 			total.setText("\u20b9 "+item.getTotal());
 			invoice_number.setText(item.getInvoice_number());
 			invoice_date.setText(item.getDate().toString());
@@ -133,7 +139,7 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 		{
 			for (Invoice wp : searchlistInvoice)
 			{
-				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText))
+				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText) ||wp.getInvoice_number().toLowerCase(Locale.getDefault()).contains(charText))
 				{
 					listInvoice.add(wp);
 				}

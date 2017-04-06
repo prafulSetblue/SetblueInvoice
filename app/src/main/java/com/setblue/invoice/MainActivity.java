@@ -1,6 +1,7 @@
 package com.setblue.invoice;
 
 
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.Fragments.InvoiceFragment;
 import com.setblue.invoice.components.NavDrawerView;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Fragment fragment;
     private FragmentManager fragmentManager;
     private LinearLayout newInvoice;
+    String from = "null";
+    private boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             init();
             setUpActionBar();
             setDrawer();
+            from = getIntent().getStringExtra("from");
+            if(from.equalsIgnoreCase("clientlist")){
+                newCustomer.performClick();
+            }
+            if (from.equalsIgnoreCase("invoicelist")){
+                newInvoice.performClick();
+            }
+            if (from.equalsIgnoreCase("ClientDetail")){
+                newInvoice.performClick();
+            }
         }
         catch (Exception e){
 
@@ -89,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             replaceFragment(fragment);
         }
         else if(v == newInvoice){
-            fragment = new InvoiceFragment();
+            fragment = new InvoiceFragment(getIntent().getIntExtra("id",0),from);
             replaceFragment(fragment);
         }
 
@@ -113,8 +128,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //finish();
+        if (exit) {
+            //System.exit(0);
+            finish();
+            moveTaskToBack(true);
+        } else {
+            Toast.makeText(this, "Press once again to exit app.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
     }
 
     @Override

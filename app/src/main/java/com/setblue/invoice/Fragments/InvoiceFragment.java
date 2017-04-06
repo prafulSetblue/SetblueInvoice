@@ -1,5 +1,6 @@
 package com.setblue.invoice.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -14,6 +15,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.MySessionManager;
 import com.setblue.invoice.utils.Validation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +54,7 @@ import java.util.Date;
  * Created by praful on 01-Feb-17.
  */
 
+@SuppressLint("ValidFragment")
 public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     private EditText invoice_date;
@@ -85,6 +89,14 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     private String stInvoiceNo = "";
     private String stNote = "";
     private String stClient = "";
+    int id = 0;
+    String from = "null";
+
+    @SuppressLint("ValidFragment")
+    public InvoiceFragment(int id, String from) {
+        this.id = id;
+        this.from = from;
+    }
 
     @Nullable
     @Override
@@ -93,6 +105,9 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         session = new MySessionManager(getActivity());
         aq = new AQuery(getActivity());
         init(view);
+        if(from != null ){
+            clientDetail();
+        }
 
 
 
@@ -171,6 +186,12 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     private void setDate() {
         invoice_date.setText(CurrentDate);
         //due_date.setText(dueDate);
+
+    }
+    public void clientDetail() {
+        String url = Apis.ClientDetails + "id=" + id;
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(getActivity(), R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
 
     }
     @Override
@@ -331,19 +352,40 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
             Log.d(CommonVariables.TAG,json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0){
-                    Toast.makeText(getActivity(),"Successfully create invoice",Toast.LENGTH_LONG).show();
-                    session.setNumber(session.getNumber()+1);
+                if(object.optString("api").equalsIgnoreCase("AddInvoice")) {
+                    if (object.optInt("resid") > 0) {
+                        Toast.makeText(getActivity(), "Successfully create invoice", Toast.LENGTH_LONG).show();
+                        session.setNumber(session.getNumber() + 1);
 
-                    Intent i = new Intent(getActivity(), InvoiceItemActivity.class);
-                    i.putExtra("InvoiceId",object.optInt("InvoiceId"));
-                    getActivity().finish();
-                    startActivity(i);
-                    getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                    //getActivity().getSupportFragmentManager().popBackStack();
+                        Intent i = new Intent(getActivity(), InvoiceItemActivity.class);
+                        i.putExtra("InvoiceId", object.optInt("InvoiceId"));
+                        getActivity().finish();
+                        startActivity(i);
+                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        //getActivity().getSupportFragmentManager().popBackStack();
+                    } else {
+                        Toast.makeText(getActivity(), object.optString("res"), Toast.LENGTH_LONG).show();
+                    }
                 }
-                else {
-                    Toast.makeText(getActivity(),object.optString("res"),Toast.LENGTH_LONG).show();
+                if (object.optString("api").equalsIgnoreCase("ClientDetails")) {
+                    if (object.optInt("resid") > 0) {
+                        JSONArray jsonArray = object.optJSONArray("resData");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.optJSONObject(i);
+                            clientName = c.optString("FirstName") + " " + c.optString("LastName");
+                            clientId = c.optInt("ClientId");
+                            stMobile = c.optString("Mobile");
+                            stCompany = c.optString("Company");
+                            stAddress = c.optString("Address");
+                            stPincode = c.optString("Pincode");
+                            stCity = c.getString("City");
+                            stState = c.optString("State");
+                            stCountry = c.optString("Country");
+                            client.setText(clientName);
+
+
+                        }
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -375,5 +417,24 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         catch(Exception e){
             e.printStackTrace();
         }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

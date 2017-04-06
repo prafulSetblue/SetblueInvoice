@@ -3,11 +3,16 @@ package com.setblue.invoice;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +24,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.adapter.ClientListAdapter;
 import com.setblue.invoice.model.Clients;
 import com.setblue.invoice.utils.Apis;
@@ -46,6 +52,9 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private SearchView search;
     AQuery aq;
     private String from = "";
+    private ImageView addClient;
+    private FragmentManager fragmentManager;
+    private CustomerFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +82,12 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
         back = (ImageView) tb.findViewById(R.id.iv_back);
         back.setOnClickListener(this);
         search=(SearchView) findViewById(R.id.iv_search);
-        search.setQueryHint("Search");
+       // search.setQueryHint("Search");
+        EditText searchEditText = (EditText)search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(android.R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(android.R.color.white));
+        searchEditText.setHint("Search");
+        searchEditText.setBackground(ContextCompat.getDrawable(this,R.drawable.bottom_line));
         //*** setOnQueryTextFocusChangeListener ***
         search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -110,6 +124,8 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     }
     private void init(){
         listviewClient = (RecyclerView)findViewById(R.id.lv_clients);
+        addClient = (ImageView)findViewById(R.id.fab);
+        addClient.setOnClickListener(this);
 
     }
     private void setData(){
@@ -129,7 +145,30 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
         if(v == back){
             finish();
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+        }
+        else if(v == addClient){
+            Intent i = new Intent(this,MainActivity.class);
+            i.putExtra("from","clientlist");
+            finish();
+            startActivity(i);
+           /* fragment = new CustomerFragment();
+            replaceFragment(fragment);*/
+        }
+    }
+    private void replaceFragment(Fragment fragment){
+        if (fragment != null) {
+            fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+            ft.replace(R.id.content_frame, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+            // fragmentManager.beginTransaction()
+            //         .replace(R.id.content_frame, fragment).setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack(null).commit();
 
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error in creating fragment");
         }
     }
 

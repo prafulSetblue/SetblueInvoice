@@ -3,4 +3,11 @@
 
     <string name="drawer_open">open drawer</string>
     <string name="drawer_close">close drawer</string>
+    <string name="items1">In case of payment by cheque and return unpaid, Rs. 500 towards cheque return and penalty charge will be charged.</string>
+    <string name="items2">We request you to follow our payment guideline. If in case, your payment gets delayed, you are liable for a late fee penalty. Once, you have exceeded the date, for the first seven days you would be charged Rs/-500, from 8th day till 14th day Rs/- 1000, and on the 15th day your services will be suspended.</string>
+    <string name="items3">All the cheques / drafts will be made in favour of "V2IDEAS.COM".</string>
+    <string name="items4">Disputes, if any, are subject to Surat Jurisdiction only</string>
+
+
+
 </resources>

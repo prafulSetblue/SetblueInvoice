@@ -1,20 +1,24 @@
 package com.setblue.invoice;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -49,6 +53,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     InvoiceListAdapter invoiceListAdapter;
     private SearchView search;
     AQuery aq;
+    private ImageView addInvoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             aq = new AQuery(this);
             setUpActionBar();
             init();
-            InvoiceList();
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -75,8 +80,15 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
 
         back = (ImageView) tb.findViewById(R.id.iv_back);
         back.setOnClickListener(this);
+
         search=(SearchView) findViewById(R.id.iv_search);
-        search.setQueryHint("Search");
+        EditText searchEditText = (EditText)search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(android.R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(android.R.color.white));
+        searchEditText.setHint("Search");
+        searchEditText.setBackground(ContextCompat.getDrawable(this,R.drawable.bottom_line));
+        //search.setQueryHint("Search");
+        //search.setQueryHint(Html.fromHtml("<font color = #ffffff>" + "Search" + "</font>"));
 
         //*** setOnQueryTextFocusChangeListener ***
         search.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
@@ -116,6 +128,8 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     }
     private void init(){
         listviewInvoice = (RecyclerView)findViewById(R.id.lv_invoice);
+        addInvoice = (ImageView)findViewById(R.id.fab);
+        addInvoice.setOnClickListener(this);
 
     }
     private void InvoiceList() {
@@ -137,7 +151,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
                         invoiceArrayList = new ArrayList<Invoice>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.optJSONObject(i);
-                            invoiceArrayList.add(new Invoice("" + jsonObject.optInt("InvoiceId"), jsonObject.optString("ClientName"), jsonObject.optString("TotalAmount"), jsonObject.optString("InvoiceNo"), jsonObject.optString("InvoiceDate")));
+                            invoiceArrayList.add(new Invoice("" + jsonObject.optInt("InvoiceId"), jsonObject.optString("ClientName"), jsonObject.optString("TotalAmount"), jsonObject.optString("InvoiceNo"), jsonObject.optString("InvoiceDate"),jsonObject.optString("Company")));
                         }
                         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
                         listviewInvoice.setLayoutManager(layoutManager);
@@ -163,9 +177,14 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
         if(v == back){
             finish();
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-
-
-
+        }
+        else if(v == addInvoice){
+            Intent i = new Intent(this,MainActivity.class);
+            i.putExtra("from","invoicelist");
+            finish();
+            startActivity(i);
+           /* fragment = new CustomerFragment();
+            replaceFragment(fragment);*/
         }
     }
     @Override
@@ -173,6 +192,8 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
         super.onResume();
         if(!CommonMethods.knowInternetOn(this)){
             CommonMethods.showInternetAlert(this);
+        }else {
+            InvoiceList();
         }
     }
 

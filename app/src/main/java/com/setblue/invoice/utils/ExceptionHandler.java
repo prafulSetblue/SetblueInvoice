@@ -63,6 +63,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		Intent intent = new Intent(myContext, MainActivity.class);
 		intent.putExtra("error", errorReport.toString());
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		myContext.finish();
 		myContext.startActivity(intent);
 
 		android.os.Process.killProcess(android.os.Process.myPid());

@@ -10,13 +10,16 @@ public class Invoice {
     private String total;
     private String invoice_number;
     private String date;
+    private String company;
 
-    public Invoice(String id, String client_name, String total, String invoice_number, String date) {
+
+    public Invoice(String id, String client_name, String total, String invoice_number, String date, String company) {
         this.id = id;
         this.client_name = client_name;
         this.total = total;
         this.invoice_number = invoice_number;
         this.date = date;
+        this.company = company;
     }
 
     public String getId() {
@@ -57,5 +60,13 @@ public class Invoice {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }

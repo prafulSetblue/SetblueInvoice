@@ -48,7 +48,7 @@
                 android:id="@+id/iv_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/iv_mail"
+                android:layout_alignParentRight="true"
                 android:background="@mipmap/ic_edit"
                 android:layout_marginRight="@dimen/padding_normal"/>
 
@@ -57,18 +57,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/ic_mail"
+                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:layout_toLeftOf="@+id/iv_preview"
                 android:visibility="gone"/>
 
-            <ImageView
-                android:id="@+id/iv_preview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_preview"
-                android:layout_marginRight="@dimen/padding_normal"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
 
 
         </RelativeLayout>
@@ -79,7 +71,8 @@
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -156,6 +149,27 @@
                     android:layout_height="0.5dp"
                     android:layout_margin="18dp"
                     android:background="@color/divider"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColorHint="@color/black_border">
+
+                    <EditText
+                        android:id="@+id/edt_mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mail Address"
+                        android:text="pflptl77@gmail.com"
+                        android:editable="false"
+                        android:singleLine="true"
+                        android:focusable="false"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_listing"
+                        android:imeOptions="actionNext" />
+
+                </android.support.design.widget.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -289,7 +303,7 @@
                         android:id="@+id/lbl_subtotal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.3"
                         android:gravity="end"
                         android:text="Sub Total"
                         android:textColor="@color/blue"
@@ -298,7 +312,7 @@
                         android:id="@+id/tv_subtotal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
+                        android:layout_weight="0.7"
                         android:layout_marginRight="10dp"
                         android:gravity="end"
                         android:text="\u20b9 0"
@@ -316,7 +330,7 @@
                         android:id="@+id/lbl_tax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.3"
                         android:gravity="end"
                         android:text="Service Tax(15%)"
                         android:textColor="@color/blue"
@@ -325,7 +339,7 @@
                         android:id="@+id/tv_tax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
+                        android:layout_weight="0.7"
                         android:layout_marginRight="10dp"
                         android:gravity="end"
                         android:text="\u20b9 0"
@@ -343,7 +357,7 @@
                         android:id="@+id/lbl_credit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.3"
                         android:gravity="end"
                         android:text="Credit"
                         android:textColor="@color/blue"
@@ -352,7 +366,7 @@
                         android:id="@+id/tv_credit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
+                        android:layout_weight="0.7"
                         android:layout_marginRight="10dp"
                         android:gravity="end"
                         android:text="\u20b9 0"
@@ -419,5 +433,15 @@
         </android.support.v4.widget.NestedScrollView>
 
     </FrameLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_preview"
+        android:background="@color/blue"
+        android:text="Preview"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_biggest"/>
 
 </LinearLayout>

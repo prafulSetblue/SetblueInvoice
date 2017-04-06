@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,10 +103,12 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             stState = et_state.getText().toString().trim();
             stCountry = et_country.getText().toString().trim();
             stZip = et_zip.getText().toString().trim();
-            if(Validation.isEmptyEdittext(et_fname) && Validation.isEmptyEdittext(et_lname)&& Validation.isEmptyEdittext(et_email)){
+            if(Validation.isEmptyEdittext(et_fname) && Validation.isEmptyEdittext(et_lname)&& Validation.isEmptyEdittext(et_email)&& Validation.isEmptyEdittext(et_company)&& Validation.isEmptyEdittext(et_address)){
                 et_fname.setError("Enter First Name");
                 et_lname.setError("Enter Last Name");
                 et_email.setError("Enter Email");
+                et_company.setError("Enter Company Name");
+                et_address.setError("Enter Company Address");
             }
             else if(Validation.isEmptyEdittext(et_fname)){
                 et_fname.setError("Enter First Name");
@@ -114,6 +118,12 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             }
             else if(Validation.isEmptyEdittext(et_email)){
                 et_email.setError("Enter Email Address");
+            }
+            else if(Validation.isEmptyEdittext(et_company)){
+                et_company.setError("Enter Company Name");
+            }
+            else if(Validation.isEmptyEdittext(et_address)){
+                et_address.setError("Enter Company Address");
             }
             else {
                     if(CommonMethods.knowInternetOn((AppCompatActivity) getActivity())){
@@ -145,7 +155,7 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
                 if(object.optInt("resid")>0){
                     Toast.makeText(getActivity(),object.optString("res"),Toast.LENGTH_LONG).show();
                     i = new Intent(getActivity(), ClientDetailActivity.class);
-                    //getActivity().finish();
+                    getActivity().finish();
                     startActivity(i);
                     getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 }
@@ -162,5 +172,23 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
 
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 }

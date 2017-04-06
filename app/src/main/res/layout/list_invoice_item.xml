@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_listing"
-            android:text="name"/>
+            android:text=""/>
 
         <TextView
             android:id="@+id/tv_item_term"
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_listing"
-            android:text="\u20b9 1000"/>
+            android:text="\u20b9 0"/>
 
         <ImageView
             android:id="@+id/iv_delete"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black_border"
         android:textSize="@dimen/text_size_listing"
-        android:text="1.00"/>
+        android:text="0.00"/>
     <TextView
         android:id="@+id/lbl"
         android:layout_width="wrap_content"
@@ -73,6 +73,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black_border"
             android:textSize="@dimen/text_size_listing"
-            android:text="1000.00"/>
+            android:text="0000.00"/>
     </LinearLayout>
 </LinearLayout>

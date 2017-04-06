@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -49,6 +50,7 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     private EditText address;
     AQuery aq;
     private int clientID = 0;
+    private Button invoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +62,13 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
             setUpActionBar();
             init();
             setData();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-
-
-
-
     }
+
     private void setUpActionBar() {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
@@ -81,40 +79,51 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
         editClient.setOnClickListener(this);
 
     }
-    private void init(){
-    clientName = (TextView)findViewById(R.id.tv_client_name);
-    companyName = (TextView)findViewById(R.id.tv_client_company);
-    email = (EditText)findViewById(R.id.edt_email);
-    mobile = (EditText)findViewById(R.id.edt_mobile);
-    address = (EditText)findViewById(R.id.edt_address);
+
+    private void init() {
+        clientName = (TextView) findViewById(R.id.tv_client_name);
+        companyName = (TextView) findViewById(R.id.tv_client_company);
+        email = (EditText) findViewById(R.id.edt_email);
+        mobile = (EditText) findViewById(R.id.edt_mobile);
+        address = (EditText) findViewById(R.id.edt_address);
+        invoice = (Button) findViewById(R.id.iv_invoice);
+        invoice.setOnClickListener(this);
 
 
     }
-    private void setData(){
+
+    private void setData() {
 
     }
+
     @Override
     public void onClick(View v) {
-        if(v == back){
+        if (v == back) {
             finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
 
+        } else if (v == editClient) {
 
-        }
-        else  if(v == editClient){
+            Intent i = new Intent(this, EditClientActivity.class);
+            i.putExtra("id", clientID);
+            startActivity(i);
 
-            Intent i = new Intent(this,EditClientActivity.class);
-            i.putExtra("id",clientID);
+        } else if(v == invoice){
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("id", clientID);
+            i.putExtra("from","ClientDetail");
+            finish();
             startActivity(i);
 
         }
     }
-    private void replaceFragment(Fragment fragment){
+
+    private void replaceFragment(Fragment fragment) {
         if (fragment != null) {
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+            ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack(null);
             ft.commit();
@@ -126,25 +135,27 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
-    public void  clientDetail(){
-        String url = Apis.ClientDetails+"id="+getIntent().getIntExtra("id",0);
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+
+    public void clientDetail() {
+        String url = Apis.ClientDetails + "id=" + getIntent().getIntExtra("id", 0);
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
 
     }
-    public void jsonCallback(String url, String json, AjaxStatus status){
 
-        if(json != null){
+    public void jsonCallback(String url, String json, AjaxStatus status) {
+
+        if (json != null) {
             //successful ajax call
-            Log.d(CommonVariables.TAG,json.toString());
+            Log.d(CommonVariables.TAG, json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0) {
-                    if(object.optString("api").equalsIgnoreCase("ClientDetails")) {
+                if (object.optInt("resid") > 0) {
+                    if (object.optString("api").equalsIgnoreCase("ClientDetails")) {
                         JSONArray jsonArray = object.optJSONArray("resData");
-                        for (int i = 0; i<jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.optJSONObject(i);
-                            clientName.setText(c.optString("FirstName")+" "+c.optString("LastName"));
+                            clientName.setText(c.optString("FirstName") + " " + c.optString("LastName"));
                             companyName.setText(c.optString("Company"));
                             email.setText(c.optString("Email"));
                             mobile.setText(c.optString("Mobile"));
@@ -160,19 +171,28 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             //ajax error
-            Log.d(CommonVariables.TAG,""+status.getCode());
+            Log.d(CommonVariables.TAG, "" + status.getCode());
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(!CommonMethods.knowInternetOn(this)){
+        if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
-        }
-        else {
+        } else {
             clientDetail();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this, MainActivity.class);
+        finish();
+        startActivity(i);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 }

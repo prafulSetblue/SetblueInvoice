@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@android:color/white">
 
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
     <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/actinbar_height"
@@ -29,14 +34,12 @@
             android:textStyle="bold"/>
 
     </LinearLayout>-->
-<ScrollView
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:layout_margin="10dp"
         android:orientation="vertical">
 
@@ -239,15 +242,7 @@
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Save"
-            android:textSize="@dimen/text_size_listing"
-            android:textColor="@android:color/white"
-            android:background="@drawable/rounded_blue_button"/>
+
         <ProgressBar
             android:id="@+id/progressBar1"
             android:visibility="gone"
@@ -259,5 +254,14 @@
 
 
 
-</ScrollView>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="@dimen/text_size_listing"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_blue_button"/>
     </LinearLayout>
+</ScrollView>

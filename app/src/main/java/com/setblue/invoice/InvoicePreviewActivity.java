@@ -22,6 +22,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -115,7 +116,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private String stNote;
     private String stMobile;
     private String stComapany;
-    private ImageView mail;
+    private Button mail;
     private int stClientID = 0;
     private String stMail;
     private String stClientName;
@@ -163,7 +164,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
         back = (ImageView) tb.findViewById(R.id.iv_back);
         back.setOnClickListener(this);
-        mail = (ImageView) tb.findViewById(R.id.iv_mail);
+        mail = (Button) findViewById(R.id.iv_mail);
         mail.setOnClickListener(this);
 
     }
@@ -224,6 +225,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private class SendMail extends AsyncTask<String, String, String> {
         private Mail m;
         private ProgressDialog progressDialog;
+        boolean send = false;
         ; //Please pay the balance of "+stTotalAmount+" by "+stDuedate+".";
 
 
@@ -241,13 +243,17 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             String[] toArr = {stMail};
            // m = new Mail("praful@setblue.com","pflptl1010",toArr);
             stBody = "Dear "+stClientName+"\nWe are contacting you in regard to a new invoice #"+stInvoiceNo+" that has been created. You may find the invoice attached.";
-            m = new Mail("noreply@setblue.com","Setblue@123",toArr,"Invoice",stBody);
+            m = new Mail("noreply@setblue.com","Setblue@123",toArr,"Invoice - "+stInvoiceNo +" from SetBlue",stBody);
             try {
                 m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf",stInvoiceNo+".pdf");
+                send = m.send();
+
             } catch(Exception e) {
                 //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
                 Log.e("MailApp", "Could not send email", e);
             }
+
+
             return null;
         }
 
@@ -255,15 +261,12 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            progressDialog.dismiss();
-            try {
-                if(m.send()) {
-                    Toast.makeText(InvoicePreviewActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(InvoicePreviewActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(send) {
+                progressDialog.dismiss();
+                Toast.makeText(InvoicePreviewActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
+            } else {
+                progressDialog.dismiss();
+                Toast.makeText(InvoicePreviewActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -300,7 +303,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             super.onPostExecute(s);
             progressDialog.dismiss();
             pdfView.fromFile(file)
-                    .defaultPage(1)
+                   // .defaultPage(1)
                     //.onPageChange((OnPageChangeListener) this)
                     .enableAnnotationRendering(true)
                     //.onLoad((OnLoadCompleteListener) this)
@@ -352,10 +355,11 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //table.setSpacingAfter(30.0f);        // Space After table starts, like margin-Bottom in CSS
 
         //Inserting List in PDF
-        List list=new List(true,30);
-        list.add(new ListItem("Items1"));
-        list.add(new ListItem("Items2"));
-        list.add(new ListItem("Items3"));
+        List list=new List(true,10);
+        list.add(new ListItem(getString(R.string.items1),invoiceFont));
+        list.add(new ListItem(getString(R.string.items2),invoiceFont));
+        list.add(new ListItem(getString(R.string.items3),invoiceFont));
+        list.add(new ListItem(getString(R.string.items4),invoiceFont));
 
         //Text formating in PDF
         Chunk chunk=new Chunk("Please Note:");

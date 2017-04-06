@@ -14,7 +14,7 @@ public class App extends Application {
 		super.onCreate();
 		// ACRA.init(this);
 		AQuery aQuery = new AQuery(this);
-		TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "Roboto-Regular.ttf"); // font
+		//TypefaceUtil.overrideFont(getApplicationContext(), "SERIF", "Roboto-Regular.ttf"); // font
 																									// from
 																									// assets:
 																									// "assets/fonts/Roboto-Regular.ttf
