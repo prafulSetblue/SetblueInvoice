@@ -193,7 +193,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
             startActivity(i);
 
         }
-        else  if(v == mail){
+      /*  else  if(v == mail){
 
 
 
@@ -212,7 +212,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    /*Mail m = new Mail("pusptl776@gmail.com","pflptl1010");
+                    *//*Mail m = new Mail("pusptl776@gmail.com","pflptl1010");
                     String[] toArr = {"pflptl776@gmail.com"};
                     try {
                         m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf");
@@ -225,22 +225,22 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                     } catch(Exception e) {
                         //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
                         Log.e("MailApp", "Could not send email", e);
-                    }*/
+                    }*//*
 
-                    /*String url = Apis.SendEmail+"InvoiceId="+getIntent().getIntExtra("invoiceID",0);
+                    *//*String url = Apis.SendEmail+"InvoiceId="+getIntent().getIntExtra("invoiceID",0);
                     Log.d(CommonVariables.TAG,url);
                     aq.progress(new ProgressDialog(InvoiceDetailActivity.this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
-*/
+*//*
 
                 }
             });
             builder.show();
 
 
-           /* fragment = new CustomerFragment();
-            replaceFragment(fragment);*/
+           *//* fragment = new CustomerFragment();
+            replaceFragment(fragment);*//*
 
-        }
+        }*/
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status){
@@ -250,26 +250,29 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
             Log.d(CommonVariables.TAG,json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0) {
+
                     if(object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
-                        JSONArray jsonArray = object.optJSONArray("resData");
-                        for (int i = 0; i<jsonArray.length(); i++) {
-                            JSONObject c = jsonArray.optJSONObject(i);
-                            invoiceID = c.optInt("InvoiceId");
-                            clientId = c.optInt("ClientId");
-                            clientName.setText(c.optString("ClientName"));
-                            clientCompany.setText(c.optString("Company"));
-                            invoiceNumber.setText(c.optString("InvoiceNo"));
-                            invoiceDate.setText(c.optString("InvoiceDate"));
-                            dueDate.setText(c.optString("DueDate"));
-                            billingAddress.setText(c.optString("CompanyAddress"));
-                            subTotal.setText("\u20b9 "+c.optInt("Subtotal"));
-                            Tax.setText("\u20b9 "+c.optInt("ServiceTax"));
-                            Total.setText("\u20b9 "+c.optInt("TotalAmount"));
-                            tvTotal.setText("\u20b9 "+c.optInt("TotalAmount"));
-                            notes.setText(c.optString("Note"));
+                        if(object.optInt("resid")>0) {
+                            JSONArray jsonArray = object.optJSONArray("resData");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.optJSONObject(i);
+                                invoiceID = c.optInt("InvoiceId");
+                                clientId = c.optInt("ClientId");
+                                clientName.setText(c.optString("ClientName"));
+                                clientCompany.setText(c.optString("Company"));
+                                invoiceNumber.setText(c.optString("InvoiceNo"));
+                                invoiceDate.setText(c.optString("InvoiceDate"));
+                                dueDate.setText(c.optString("DueDate"));
+                                billingAddress.setText(c.optString("CompanyAddress"));
+                                subTotal.setText("\u20b9 " + c.optInt("Subtotal"));
+                                Tax.setText("\u20b9 " + c.optInt("ServiceTax"));
+                                Total.setText("\u20b9 " + c.optInt("TotalAmount"));
+                                tvTotal.setText("\u20b9 " + c.optInt("TotalAmount"));
+                                notes.setText(c.optString("Note"));
+                                email.setText(c.optString("EmailId"));
 
 
+                            }
                         }
                     }
                     if(object.optString("api").equalsIgnoreCase("InvoiceList")) {
@@ -292,7 +295,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                             }
                         }
                     }
-                    if(object.optString("api").equalsIgnoreCase("SendEmail")) {
+                    /*if(object.optString("api").equalsIgnoreCase("SendEmail")) {
                         if(object.optInt("resid")>0) {
                             Toast.makeText(this,"Mail sent successfully.",Toast.LENGTH_SHORT).show();
                         }
@@ -300,8 +303,8 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                             Toast.makeText(this,"Something Wrong.",Toast.LENGTH_SHORT).show();
                         }
                     }
+*/
 
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

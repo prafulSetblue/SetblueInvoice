@@ -43,7 +43,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class EditInvoiceActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,View.OnClickListener {
+public class EditInvoiceActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
 
     public ImageView back;
@@ -85,17 +85,13 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
             setUpActionBar();
             init();
             setData();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-
-
-
-
     }
+
     private void setUpActionBar() {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
@@ -105,16 +101,17 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
 
 
     }
-    private void init(){
+
+    private void init() {
         myCalendar = Calendar.getInstance();
-        invoice_date = (EditText)findViewById(R.id.edt_invoice_date);
-        client = (EditText)findViewById(R.id.edt_customer);
-        email = (EditText)findViewById(R.id.edt_Email);
-        invoiceNumber = (EditText)findViewById(R.id.edt_invoice_number);
-        due_date = (EditText)findViewById(R.id.edt_due_date);
-        term = (EditText)findViewById(R.id.edt_term);
-        note = (EditText)findViewById(R.id.edt_notes);
-        save = (Button)findViewById(R.id.btn_save);
+        invoice_date = (EditText) findViewById(R.id.edt_invoice_date);
+        client = (EditText) findViewById(R.id.edt_customer);
+        email = (EditText) findViewById(R.id.edt_Email);
+        invoiceNumber = (EditText) findViewById(R.id.edt_invoice_number);
+        due_date = (EditText) findViewById(R.id.edt_due_date);
+        term = (EditText) findViewById(R.id.edt_term);
+        note = (EditText) findViewById(R.id.edt_notes);
+        save = (Button) findViewById(R.id.btn_save);
         save.setOnClickListener(this);
         invoice_date.setOnClickListener(this);
         invoice_date.setInputType(InputType.TYPE_NULL);
@@ -144,66 +141,58 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         });*/
 
     }
-    private void setData(){
+
+    private void setData() {
 
     }
+
     @Override
     public void onClick(View v) {
-        if(v == back){
+        if (v == back) {
             finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-        }
-        else if(v == invoice_date){
+        } else if (v == invoice_date) {
             getDate();
-        }
-        else if(v == save){
+        } else if (v == save) {
             stEmail = email.getText().toString();
             stInvoiceNo = invoiceNumber.getText().toString();
             stTerm = term.getText().toString();
             CurrentDate = invoice_date.getText().toString();
             dueDate = due_date.getText().toString();
             stNote = note.getText().toString();
-            if(Validation.isEmptyEdittext(client)){
+            if (Validation.isEmptyEdittext(client)) {
                 client.setError("Enter Client Name");
-            }
-            else if(Validation.isEmptyEdittext(email)){
+            } else if (Validation.isEmptyEdittext(email)) {
                 email.setError("Enter Email Address");
-            }
-            else if(Validation.isEmptyEdittext(invoiceNumber)){
+            } else if (Validation.isEmptyEdittext(invoiceNumber)) {
                 invoiceNumber.setError("Enter Invoice Number");
-            }
-            else if(Validation.isEmptyEdittext(term)){
+            } else if (Validation.isEmptyEdittext(term)) {
                 term.setError("Enter Term");
-            }
-            else if(Validation.isEmptyEdittext(invoice_date)){
+            } else if (Validation.isEmptyEdittext(invoice_date)) {
                 invoice_date.setError("Enter Invoice Date");
-            }
-            else if(Validation.isEmptyEdittext(due_date)){
+            } else if (Validation.isEmptyEdittext(due_date)) {
                 due_date.setError("Enter Due Date");
-            }
-            else if(Validation.isEmptyEdittext(note)){
+            } else if (Validation.isEmptyEdittext(note)) {
                 note.setError("Enter Notes");
-            }
-            else if(!Validation.isValidEmail(stEmail)){
+            } else if (!Validation.isValidEmail(stEmail)) {
                 email.setError("Enter Valid Email Address");
-            }
-            else {
+            } else {
                 UpdateInvoice();
             }
         }
 
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // myCalendar.set(Calendar.YEAR, year);
         // myCalendar.set(Calendar.MONTH, monthOfYear);
         // myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         // final String strDate = dayOfMonth + "/" + monthOfYear + "/" + year;
-        if(dpd.isShowing()) {
+        if (dpd.isShowing()) {
             dpd.cancel();
         }
-
 
 
         myCalendar.set(year, monthOfYear, dayOfMonth);
@@ -213,7 +202,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         CurrentDate = sdf.format(myCalendar.getTime());
         invoice_date.setText(CurrentDate);
         stTerm = term.getText().toString();
-        if(!stTerm.equalsIgnoreCase("")) {
+        if (!stTerm.equalsIgnoreCase("")) {
             myCalendar.add(Calendar.DATE, Integer.valueOf(term.getText().toString()));
         }// number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
@@ -222,9 +211,10 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
 
         // setDate();
     }
+
     public void getDate() {
 
-        dpd = new DatePickerDialog(this, R.style.DialogTheme,this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+        dpd = new DatePickerDialog(this, R.style.DialogTheme, this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
         try {
             dpd.getDatePicker().setMinDate(new Date().getTime());
         } catch (Exception e) {
@@ -236,107 +226,109 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
     }
 
 
-    public void  clientDetail(){
-        String url = Apis.ClientDetails+"id="+getIntent().getIntExtra("clientID",0);
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+    public void clientDetail() {
+        String url = Apis.ClientDetails + "id=" + getIntent().getIntExtra("clientID", 0);
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
 
     }
-    private void InvoiceDetail(){
-        String url = Apis.InvoiceDetail+"id="+ getIntent().getIntExtra("id",0);
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+
+    private void InvoiceDetail() {
+        String url = Apis.InvoiceDetail + "id=" + getIntent().getIntExtra("id", 0);
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
     }
+
     private void UpdateInvoice() {
-        String url = Apis.UpdateInvoice+"ClientId="+getIntent().getIntExtra("clientID",0)+"&"+"MobileNo="+stMobile+"&"+"CompanyAddress="+stAddress+"&"+"City="+stCity
-                +"&"+"State="+stState+"&"+"Country="+stCountry+"&"+"Pincode="+stPincode+"&"+"InvoiceDate="+ URLEncoder.encode(CurrentDate)+"&"+"DueDate="+ URLEncoder.encode(dueDate)+"&"+"Note="+stNote+"&"+"invoiceno="+stInvoiceNo+"&"+"AdminId="+Integer.parseInt(session.getUserId())+"&"+"id="+ getIntent().getIntExtra("id",0);
+        String url = Apis.UpdateInvoice + "ClientId=" + getIntent().getIntExtra("clientID", 0) + "&" + "MobileNo=" + stMobile + "&" + "CompanyAddress=" + stAddress + "&" + "City=" + stCity
+                + "&" + "State=" + stState + "&" + "Country=" + stCountry + "&" + "Pincode=" + stPincode + "&" + "InvoiceDate=" + URLEncoder.encode(CurrentDate) + "&" + "DueDate=" + URLEncoder.encode(dueDate) + "&" + "Note=" + stNote + "&" + "invoiceno=" + stInvoiceNo + "&" + "AdminId=" + Integer.parseInt(session.getUserId()) + "&" + "id=" + getIntent().getIntExtra("id", 0);
 
-        Log.d(CommonVariables.TAG,"url: "+ url);
+        Log.d(CommonVariables.TAG, "url: " + url);
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
 
     }
-    public void jsonCallback(String url, String json, AjaxStatus status){
 
-        if(json != null){
+    public void jsonCallback(String url, String json, AjaxStatus status) {
+
+        if (json != null) {
             //successful ajax call
-            Log.d(CommonVariables.TAG,json.toString());
+            Log.d(CommonVariables.TAG, json.toString());
             try {
                 JSONObject object = new JSONObject(json);
 
-                    if(object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
-                        if(object.optInt("resid")>0) {
-                            JSONArray jsonArray = object.optJSONArray("resData");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject c = jsonArray.optJSONObject(i);
-                                CurrentDate = c.optString("InvoiceDate");
-                                invoice_date.setText(CurrentDate);
-                                invoiceNumber.setText(c.optString("InvoiceNo"));
-                                dueDate = c.optString("DueDate");
-                                due_date.setText(dueDate);
-                                term.setText(get_count_of_days(CurrentDate,dueDate));
-                                client.setText(c.optString("ClientName"));
-                                note.setText(c.optString("Note"));
+                if (object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
+                    if (object.optInt("resid") > 0) {
+                        JSONArray jsonArray = object.optJSONArray("resData");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.optJSONObject(i);
+                            CurrentDate = c.optString("InvoiceDate");
+                            invoice_date.setText(CurrentDate);
+                            invoiceNumber.setText(c.optString("InvoiceNo"));
+                            dueDate = c.optString("DueDate");
+                            due_date.setText(dueDate);
+                            term.setText(get_count_of_days(CurrentDate, dueDate));
+                            client.setText(c.optString("ClientName"));
+                            note.setText(c.optString("Note"));
 
-                            }
                         }
                     }
-                    if(object.optString("api").equalsIgnoreCase("ClientDetails")) {
-                        if(object.optInt("resid")>0) {
-                            JSONArray jsonArray = object.optJSONArray("resData");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject c = jsonArray.optJSONObject(i);
-                                email.setText(c.optString("Email"));
-                                stMobile = c.optString("Mobile");
-                                stCompany = c.optString("Company");
-                                stAddress = c.optString("Address");
-                                stPincode = c.optString("Pincode");
-                                stCity = c.optString("City");
-                                stState = c.optString("State");
-                                stCountry = c.optString("Country");
-                                InvoiceDetail();
+                }
+                if (object.optString("api").equalsIgnoreCase("ClientDetails")) {
+                    if (object.optInt("resid") > 0) {
+                        JSONArray jsonArray = object.optJSONArray("resData");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject c = jsonArray.optJSONObject(i);
+                            email.setText(c.optString("Email"));
+                            stMobile = c.optString("Mobile");
+                            stCompany = c.optString("Company");
+                            stAddress = c.optString("Address");
+                            stPincode = c.optString("Pincode");
+                            stCity = c.optString("City");
+                            stState = c.optString("State");
+                            stCountry = c.optString("Country");
+                            InvoiceDetail();
 
 
-                            }
                         }
                     }
+                }
 
 
-                    if(object.optString("api").equalsIgnoreCase("UpdateInvoice")) {
-                        if(object.optInt("resid") >0){
-                            Intent i = new Intent(this, InvoiceItemActivity.class);
-                            i.putExtra("InvoiceId",getIntent().getIntExtra("id",0));
-                            finish();
-                            startActivity(i);
-                            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                if (object.optString("api").equalsIgnoreCase("UpdateInvoice")) {
+                    if (object.optInt("resid") > 0) {
+                        Intent i = new Intent(this, InvoiceItemActivity.class);
+                        i.putExtra("InvoiceId", getIntent().getIntExtra("id", 0));
+                        finish();
+                        startActivity(i);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-                        }
-                        else {
-                            Toast.makeText(this,"Something Worng.",Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        Toast.makeText(this, "Something Worng.", Toast.LENGTH_SHORT).show();
                     }
-
+                }
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             //ajax error
-            Log.d(CommonVariables.TAG,""+status.getCode());
+            Log.d(CommonVariables.TAG, "" + status.getCode());
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(!CommonMethods.knowInternetOn(this)){
+        if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
-        }
-        else {
+        } else {
             clientDetail();
         }
     }
+
     public String get_count_of_days(String Created_date_String, String Expire_date_String) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -353,8 +345,12 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         }
 
         int c_year = 0, c_month = 0, c_day = 0;
-
-        if (Created_convertedDate.after(todayWithZeroTime)) {
+        Calendar c_cal = Calendar.getInstance();
+        c_cal.setTime(Created_convertedDate);
+        c_year = c_cal.get(Calendar.YEAR);
+        c_month = c_cal.get(Calendar.MONTH);
+        c_day = c_cal.get(Calendar.DAY_OF_MONTH);
+      /*  if (Created_convertedDate.after(todayWithZeroTime)) {
             Calendar c_cal = Calendar.getInstance();
             c_cal.setTime(Created_convertedDate);
             c_year = c_cal.get(Calendar.YEAR);
@@ -367,7 +363,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
             c_year = c_cal.get(Calendar.YEAR);
             c_month = c_cal.get(Calendar.MONTH);
             c_day = c_cal.get(Calendar.DAY_OF_MONTH);
-        }
+        }*/
 
 
     /*Calendar today_cal = Calendar.getInstance();

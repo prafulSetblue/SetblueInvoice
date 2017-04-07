@@ -153,8 +153,9 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             try {
                 JSONObject object = new JSONObject(json);
                 if(object.optInt("resid")>0){
-                    Toast.makeText(getActivity(),object.optString("res"),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Customer added successfully",Toast.LENGTH_LONG).show();
                     i = new Intent(getActivity(), ClientDetailActivity.class);
+                    i.putExtra("id",object.optInt("ClientId"));
                     getActivity().finish();
                     startActivity(i);
                     getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

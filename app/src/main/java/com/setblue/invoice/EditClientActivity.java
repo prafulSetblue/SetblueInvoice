@@ -178,22 +178,26 @@ public class EditClientActivity extends AppCompatActivity implements View.OnClic
             Log.d(CommonVariables.TAG,json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0) {
+
                     if(object.optString("api").equalsIgnoreCase("ClientDetails")) {
-                        JSONArray jsonArray = object.optJSONArray("resData");
-                        for (int i = 0; i<jsonArray.length(); i++) {
-                            JSONObject c = jsonArray.optJSONObject(i);
-                            et_fname.setText(c.optString("FirstName"));
-                            et_lname.setText(c.optString("LastName"));
+                        if(object.optInt("resid")>0) {
+                            JSONArray jsonArray = object.optJSONArray("resData");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject c = jsonArray.optJSONObject(i);
+                                et_fname.setText(c.optString("FirstName"));
+                                et_lname.setText(c.optString("LastName"));
                                 et_company.setText(c.optString("Company"));
                                 et_mobile.setText(c.optString("Mobile"));
                                 et_email.setText(c.optString("Email"));
                                 et_address.setText(c.optString("Address"));
-                                et_city .setText(c.optString("City"));
-                                et_state .setText(c.optString("State"));
-                                et_country .setText(c.optString("Country"));
-                                et_zip .setText(c.optString("Pincode"));
+                                et_city.setText(c.optString("City"));
+                                et_state.setText(c.optString("State"));
+                                et_country.setText(c.optString("Country"));
+                                et_zip.setText(c.optString("Pincode"));
 
+                            }
+                        }else {
+                            Toast.makeText(this,"Something Wrong",Toast.LENGTH_SHORT).show();
                         }
                     }
                     if(object.optString("api").equalsIgnoreCase("UpdateClient")) {
@@ -206,7 +210,7 @@ public class EditClientActivity extends AppCompatActivity implements View.OnClic
 
                     }
 
-                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

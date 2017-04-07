@@ -389,7 +389,7 @@
                         android:id="@+id/lbl_total"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.3"
                         android:gravity="end"
                         android:text="Total"
                         android:textStyle="bold"
@@ -399,7 +399,7 @@
                         android:id="@+id/tv_total"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.7"
                         android:layout_marginRight="10dp"
                         android:gravity="end"
                         android:text="\u20b9 0"
@@ -441,6 +441,7 @@
         android:background="@color/blue"
         android:text="Preview"
         android:textAllCaps="false"
+        android:textStyle="bold"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_size_biggest"/>
 

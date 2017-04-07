@@ -58,6 +58,10 @@
 
 
     </android.support.v7.widget.Toolbar>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -71,8 +75,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_clients"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
         <ImageView
             android:id="@+id/fab"
@@ -85,6 +88,6 @@
             android:src="@drawable/ic_plus"
             android:background="@drawable/xml_ovel_white"/>
     </RelativeLayout>
-
+</android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
     </FrameLayout>

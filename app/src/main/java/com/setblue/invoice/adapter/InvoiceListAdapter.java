@@ -85,6 +85,7 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 	public class InvoiceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
+		private final TextView company;
 		private InvoiceListAdapter mAdapter;
 		public TextView title;
 		public TextView total;
@@ -96,6 +97,7 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 			super(itemView);
 			this.mAdapter = mAdapter;
 			title = (TextView) itemView.findViewById(R.id.tv_client_name);
+			company = (TextView) itemView.findViewById(R.id.tv_company);
 			total = (TextView) itemView.findViewById(R.id.tv_total);
 			invoice_number = (TextView) itemView.findViewById(R.id.tv_invoice_number);
 			invoice_date = (TextView) itemView.findViewById(R.id.tv_invoice_date);
@@ -115,12 +117,12 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 
 		public void setDateToView(Invoice item, int position) throws Exception {
 			if(item.getCompany().equalsIgnoreCase("") || item.getCompany().equalsIgnoreCase("null")){
-				title.setText(item.getClient_name());
-
+				company.setVisibility(View.GONE);
 			}else {
-				title.setText(item.getClient_name() + " (" + item.getCompany() + ")");
+				company.setVisibility(View.VISIBLE);
+				company.setText(item.getCompany());
 			}
-			//title.setText(item.getClient_name());
+			title.setText(item.getClient_name());
 			total.setText("\u20b9 "+item.getTotal());
 			invoice_number.setText(item.getInvoice_number());
 			invoice_date.setText(item.getDate().toString());

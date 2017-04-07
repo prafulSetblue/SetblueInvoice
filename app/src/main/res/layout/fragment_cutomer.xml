@@ -135,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Email Address"
+                android:inputType=""
                 android:singleLine="true"
                 android:imeOptions="actionNext" />
 
@@ -260,6 +261,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
+        android:textStyle="bold"
         android:textSize="@dimen/text_size_listing"
         android:textColor="@android:color/white"
         android:background="@drawable/rounded_blue_button"/>

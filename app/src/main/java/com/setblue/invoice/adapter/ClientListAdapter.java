@@ -81,6 +81,7 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 	public class ClientHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 		private final TextView email;
+		private final TextView comapny;
 		private ClientListAdapter mAdapter;
 		public TextView title;
 		private Intent i;
@@ -89,6 +90,7 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 			super(itemView);
 			this.mAdapter = mAdapter;
 			title = (TextView) itemView.findViewById(R.id.tv_client_name);
+			comapny = (TextView) itemView.findViewById(R.id.tv_company);
 			email = (TextView) itemView.findViewById(R.id.tv_client_email);
 
 			itemView.setOnClickListener(this);
@@ -122,11 +124,15 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 
 		public void setDateToView(Clients item, int position) throws Exception {
 			if(item.getCompany().equalsIgnoreCase("") || item.getCompany().equalsIgnoreCase("null")){
-				title.setText(item.getClient_name());
+
+				comapny.setVisibility(View.GONE);
 
 			}else {
-				title.setText(item.getClient_name() + " (" + item.getCompany() + ")");
+				comapny.setVisibility(View.VISIBLE);
+				comapny.setText(item.getCompany());
+
 			}
+			title.setText(item.getClient_name());
 			email.setText(item.getEmail());
 
 		}

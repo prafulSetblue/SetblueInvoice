@@ -3,10 +3,12 @@ package com.setblue.invoice;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +57,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private ImageView addClient;
     private FragmentManager fragmentManager;
     private CustomerFragment fragment;
+    private SwipeRefreshLayout swipeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,9 +126,28 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
 
     }
     private void init(){
+        swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         listviewClient = (RecyclerView)findViewById(R.id.lv_clients);
         addClient = (ImageView)findViewById(R.id.fab);
         addClient.setOnClickListener(this);
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeView.setRefreshing(true);
+                Log.d("Swipe", "Refreshing Number");
+                ( new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeView.setRefreshing(false);
+                        //Toast.makeText(getActivity(),"Refresh",Toast.LENGTH_LONG).show();
+                       setData();
+                        //onResume();
+                        //double f = Math.random();
+                        //rndNum.setText(String.valueOf(f));
+                    }
+                }, 000);
+            }
+        });
 
     }
     private void setData(){
@@ -199,7 +221,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
                         listviewClient.setLayoutManager(layoutManager);
                         clientListAdapter = new ClientListAdapter(this, clientsArrayList, from);
                         listviewClient.setAdapter(clientListAdapter);
-                        listviewClient.addItemDecoration(new DividerItemDecoration(this));
+                       // listviewClient.addItemDecoration(new DividerItemDecoration(this));
                     } else {
                         //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
                     }

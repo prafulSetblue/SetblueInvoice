@@ -44,12 +44,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         try {
             setContentView(R.layout.activity_main);
+
             init();
             setUpActionBar();
             setDrawer();
             from = getIntent().getStringExtra("from");
             if(from.equalsIgnoreCase("clientlist")){
-                newCustomer.performClick();
+                fragment = new CustomerFragment();
+                replaceFragment(fragment);
             }
             if (from.equalsIgnoreCase("invoicelist")){
                 newInvoice.performClick();
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (from.equalsIgnoreCase("ClientDetail")){
                 newInvoice.performClick();
             }
+
         }
         catch (Exception e){
 

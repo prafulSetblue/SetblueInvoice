@@ -98,8 +98,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     public static final String READ_EXTERNAL_STORAGE = "android.permission.READ_EXTERNAL_STORAGE";
     public static final int PERMISSION_CODE = 42042;
     private PDFView pdfView;
-    private Font catFont;
-    private static Font invoiceFont;
+    private Font bold;
+    private static Font normal;
     private int invoiceID;
     private AQuery aq;
     private String stInvoiceDate;
@@ -128,9 +128,9 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         try {
-            catFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+            bold = new Font(Font.FontFamily.TIMES_ROMAN, 10,
                     Font.BOLD);
-            invoiceFont = new Font(Font.FontFamily.TIMES_ROMAN, 10,
+            normal = new Font(Font.FontFamily.TIMES_ROMAN, 10,
                     Font.NORMAL);
             int SDK_INT = android.os.Build.VERSION.SDK_INT;
             if (SDK_INT > 8)
@@ -245,7 +245,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             stBody = "Dear "+stClientName+"\nWe are contacting you in regard to a new invoice #"+stInvoiceNo+" that has been created. You may find the invoice attached.";
             m = new Mail("noreply@setblue.com","Setblue@123",toArr,"Invoice - "+stInvoiceNo +" from SetBlue",stBody);
             try {
-                m.addAttachment("/storage/emulated/0/pdfdemo/invoice.pdf",stInvoiceNo+".pdf");
+                m.addAttachment("/storage/emulated/0/pdfdemo/"+stInvoiceNo+".pdf",stInvoiceNo+".pdf");
                 send = m.send();
 
             } catch(Exception e) {
@@ -315,7 +315,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
     private void createPdf(JSONArray jsonArray) throws FileNotFoundException, DocumentException, IOException {
 
-        File pdfFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "pdfdemo");
+        File pdfFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "setblue");
         if (!pdfFolder.exists()) {
             pdfFolder.mkdir();
             Log.i(CommonVariables.TAG, pdfFolder.toString());
@@ -331,16 +331,16 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //Create time stamp
         Date date = new Date();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        file = new File(pdfFolder,"invoice" + ".pdf");
+        file = new File(pdfFolder,stInvoiceNo + ".pdf");
         Log.i(CommonVariables.TAG, file.toString());
         OutputStream output = new FileOutputStream(file);
-        document = new Document(PageSize.A4);
+        document = new Document(PageSize.A4,20,20,40,40);
         PdfWriter.getInstance(document, output);
         //Inserting Pdf file
         PdfPTable table=new PdfPTable(3);
         PdfPCell cell = new PdfPCell (new Paragraph ("Invoice # "+stInvoiceNo+"\n" +
                 "Invoice Date: "+stInvoiceDate+"\n" +
-                "Due Date: "+stDuedate+""));
+                "Due Date: "+stDuedate+"",bold));
 
         cell.setColspan (3);
         cell.setHorizontalAlignment (Element.ALIGN_LEFT);
@@ -355,14 +355,14 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //table.setSpacingAfter(30.0f);        // Space After table starts, like margin-Bottom in CSS
 
         //Inserting List in PDF
-        List list=new List(true,10);
-        list.add(new ListItem(getString(R.string.items1),invoiceFont));
-        list.add(new ListItem(getString(R.string.items2),invoiceFont));
-        list.add(new ListItem(getString(R.string.items3),invoiceFont));
-        list.add(new ListItem(getString(R.string.items4),invoiceFont));
+        List list=new List(false,10);
+        list.add(new ListItem(getString(R.string.items1),normal));
+        list.add(new ListItem(getString(R.string.items2),normal));
+        list.add(new ListItem(getString(R.string.items3),normal));
+        list.add(new ListItem(getString(R.string.items4),normal));
 
         //Text formating in PDF
-        Chunk chunk=new Chunk("Please Note:");
+        Chunk chunk=new Chunk("Please Note:",normal);
         //chunk.setUnderline(+1f,-2f);//1st co-ordinate is for line width,2nd is space between
 
         //chunk1.setBackground(new BaseColor (17, 46, 193));
@@ -373,23 +373,23 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         document.addHeader("Setblue","test");
         //document.addTitle("Setblue");
 
-        Paragraph p = new Paragraph("V2IDEAS.COM",catFont);
+        Paragraph p = new Paragraph("V2IDEAS.COM",bold);
         p.setAlignment(Element.ALIGN_RIGHT);
-        Paragraph address = new Paragraph("801, Empire State builing,\nNear World Trad Center,\nUdhna Darwaja,Ring Road,\nSurat-395002 (GJ) India\nPh - 0261 4015401",invoiceFont);
+        Paragraph address = new Paragraph("801, Empire State builing,\nNear World Trad Center,\nUdhna Darwaja,Ring Road,\nSurat-395002 (GJ) India\nPh - 0261 4015401",normal);
         address.setAlignment(Element.ALIGN_RIGHT);
-        address.setSpacingAfter(10.0f);
+        address.setSpacingAfter(05.0f);
 
-        Paragraph serveceTax = new Paragraph("Servce Tax No: ABAPT4600JSD001\nPan No: ABAPT4600J",invoiceFont);
+        Paragraph serveceTax = new Paragraph("Service Tax No: ABAPT4600JSD001\nPan No: ABAPT4600J",normal);
         serveceTax.setAlignment(Element.ALIGN_RIGHT);
-        serveceTax.setSpacingAfter(10.0f);
+        serveceTax.setSpacingAfter(05.0f);
 
 
-        Paragraph p1 = new Paragraph("Invoice To",invoiceFont);
+        Paragraph p1 = new Paragraph("Invoice To",normal);
         p1.setAlignment(Element.ALIGN_LEFT);
 
-        Paragraph clientname = new Paragraph(stComapany,catFont);
+        Paragraph clientname = new Paragraph(stComapany,bold);
         clientname.setAlignment(Element.ALIGN_LEFT);
-        Paragraph clientAddress = new Paragraph(stAddress+",\n"+stCity+",\nTel - "+stMobile+"",invoiceFont);
+        Paragraph clientAddress = new Paragraph(stAddress+",\n"+stCity+",\nTel - "+stMobile+"",normal);
         clientAddress.setAlignment(Element.ALIGN_LEFT);
         clientAddress.setSpacingAfter(10.0f);
         // Second parameter is the number of the chapter
@@ -405,8 +405,9 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
        // document.add(new Paragraph("Invoice To"));
         document.add(clientname);
         document.add(clientAddress);
-
-        createTable(document,jsonArray);
+        if(jsonArray.length() != 0) {
+            createTable(document, jsonArray);
+        }
         createTotalTable(document);
 
         document.add(Chunk.NEWLINE);
@@ -416,18 +417,14 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //document.newPage();
         document.add(list);
         document.add(Chunk.NEWLINE);
-        document.add(new Paragraph("For,",invoiceFont));
+        document.add(new Paragraph("For,",normal));
         document.add(image);
-        document.add(new Paragraph("V2IDEAS.COM",invoiceFont));
+        document.add(new Paragraph("V2IDEAS.COM",normal));
 
         document.close();
         output.close();
 
         Log.i(CommonVariables.TAG, file.toString());
-
-
-
-
 
     }
     private void createTable(Document doc, JSONArray jsonArray)
@@ -440,31 +437,31 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         // t.setSpacing(4);
         // t.setBorderWidth(1);
 
-        PdfPCell c1 = new PdfPCell(new Phrase("Description",catFont));
+        PdfPCell c1 = new PdfPCell(new Phrase("Description",bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (10.0f);
+        c1.setPadding (5.0f);
         c1.setColspan(2);
         table.addCell(c1);
 
 
-        c1 = new PdfPCell(new Phrase("Term(In Months)",catFont));
+        c1 = new PdfPCell(new Phrase("Term\n(In Months)",bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (10.0f);
+        c1.setPadding (5.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Qty",catFont));
+        c1 = new PdfPCell(new Phrase("Qty",bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (10.0f);
+        c1.setPadding (5.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Rate",catFont));
+        c1 = new PdfPCell(new Phrase("Rate",bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (10.0f);
+        c1.setPadding (5.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Total",catFont));
+        c1 = new PdfPCell(new Phrase("Total",bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (10.0f);
+        c1.setPadding (5.0f);
         table.addCell(c1);
 
         table.setHeaderRows(1);
@@ -473,26 +470,26 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
             Double duration = Double.parseDouble(c.optString("Term"))/12;
             Double Total = c.optInt("Qty")*c.optInt("Rate")*duration;
-            Paragraph phrase = new Paragraph(c.optString("ItemName"),invoiceFont);
-            phrase.setFont(invoiceFont);
+            Paragraph phrase = new Paragraph(c.optString("ItemName"),normal);
+            phrase.setFont(normal);
             c1 = new PdfPCell(phrase);
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
             c1.setPadding (05.0f);
             c1.setColspan(2);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+c.optString("Term"),invoiceFont));
+            c1 = new PdfPCell(new Phrase(""+c.optString("Term"),normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setPadding (05.0f);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+c.optInt("Qty"),invoiceFont));
+            c1 = new PdfPCell(new Phrase(""+c.optInt("Qty"),normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setPadding (05.0f);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+c.optInt("Rate"),invoiceFont));
+            c1 = new PdfPCell(new Phrase(""+c.optInt("Rate"),normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setPadding (05.0f);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+new DecimalFormat("##.##").format(Total),invoiceFont));
+            c1 = new PdfPCell(new Phrase(""+new DecimalFormat("##.##").format(Total),normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setPadding (05.0f);
             table.addCell(c1);
@@ -522,46 +519,46 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         // t.setSpacing(4);
         // t.setBorderWidth(1);
 
-        PdfPCell c1 = new PdfPCell(new Phrase("Sub Total",invoiceFont));
+        PdfPCell c1 = new PdfPCell(new Phrase("Sub Total",normal));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setPadding (05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase(stSubtotal,invoiceFont));
+        c1 = new PdfPCell(new Phrase(stSubtotal,normal));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         c1.setPadding (05.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("15% New Service Tax(Nov-2015)",invoiceFont));
+        c1 = new PdfPCell(new Phrase("15% New Service Tax(Nov-2015)",normal));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setPadding (05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase(stServiceTax,invoiceFont));
+        c1 = new PdfPCell(new Phrase(stServiceTax,normal));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         c1.setPadding (05.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Credit",invoiceFont));
+        c1 = new PdfPCell(new Phrase("Credit",normal));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setPadding (05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("",invoiceFont));
+        c1 = new PdfPCell(new Phrase("",normal));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         c1.setPadding (05.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Total",catFont));
+        c1 = new PdfPCell(new Phrase("Total",bold));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setPadding (05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase(stTotalAmount,catFont));
+        c1 = new PdfPCell(new Phrase(stTotalAmount,bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         c1.setPadding (05.0f);
         table.addCell(c1);
@@ -656,7 +653,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             Log.d(CommonVariables.TAG,json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0) {
+
                     if(object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
                         JSONArray jsonArray = object.optJSONArray("resData");
                         for (int i = 0; i<jsonArray.length(); i++) {
@@ -684,15 +681,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                         }
                     }
                     if(object.optString("api").equalsIgnoreCase("InvoiceList")) {
-                        if(object.optInt("resid")>0) {
-                            if (object.optJSONArray("resData").length() != 0) {
-                                JSONArray jsonArray = object.optJSONArray("resData");
-                                new AsyncTaskpdf(jsonArray).execute();
-
-                            } else {
-                                //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
-                            }
-                        }
+                        JSONArray jsonArray = object.optJSONArray("resData");
+                        new AsyncTaskpdf(jsonArray).execute();
                     }
                     if(object.optString("api").equalsIgnoreCase("ClientDetails")) {
                         if(object.optInt("resid")>0) {
@@ -704,7 +694,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                         }
                     }
 
-                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

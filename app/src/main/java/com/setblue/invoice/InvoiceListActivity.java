@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +56,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     private SearchView search;
     AQuery aq;
     private ImageView addInvoice;
+    private SwipeRefreshLayout swipeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +67,12 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             aq = new AQuery(this);
             setUpActionBar();
             init();
+            InvoiceList();
 
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
-
-
 
     }
     private void setUpActionBar() {
@@ -127,9 +128,24 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
 
     }
     private void init(){
+        swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         listviewInvoice = (RecyclerView)findViewById(R.id.lv_invoice);
         addInvoice = (ImageView)findViewById(R.id.fab);
         addInvoice.setOnClickListener(this);
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeView.setRefreshing(true);
+                Log.d("Swipe", "Refreshing Number");
+                ( new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeView.setRefreshing(false);
+                        InvoiceList();
+                    }
+                }, 000);
+            }
+        });
 
     }
     private void InvoiceList() {
@@ -157,7 +173,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
                         listviewInvoice.setLayoutManager(layoutManager);
                         invoiceListAdapter = new InvoiceListAdapter(this, invoiceArrayList);
                         listviewInvoice.setAdapter(invoiceListAdapter);
-                        listviewInvoice.addItemDecoration(new DividerItemDecoration(this));
+                       // listviewInvoice.addItemDecoration(new DividerItemDecoration(this));
                     } else {
                         //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
                     }
@@ -192,8 +208,6 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
         super.onResume();
         if(!CommonMethods.knowInternetOn(this)){
             CommonMethods.showInternetAlert(this);
-        }else {
-            InvoiceList();
         }
     }
 
