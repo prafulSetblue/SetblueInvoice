@@ -141,7 +141,7 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 		{
 			for (Invoice wp : searchlistInvoice)
 			{
-				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText) ||wp.getInvoice_number().toLowerCase(Locale.getDefault()).contains(charText))
+				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText) || wp.getInvoice_number().toLowerCase(Locale.getDefault()).contains(charText)|| wp.getCompany().toLowerCase(Locale.getDefault()).contains(charText))
 				{
 					listInvoice.add(wp);
 				}

@@ -148,7 +148,6 @@
                 android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:text="Save"
                 android:textSize="@dimen/text_size_listing"
                 android:textColor="@android:color/white"

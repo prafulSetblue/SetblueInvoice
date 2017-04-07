@@ -109,12 +109,9 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
             clientDetail();
         }
 
-
-
         return view;
 
     }
-
 
     private void init(View v) {
         myCalendar = Calendar.getInstance();
@@ -354,7 +351,7 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
                 JSONObject object = new JSONObject(json);
                 if(object.optString("api").equalsIgnoreCase("AddInvoice")) {
                     if (object.optInt("resid") > 0) {
-                        Toast.makeText(getActivity(), "Successfully create invoice", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), "Successfully create invoice", Toast.LENGTH_LONG).show();
                         session.setNumber(session.getNumber() + 1);
 
                         Intent i = new Intent(getActivity(), InvoiceItemActivity.class);

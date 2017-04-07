@@ -107,6 +107,7 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
             i.putExtra("invoiceID",getIntent().getIntExtra("InvoiceId",0));
             finish();
             startActivity(i);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         }
         else  if(v == addItems){
 

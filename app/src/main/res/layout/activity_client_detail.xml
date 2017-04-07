@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="@drawable/bottom_shadow"
         android:layout_height="?attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@drawable/bottom_shadow"
         app:layout_collapseMode="pin"
-        >
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingRight="15dp"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_arrow_back_black_24dp"/>
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
 
             <!-- This is a centered logo -->
@@ -32,164 +34,167 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
                 android:layout_toRightOf="@+id/iv_back"
+                android:gravity="center"
+                android:text="Client Details"
                 android:textColor="@android:color/white"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:text="Client Details"/>
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/iv_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/ic_edit"
+                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:layout_alignParentRight="true"/>
-
+                android:background="@mipmap/ic_edit" />
 
 
         </RelativeLayout>
 
 
     </android.support.v7.widget.Toolbar>
-<FrameLayout
-    android:id="@+id/content_frame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:scrollbars="none">
 
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/padding_normal"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_client_name"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Praful Patel"
-            android:textSize="@dimen/text_size_biggest"
-            android:textColor="@color/blue"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/tv_client_company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginBottom="@dimen/padding_normal"
-            android:text="Setblue"
-            android:textSize="@dimen/text_size_listing"
-            android:textColor="@color/blue"
-            android:textStyle="bold"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_margin="18dp"
-            android:background="@color/divider"/>
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
 
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
-
-            <EditText
-                android:id="@+id/edt_email"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email"
-                android:text="praful@setblue.com"
-                android:editable="false"
-                android:singleLine="true"
-                android:focusable="false"
-                android:drawableLeft="@drawable/ic_email_bg_24dp"
-                android:drawablePadding="12dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_listing"
-                android:imeOptions="actionNext" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        </android.support.design.widget.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/padding_normal"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+                    <TextView
+                        android:id="@+id/tv_client_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_biggest"
+                        android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edt_mobile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Mobile"
-                android:text="9913181776"
-                android:editable="false"
-                android:singleLine="true"
-                android:focusable="false"
-                android:drawableLeft="@drawable/ic_phone_android_black_24dp"
-                android:drawablePadding="12dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_listing"
-                android:imeOptions="actionNext" />
+                    <TextView
+                        android:id="@+id/tv_client_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/padding_normal"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/text_size_listing"
+                        android:textStyle="bold" />
 
-        </android.support.design.widget.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_margin="18dp"
+                        android:background="@color/divider" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
 
-            <EditText
-                android:id="@+id/edt_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Address"
-                android:text="Surat,Gujarat,India"
-                android:editable="false"
-                android:singleLine="true"
-                android:focusable="false"
-                android:drawableLeft="@drawable/ic_place_black_24dp"
-                android:drawablePadding="12dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_listing"
-                android:imeOptions="actionNext" />
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:textColorHint="@color/black_border">
 
-        </android.support.design.widget.TextInputLayout>
+                        <EditText
+                            android:id="@+id/edt_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_email_bg_24dp"
+                            android:drawablePadding="12dp"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Email"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_listing" />
 
-</LinearLayout>
-        <Button
-            android:id="@+id/iv_invoice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/blue"
-            android:text="Create Invoice"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_biggest"/>
-    </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
 
-</ScrollView>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:textColorHint="@color/black_border">
 
-</FrameLayout>
+                        <EditText
+                            android:id="@+id/edt_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_phone_android_black_24dp"
+                            android:drawablePadding="12dp"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Mobile"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_listing" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:textColorHint="@color/black_border">
+
+                        <EditText
+                            android:id="@+id/edt_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_place_black_24dp"
+                            android:drawablePadding="12dp"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="Address"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_listing" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/iv_invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue"
+                    android:text="Create Invoice"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_size_biggest"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
 
 </LinearLayout>

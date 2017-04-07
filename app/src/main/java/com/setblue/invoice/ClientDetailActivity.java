@@ -190,9 +190,9 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(this, MainActivity.class);
+        /*Intent i = new Intent(this, MainActivity.class);
         finish();
         startActivity(i);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);*/
     }
 }

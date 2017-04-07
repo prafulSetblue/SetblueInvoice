@@ -133,8 +133,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             normal = new Font(Font.FontFamily.TIMES_ROMAN, 10,
                     Font.NORMAL);
             int SDK_INT = android.os.Build.VERSION.SDK_INT;
-            if (SDK_INT > 8)
-            {
+            if (SDK_INT > 8) {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                         .permitAll().build();
                 StrictMode.setThreadPolicy(policy);
@@ -143,20 +142,18 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             }
             setContentView(R.layout.activity_invoive_preview);
             aq = new AQuery(this);
-            invoiceID = getIntent().getIntExtra("invoiceID",0);
+            invoiceID = getIntent().getIntExtra("invoiceID", 0);
             setUpActionBar();
             init();
             requestPermissionSMSReceive();
             setData();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-
-
     }
+
     private void setUpActionBar() {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
@@ -168,16 +165,13 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         mail.setOnClickListener(this);
 
     }
+
     @Override
     public void onClick(View v) {
-        if(v == back){
+        if (v == back) {
             finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-
-
-
-        }
-        else  if(v == mail){
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        } else if (v == mail) {
 
             new SendMail().execute();
 
@@ -187,11 +181,10 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
         }
     }
-    private void init(){
 
-        pdfView = (PDFView)findViewById(R.id.pdfView);
+    private void init() {
 
-
+        pdfView = (PDFView) findViewById(R.id.pdfView);
     }
 
     @Override
@@ -203,22 +196,25 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     public void loadComplete(int nbPages) {
 
     }
-    private void setData(){
-        String url = Apis.InvoiceDetail+"id="+ getIntent().getIntExtra("id",0);
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+
+    private void setData() {
+        String url = Apis.InvoiceDetail + "id=" + getIntent().getIntExtra("id", 0);
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
     }
+
     private void ItemList() {
-        String url = Apis.InvoiceItemList+"InvoiceId="+getIntent().getIntExtra("id",0);
+        String url = Apis.InvoiceItemList + "InvoiceId=" + getIntent().getIntExtra("id", 0);
         //Make Asynchronous call using AJAX method
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
 
     }
-    public void  clientDetail(){
-        String url = Apis.ClientDetails+"id="+stClientID;
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+
+    public void clientDetail() {
+        String url = Apis.ClientDetails + "id=" + stClientID;
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
 
     }
 
@@ -232,7 +228,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            progressDialog = new ProgressDialog(InvoicePreviewActivity.this, R.style.CustomProgressDialog);
             progressDialog = ProgressDialog.show(InvoicePreviewActivity.this,
                     "Setblue Invoice",
                     "Sending Mail..");
@@ -241,14 +237,14 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         @Override
         protected String doInBackground(String... params) {
             String[] toArr = {stMail};
-           // m = new Mail("praful@setblue.com","pflptl1010",toArr);
-            stBody = "Dear "+stClientName+"\nWe are contacting you in regard to a new invoice #"+stInvoiceNo+" that has been created. You may find the invoice attached.";
-            m = new Mail("noreply@setblue.com","Setblue@123",toArr,"Invoice - "+stInvoiceNo +" from SetBlue",stBody);
+            // m = new Mail("praful@setblue.com","pflptl1010",toArr);
+            stBody = "Dear " + stClientName + "\nWe are contacting you in regard to a new invoice #" + stInvoiceNo + " that has been created. You may find the invoice attached.";
+            m = new Mail("noreply@setblue.com", "Setblue@123", toArr, "Invoice - " + stInvoiceNo + " from SetBlue", stBody);
             try {
-                m.addAttachment("/storage/emulated/0/pdfdemo/"+stInvoiceNo+".pdf",stInvoiceNo+".pdf");
+                m.addAttachment(file.toString(), stInvoiceNo + ".pdf");
                 send = m.send();
 
-            } catch(Exception e) {
+            } catch (Exception e) {
                 //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
                 Log.e("MailApp", "Could not send email", e);
             }
@@ -261,7 +257,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if(send) {
+            if (send) {
                 progressDialog.dismiss();
                 Toast.makeText(InvoicePreviewActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
             } else {
@@ -270,9 +266,11 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             }
         }
     }
+
     private class AsyncTaskpdf extends AsyncTask<String, String, String> {
         ProgressDialog progressDialog;
         JSONArray JsonArray;
+
         public AsyncTaskpdf(JSONArray jsonArray) {
             JsonArray = jsonArray;
         }
@@ -280,6 +278,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(InvoicePreviewActivity.this, R.style.CustomProgressDialog);
             progressDialog = ProgressDialog.show(InvoicePreviewActivity.this,
                     "Loading",
                     "Wait for  Preview");
@@ -303,11 +302,11 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             super.onPostExecute(s);
             progressDialog.dismiss();
             pdfView.fromFile(file)
-                   // .defaultPage(1)
+                    // .defaultPage(1)
                     //.onPageChange((OnPageChangeListener) this)
                     .enableAnnotationRendering(true)
                     //.onLoad((OnLoadCompleteListener) this)
-                   // .scrollHandle(new DefaultScrollHandle(InvoicePreviewActivity.this))
+                    // .scrollHandle(new DefaultScrollHandle(InvoicePreviewActivity.this))
                     .load();
 
         }
@@ -331,38 +330,38 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //Create time stamp
         Date date = new Date();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        file = new File(pdfFolder,stInvoiceNo + ".pdf");
+        file = new File(pdfFolder, stInvoiceNo + ".pdf");
         Log.i(CommonVariables.TAG, file.toString());
         OutputStream output = new FileOutputStream(file);
-        document = new Document(PageSize.A4,20,20,40,40);
+        document = new Document(PageSize.A4, 20, 20, 40, 40);
         PdfWriter.getInstance(document, output);
         //Inserting Pdf file
-        PdfPTable table=new PdfPTable(3);
-        PdfPCell cell = new PdfPCell (new Paragraph ("Invoice # "+stInvoiceNo+"\n" +
-                "Invoice Date: "+stInvoiceDate+"\n" +
-                "Due Date: "+stDuedate+"",bold));
+        PdfPTable table = new PdfPTable(3);
+        PdfPCell cell = new PdfPCell(new Paragraph("Invoice # " + stInvoiceNo + "\n" +
+                "Invoice Date: " + stInvoiceDate + "\n" +
+                "Due Date: " + stDuedate + "", bold));
 
-        cell.setColspan (3);
-        cell.setHorizontalAlignment (Element.ALIGN_LEFT);
-        cell.setPadding (10.0f);
+        cell.setColspan(3);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setPadding(10.0f);
         cell.setBackgroundColor(new BaseColor(247, 247, 248));
 
         table.addCell(cell);
         table.setWidthPercentage(100);
 
-       // table.addCell("Invoice # V21515107\nInvoice Date: 22/03/2017\nDua Date: 21/04/2017");
-       // table.setSpacingBefore(30.0f);       // Space Before table starts, like margin-top in CSS
+        // table.addCell("Invoice # V21515107\nInvoice Date: 22/03/2017\nDua Date: 21/04/2017");
+        // table.setSpacingBefore(30.0f);       // Space Before table starts, like margin-top in CSS
         //table.setSpacingAfter(30.0f);        // Space After table starts, like margin-Bottom in CSS
 
         //Inserting List in PDF
-        List list=new List(false,10);
-        list.add(new ListItem(getString(R.string.items1),normal));
-        list.add(new ListItem(getString(R.string.items2),normal));
-        list.add(new ListItem(getString(R.string.items3),normal));
-        list.add(new ListItem(getString(R.string.items4),normal));
+        List list = new List(false, 10);
+        list.add(new ListItem(getString(R.string.items1), normal));
+        list.add(new ListItem(getString(R.string.items2), normal));
+        list.add(new ListItem(getString(R.string.items3), normal));
+        list.add(new ListItem(getString(R.string.items4), normal));
 
         //Text formating in PDF
-        Chunk chunk=new Chunk("Please Note:",normal);
+        Chunk chunk = new Chunk("Please Note:", normal);
         //chunk.setUnderline(+1f,-2f);//1st co-ordinate is for line width,2nd is space between
 
         //chunk1.setBackground(new BaseColor (17, 46, 193));
@@ -370,26 +369,26 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         document.open();
         //document.add(image);
 
-        document.addHeader("Setblue","test");
+        document.addHeader("Setblue", "test");
         //document.addTitle("Setblue");
 
-        Paragraph p = new Paragraph("V2IDEAS.COM",bold);
+        Paragraph p = new Paragraph("V2IDEAS.COM", bold);
         p.setAlignment(Element.ALIGN_RIGHT);
-        Paragraph address = new Paragraph("801, Empire State builing,\nNear World Trad Center,\nUdhna Darwaja,Ring Road,\nSurat-395002 (GJ) India\nPh - 0261 4015401",normal);
+        Paragraph address = new Paragraph("801, Empire State builing,\nNear World Trade Center,\nUdhna Darwaja,Ring Road,\nSurat-395002 (GJ) India\nPh - 0261 4015401", normal);
         address.setAlignment(Element.ALIGN_RIGHT);
         address.setSpacingAfter(05.0f);
 
-        Paragraph serveceTax = new Paragraph("Service Tax No: ABAPT4600JSD001\nPan No: ABAPT4600J",normal);
+        Paragraph serveceTax = new Paragraph("Service Tax No: ABAPT4600JSD001\nPan No: ABAPT4600J", normal);
         serveceTax.setAlignment(Element.ALIGN_RIGHT);
         serveceTax.setSpacingAfter(05.0f);
 
 
-        Paragraph p1 = new Paragraph("Invoice To",normal);
+        Paragraph p1 = new Paragraph("Invoice To", normal);
         p1.setAlignment(Element.ALIGN_LEFT);
 
-        Paragraph clientname = new Paragraph(stComapany,bold);
+        Paragraph clientname = new Paragraph(stComapany, bold);
         clientname.setAlignment(Element.ALIGN_LEFT);
-        Paragraph clientAddress = new Paragraph(stAddress+",\n"+stCity+",\nTel - "+stMobile+"",normal);
+        Paragraph clientAddress = new Paragraph(stAddress + ",\n" + stCity + ",\nTel - " + stMobile + "", normal);
         clientAddress.setAlignment(Element.ALIGN_LEFT);
         clientAddress.setSpacingAfter(10.0f);
         // Second parameter is the number of the chapter
@@ -402,10 +401,10 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         // document.add(new Paragraph(Html.fromHtml(invoice).toString()));
         document.add(table);
         document.add(p1);
-       // document.add(new Paragraph("Invoice To"));
+        // document.add(new Paragraph("Invoice To"));
         document.add(clientname);
         document.add(clientAddress);
-        if(jsonArray.length() != 0) {
+        if (jsonArray.length() != 0) {
             createTable(document, jsonArray);
         }
         createTotalTable(document);
@@ -417,9 +416,9 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //document.newPage();
         document.add(list);
         document.add(Chunk.NEWLINE);
-        document.add(new Paragraph("For,",normal));
+        document.add(new Paragraph("For,", normal));
         document.add(image);
-        document.add(new Paragraph("V2IDEAS.COM",normal));
+        document.add(new Paragraph("V2IDEAS.COM", normal));
 
         document.close();
         output.close();
@@ -427,6 +426,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         Log.i(CommonVariables.TAG, file.toString());
 
     }
+
     private void createTable(Document doc, JSONArray jsonArray)
             throws BadElementException {
 
@@ -437,71 +437,67 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         // t.setSpacing(4);
         // t.setBorderWidth(1);
 
-        PdfPCell c1 = new PdfPCell(new Phrase("Description",bold));
+        PdfPCell c1 = new PdfPCell(new Phrase("Description", bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (5.0f);
+        c1.setPadding(5.0f);
         c1.setColspan(2);
         table.addCell(c1);
 
 
-        c1 = new PdfPCell(new Phrase("Term\n(In Months)",bold));
+        c1 = new PdfPCell(new Phrase("Term\n(In Months)", bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (5.0f);
+        c1.setPadding(5.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Qty",bold));
+        c1 = new PdfPCell(new Phrase("Qty", bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (5.0f);
+        c1.setPadding(5.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Rate",bold));
+        c1 = new PdfPCell(new Phrase("Rate", bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (5.0f);
+        c1.setPadding(5.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Total",bold));
+        c1 = new PdfPCell(new Phrase("Total", bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (5.0f);
+        c1.setPadding(5.0f);
         table.addCell(c1);
 
         table.setHeaderRows(1);
-        for(int i =0; i<jsonArray.length(); i++){
-            JSONObject c= jsonArray.optJSONObject(i);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject c = jsonArray.optJSONObject(i);
 
-            Double duration = Double.parseDouble(c.optString("Term"))/12;
-            Double Total = c.optInt("Qty")*c.optInt("Rate")*duration;
-            Paragraph phrase = new Paragraph(c.optString("ItemName"),normal);
+            Double duration = Double.parseDouble(c.optString("Term")) / 12;
+            Double Total = c.optInt("Qty") * c.optInt("Rate") * duration;
+            Paragraph phrase = new Paragraph(c.optString("ItemName"), normal);
             phrase.setFont(normal);
             c1 = new PdfPCell(phrase);
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setPadding (05.0f);
+            c1.setPadding(05.0f);
             c1.setColspan(2);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+c.optString("Term"),normal));
+            c1 = new PdfPCell(new Phrase("" + c.optString("Term"), normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-            c1.setPadding (05.0f);
+            c1.setPadding(05.0f);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+c.optInt("Qty"),normal));
+            c1 = new PdfPCell(new Phrase("" + c.optInt("Qty"), normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-            c1.setPadding (05.0f);
+            c1.setPadding(05.0f);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+c.optInt("Rate"),normal));
+            c1 = new PdfPCell(new Phrase("" + c.optInt("Rate"), normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-            c1.setPadding (05.0f);
+            c1.setPadding(05.0f);
             table.addCell(c1);
-            c1 = new PdfPCell(new Phrase(""+new DecimalFormat("##.##").format(Total),normal));
+            c1 = new PdfPCell(new Phrase("" + new DecimalFormat("##.##").format(Total), normal));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-            c1.setPadding (05.0f);
+            c1.setPadding(05.0f);
             table.addCell(c1);
         }
 
 
-
-
-
-
         try {
-           // table.setWidthPercentage  (new float[]{ 150, 100,100,100 },null);
+            // table.setWidthPercentage  (new float[]{ 150, 100,100,100 },null);
             table.setWidthPercentage(100);
             doc.add(table);
         } catch (DocumentException e) {
@@ -509,6 +505,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         }
 
     }
+
     public void createTotalTable(Document doc)
             throws BadElementException {
 
@@ -519,56 +516,54 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         // t.setSpacing(4);
         // t.setBorderWidth(1);
 
-        PdfPCell c1 = new PdfPCell(new Phrase("Sub Total",normal));
+        PdfPCell c1 = new PdfPCell(new Phrase("Sub Total", normal));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase(stSubtotal,normal));
+        c1 = new PdfPCell(new Phrase(stSubtotal, normal));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("15% New Service Tax(Nov-2015)",normal));
+        c1 = new PdfPCell(new Phrase("15% New Service Tax(Nov-2015)", normal));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase(stServiceTax,normal));
+        c1 = new PdfPCell(new Phrase(stServiceTax, normal));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Credit",normal));
+        c1 = new PdfPCell(new Phrase("Credit", normal));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("",normal));
+        c1 = new PdfPCell(new Phrase("", normal));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase("Total",bold));
+        c1 = new PdfPCell(new Phrase("Total", bold));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         c1.setColspan(5);
         table.addCell(c1);
 
-        c1 = new PdfPCell(new Phrase(stTotalAmount,bold));
+        c1 = new PdfPCell(new Phrase(stTotalAmount, bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding (05.0f);
+        c1.setPadding(05.0f);
         table.addCell(c1);
-
-
 
 
         try {
-           // table.setWidthPercentage  (new float[]{ 150, 100,100,100 },null);
-           // table.setLockedWidth(true);
+            // table.setWidthPercentage  (new float[]{ 150, 100,100,100 },null);
+            // table.setLockedWidth(true);
             table.setWidthPercentage(100);
             doc.add(table);
         } catch (DocumentException e) {
@@ -576,9 +571,10 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         }
 
     }
-    public byte[] convertImageToByte(){
+
+    public byte[] convertImageToByte() {
         byte[] data = null;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.stamp);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.stamp);
         //Bitmap bitmap = getBitmapFromURL("http://theprintshop.ae/wp-content/uploads/2015/06/1.png");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -602,9 +598,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     }
 
 
-
     private void requestPermissionSMSReceive() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_RECEIVE_MESSAGE);
@@ -623,6 +618,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             }
         }
     }
+
     @SuppressLint("Override")
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -646,62 +642,63 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
         }
     }
-    public void jsonCallback(String url, String json, AjaxStatus status){
 
-        if(json != null){
+    public void jsonCallback(String url, String json, AjaxStatus status) {
+
+        if (json != null) {
             //successful ajax call
-            Log.d(CommonVariables.TAG,json.toString());
+            Log.d(CommonVariables.TAG, json.toString());
             try {
                 JSONObject object = new JSONObject(json);
 
-                    if(object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
+                if (object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
+                    JSONArray jsonArray = object.optJSONArray("resData");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject c = jsonArray.optJSONObject(i);
+                        stClientName = c.optString("ClientName");
+                        stClientID = c.optInt("ClientId");
+                        stMobile = c.optString("MobileNo");
+                        stInvoiceNo = c.optString("InvoiceNo");
+                        stInvoiceDate = c.optString("InvoiceDate");
+                        stDuedate = c.optString("DueDate");
+                        stAddress = c.optString("CompanyAddress");
+                        stCity = c.optString("City");
+                        stState = c.optString("State");
+                        stCountry = c.optString("Country");
+                        stPincode = c.optString("Pincode");
+                        stSubtotal = c.optString("Subtotal");
+                        stServiceTax = c.optString("ServiceTax");
+                        stTotalAmount = c.optString("TotalAmount");
+                        stNote = c.optString("Note");
+                        stComapany = c.optString("Company");
+                        ItemList();
+                        clientDetail();
+
+
+                    }
+                }
+                if (object.optString("api").equalsIgnoreCase("InvoiceList")) {
+                    JSONArray jsonArray = object.optJSONArray("resData");
+                    new AsyncTaskpdf(jsonArray).execute();
+                }
+                if (object.optString("api").equalsIgnoreCase("ClientDetails")) {
+                    if (object.optInt("resid") > 0) {
                         JSONArray jsonArray = object.optJSONArray("resData");
-                        for (int i = 0; i<jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.optJSONObject(i);
-                            stClientName = c.optString("ClientName");
-                            stClientID = c.optInt("ClientId");
-                            stMobile = c.optString("MobileNo");
-                            stInvoiceNo = c.optString("InvoiceNo");
-                            stInvoiceDate = c.optString("InvoiceDate");
-                            stDuedate = c.optString("DueDate");
-                            stAddress = c.optString("CompanyAddress");
-                            stCity = c.optString("City");
-                            stState = c.optString("State");
-                            stCountry = c.optString("Country");
-                            stPincode = c.optString("Pincode");
-                            stSubtotal = c.optString("Subtotal");
-                            stServiceTax = c.optString("ServiceTax");
-                            stTotalAmount = c.optString("TotalAmount");
-                            stNote = c.optString("Note");
-                            stComapany = c.optString("Company");
-                            ItemList();
-                            clientDetail();
-
-
+                            stMail = c.optString("Email");
                         }
                     }
-                    if(object.optString("api").equalsIgnoreCase("InvoiceList")) {
-                        JSONArray jsonArray = object.optJSONArray("resData");
-                        new AsyncTaskpdf(jsonArray).execute();
-                    }
-                    if(object.optString("api").equalsIgnoreCase("ClientDetails")) {
-                        if(object.optInt("resid")>0) {
-                            JSONArray jsonArray = object.optJSONArray("resData");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject c = jsonArray.optJSONObject(i);
-                                stMail = c.optString("Email");
-                            }
-                        }
-                    }
+                }
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             //ajax error
-            Log.d(CommonVariables.TAG,""+status.getCode());
+            Log.d(CommonVariables.TAG, "" + status.getCode());
         }
     }
 
@@ -710,10 +707,11 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             paragraph.add(new Paragraph(" "));
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(!CommonMethods.knowInternetOn(this)){
+        if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
         }
     }

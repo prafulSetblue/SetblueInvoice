@@ -150,7 +150,7 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 		{
 			for (Clients wp : searchlistInvoice)
 			{
-				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText))
+				if (wp.getClient_name().toLowerCase(Locale.getDefault()).contains(charText) || wp.getCompany().toLowerCase(Locale.getDefault()).contains(charText))
 				{
 					listClient.add(wp);
 				}
