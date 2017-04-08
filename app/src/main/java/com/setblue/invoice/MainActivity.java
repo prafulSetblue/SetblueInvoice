@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             init();
             setUpActionBar();
             setDrawer();
+
             from = getIntent().getStringExtra("from");
             if(from.equalsIgnoreCase("clientlist")){
-                fragment = new CustomerFragment();
+                fragment = new CustomerFragment(from);
                 replaceFragment(fragment);
             }
             if (from.equalsIgnoreCase("invoicelist")){
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v == newCustomer){
-            fragment = new CustomerFragment();
+            fragment = new CustomerFragment(from);
             replaceFragment(fragment);
         }
         else if(v == newInvoice){
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
             ft.replace(R.id.content_frame, fragment);
-            ft.addToBackStack(null);
+            ft.addToBackStack("My Fragment");
             ft.commit();
             // fragmentManager.beginTransaction()
             //         .replace(R.id.content_frame, fragment).setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack(null).commit();
@@ -131,7 +132,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (exit) {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            if (exit) {
+                //System.exit(0);
+                finish();
+                moveTaskToBack(true);
+            } else {
+                Toast.makeText(this, "Press once again to exit app.",
+                        Toast.LENGTH_SHORT).show();
+                exit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exit = false;
+                    }
+                }, 3 * 1000);
+
+            }
+            super.onBackPressed();
+        }
+       /* if (exit) {
             //System.exit(0);
             finish();
             moveTaskToBack(true);
@@ -146,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }, 3 * 1000);
 
-        }
+        }*/
     }
 
     @Override

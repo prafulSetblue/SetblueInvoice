@@ -23,15 +23,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
 
         </activity>
         <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
 
 
         </activity>
         <activity android:name=".SignupActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".ClientListActivity"
             android:screenOrientation="portrait"/>
@@ -42,15 +45,18 @@
         <activity android:name=".InvoiceDetailActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".InvoiceItemActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".InvoicePreviewActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ForgotPasswordActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".EditClientActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".EditInvoiceActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
     </application>
 

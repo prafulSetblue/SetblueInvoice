@@ -120,6 +120,11 @@ public class ClientListAdapter extends RecyclerView.Adapter<ClientListAdapter.Cl
 				i.putExtra("id",listClient.get(getPosition()).getId());
 				context.startActivity(i);
 			}
+			else if(from.equalsIgnoreCase("Customer")){
+				i = new Intent(context, ClientDetailActivity.class);
+				i.putExtra("id",listClient.get(getPosition()).getId());
+				context.startActivity(i);
+			}
 		}
 
 		public void setDateToView(Clients item, int position) throws Exception {

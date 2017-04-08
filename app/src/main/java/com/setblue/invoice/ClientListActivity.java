@@ -171,7 +171,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
         else if(v == addClient){
             Intent i = new Intent(this,MainActivity.class);
             i.putExtra("from","clientlist");
-            finish();
+            //finish();
             startActivity(i);
            /* fragment = new CustomerFragment();
             replaceFragment(fragment);*/

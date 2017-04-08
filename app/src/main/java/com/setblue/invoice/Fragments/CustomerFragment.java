@@ -1,5 +1,6 @@
 package com.setblue.invoice.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
 /**
  * Created by praful on 01-Feb-17.
  */
-
+@SuppressLint("ValidFragment")
 public class CustomerFragment extends Fragment implements View.OnClickListener {
 
     private Button bt_save;
@@ -62,6 +63,12 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
     private EditText et_email;
     private String stEmail;
     AQuery aq;
+    String from = "";
+
+
+    public CustomerFragment(String from) {
+        this.from = from;
+    }
 
     @Nullable
     @Override
@@ -156,7 +163,7 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(),"Customer added successfully",Toast.LENGTH_LONG).show();
                     i = new Intent(getActivity(), ClientDetailActivity.class);
                     i.putExtra("id",object.optInt("ClientId"));
-                    getActivity().finish();
+                    //getActivity().finish();
                     startActivity(i);
                     getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 }
@@ -184,7 +191,19 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        if(from == null){
+                            getFragmentManager().popBackStack();
+                        }
+                       else if(from.equalsIgnoreCase("null")) {
+                           getFragmentManager().popBackStack();
+                       }
+                        else {
+                           Intent i = new Intent(getActivity(), ClientListActivity.class);
+                           i.putExtra("from", "Customer");
+                           getActivity().finish();
+                           startActivity(i);
+                           getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                       }
                         return true;
                     }
                 }

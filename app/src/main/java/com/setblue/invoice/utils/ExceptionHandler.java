@@ -65,6 +65,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		myContext.finish();
 		myContext.startActivity(intent);
+		myContext.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
 
 		android.os.Process.killProcess(android.os.Process.myPid());
 		System.exit(10);

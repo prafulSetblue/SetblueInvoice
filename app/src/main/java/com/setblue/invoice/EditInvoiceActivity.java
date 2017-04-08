@@ -116,6 +116,47 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         invoice_date.setOnClickListener(this);
         invoice_date.setInputType(InputType.TYPE_NULL);
         due_date.setInputType(InputType.TYPE_NULL);
+        term.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //invoice_date.setText(CurrentDate);
+                String strDate = CurrentDate;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date date = null;
+                try {
+                    date = dateFormat.parse(strDate);
+                    //dueDate = dateFormat.format(date);
+                    //System.out.println(dueDate);
+                    myCalendar.setTime(date);
+                    if (!term.getText().toString().equalsIgnoreCase("")) {
+                        myCalendar.add(Calendar.DATE, Integer.valueOf(term.getText().toString()));
+                    }// number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    dueDate = sdf1.format(myCalendar.getTime());
+                    due_date.setText(dueDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+               /* if (!stTerm.equalsIgnoreCase("")) {
+                    myCalendar.add(Calendar.DATE, Integer.valueOf(term.getText().toString()));
+                }// number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
+                SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                dueDate = sdf1.format(myCalendar.getTime());
+                due_date.setText(dueDate);*/
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
        /* term.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -149,8 +190,14 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
     @Override
     public void onClick(View v) {
         if (v == back) {
-            finish();
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            }
+            else {
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+
 
         } else if (v == invoice_date) {
             getDate();
@@ -214,7 +261,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
 
     public void getDate() {
 
-        dpd = new DatePickerDialog(this, R.style.DialogTheme, this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+        dpd = new DatePickerDialog(this,android.R.style.Theme_DeviceDefault_Light, this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
         try {
             dpd.getDatePicker().setMinDate(new Date().getTime());
         } catch (Exception e) {
@@ -392,5 +439,15 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         float dayCount = (float) (diff / (24 * 60 * 60 * 1000));
 
         return ("" + (int) dayCount);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

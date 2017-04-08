@@ -54,6 +54,7 @@
     <ScrollView
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:background="@android:color/white">
 
 
@@ -61,173 +62,175 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="false"
-            android:layout_margin="10dp"
             android:orientation="vertical">
 
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:textColorHint="@color/black_border">
-
-                <EditText
-                    android:id="@+id/edt_customer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Customer"
-                    android:singleLine="true"
-                    android:focusable="false"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_listing"
-                    android:imeOptions="actionNext" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:textColorHint="@color/black_border">
-
-                <EditText
-                    android:id="@+id/edt_Email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Email"
-                    android:textSize="@dimen/text_size_listing"
-                    android:singleLine="true"
-                    android:inputType="textEmailAddress"
-                    android:imeOptions="actionNext" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:textColorHint="@color/black_border">
-
-                <EditText
-                    android:id="@+id/edt_invoice_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_listing"
-                    android:hint="Invoice #"
-                    android:singleLine="true"
-                    android:imeOptions="actionNext" />
-
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:textColorHint="@color/black_border">
-
-                <EditText
-                    android:id="@+id/edt_term"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_listing"
-                    android:hint="Term (In Days)"
-                    android:singleLine="true"
-                    android:inputType="number"
-                    android:imeOptions="actionNext" />
-
-            </android.support.design.widget.TextInputLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:orientation="horizontal">
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColorHint="@color/black_border">
-
-                    <EditText
-                        android:id="@+id/edt_invoice_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_listing"
-                        android:hint="Invoice Date"
-                        android:singleLine="true"
-                        android:focusable="false"
-                        android:imeOptions="actionNext" />
-
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColorHint="@color/black_border">
-
-                    <EditText
-                        android:id="@+id/edt_due_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_listing"
-                        android:hint="Due Date"
-                        android:focusable="false"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext" />
-
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
 
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:textColorHint="@color/black_border">
 
+                    <EditText
+                        android:id="@+id/edt_customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="Customer"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_listing" />
 
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:textColorHint="@color/black_border"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/edt_Email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textSize="@dimen/text_size_listing" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:textColorHint="@color/black_border">
+
+                    <EditText
+                        android:id="@+id/edt_invoice_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Invoice #"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:textSize="@dimen/text_size_listing" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:textColorHint="@color/black_border">
+
+                    <EditText
+                        android:id="@+id/edt_term"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Term (In Days)"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textSize="@dimen/text_size_listing" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_border">
+
+                        <EditText
+                            android:id="@+id/edt_invoice_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:hint="Invoice Date"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:textSize="@dimen/text_size_listing" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/black_border">
+
+                        <EditText
+                            android:id="@+id/edt_due_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:hint="Due Date"
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:textSize="@dimen/text_size_listing" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginBottom="18dp"
                     android:textColorHint="@color/black_border">
 
                     <EditText
                         android:id="@+id/edt_notes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_listing"
                         android:hint="Notes"
+                        android:imeOptions="actionNext"
                         android:singleLine="true"
-                        android:imeOptions="actionNext" />
+                        android:textSize="@dimen/text_size_listing" />
 
                 </android.support.design.widget.TextInputLayout>
+
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btn_save"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginBottom="10dp"
-                    android:text="Next"
-                    android:textSize="@dimen/text_size_listing"
+                    android:background="@drawable/rounded_blue_button"
+                    android:text="Update Items"
+                    android:textStyle="bold"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/rounded_blue_button"/>
+                    android:textSize="@dimen/text_size_listing" />
+
 
                 <ProgressBar
                     android:id="@+id/progressBar1"
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
 

@@ -90,13 +90,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else if(v == forgot){
             i = new Intent(this, ForgotPasswordActivity.class);
-            finish();
+            //finish();
             startActivity(i);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
         else if(v == signup){
             i = new Intent(this, SignupActivity.class);
-            finish();
+            //finish();
             startActivity(i);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }

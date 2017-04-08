@@ -159,7 +159,7 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
                             companyName.setText(c.optString("Company"));
                             email.setText(c.optString("Email"));
                             mobile.setText(c.optString("Mobile"));
-                            address.setText(c.optString("Address"));
+                            address.setText(c.optString("Address")+", "+c.optString("City"));
                             clientID = c.optInt("ClientId");
 
 

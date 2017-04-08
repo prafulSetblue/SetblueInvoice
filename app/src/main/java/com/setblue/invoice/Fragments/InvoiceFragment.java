@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,8 +30,10 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.ClientDetailActivity;
 import com.setblue.invoice.ClientListActivity;
 import com.setblue.invoice.InvoiceItemActivity;
+import com.setblue.invoice.InvoiceListActivity;
 import com.setblue.invoice.MainActivity;
 import com.setblue.invoice.R;
 import com.setblue.invoice.utils.Apis;
@@ -134,6 +137,45 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         term.setOnClickListener(this);
         invoice_date.setInputType(InputType.TYPE_NULL);
         due_date.setInputType(InputType.TYPE_NULL);
+        term.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               // invoice_date.setText("");
+               // due_date.setText("");
+                if (!term.getText().toString().equalsIgnoreCase("")) {
+
+                    String strDate = CurrentDate;
+                    if(!strDate.equalsIgnoreCase("")) {
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = null;
+                        try {
+                            date = dateFormat.parse(strDate);
+                            //dueDate = dateFormat.format(date);
+                            //System.out.println(dueDate);
+                            myCalendar.setTime(date);
+                            myCalendar.add(Calendar.DATE, Integer.valueOf(term.getText().toString()));
+                            SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                            dueDate = sdf1.format(myCalendar.getTime());
+                            due_date.setText(dueDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
          /* invoice_date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -426,7 +468,26 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        if(from == null){
+                            getFragmentManager().popBackStack();
+                        }
+                        else if(from.equalsIgnoreCase("null") ) {
+                            getFragmentManager().popBackStack();
+                        }else if(from.equalsIgnoreCase("ClientDetail")){
+                            Intent i = new Intent(getActivity(), ClientDetailActivity.class);
+                            i.putExtra("from","ClientDetail");
+                            i.putExtra("id",id);
+                            getActivity().finish();
+                            startActivity(i);
+                            getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        }
+                        else {
+                            Intent i = new Intent(getActivity(), InvoiceListActivity.class);
+                            i.putExtra("from","InvoiceList");
+                            getActivity().finish();
+                            startActivity(i);
+                            getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        }
                         return true;
                     }
                 }

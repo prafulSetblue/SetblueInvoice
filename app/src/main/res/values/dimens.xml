@@ -11,6 +11,7 @@
     <dimen name="text_size_listing">15sp</dimen>
     <dimen name="text_size_medium">11sp</dimen>
     <dimen name="text_size_biggest">20sp</dimen>
+    <dimen name="text_size_largest">25sp</dimen>
     <dimen name="text_size_small">11sp</dimen>
     <dimen name="text_size_smallest">10sp</dimen>
     <dimen name="small_icon_size">24dp</dimen>

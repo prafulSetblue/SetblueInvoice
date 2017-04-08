@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
@@ -51,6 +53,8 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<InvoiceItem> clientsArrayList;
     private InvoiceItemListAdapter itemListAdapter;
     private Button save;
+    private LinearLayout ll_items;
+    private TextView tv_no_items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,8 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
 
     }
     private void init(){
+        ll_items = (LinearLayout)findViewById(R.id.ll_items);
+        tv_no_items = (TextView)findViewById(R.id.lbl_no_items);
         listviewItems = (RecyclerView)findViewById(R.id.lv_items);
         save = (Button)findViewById(R.id.btn_save);
         save.setOnClickListener(this);
@@ -134,8 +140,9 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
             try {
                 JSONObject object = new JSONObject(json);
                 if(object.optInt("resid")>0) {
-                    if (object.optJSONArray("resData").length() != 0) {
-                        JSONArray jsonArray = object.optJSONArray("resData");
+                    JSONArray jsonArray = object.optJSONArray("resData");
+                    if (jsonArray.length() != 0) {
+
                         clientsArrayList = new ArrayList<InvoiceItem>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.optJSONObject(i);
@@ -148,8 +155,15 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
                         listviewItems.setAdapter(itemListAdapter);
                         listviewItems.addItemDecoration(new DividerItemDecoration(this));
                     } else {
-                        //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
+
+                        ll_items.setVisibility(View.VISIBLE);
+                        tv_no_items.setVisibility(View.GONE);
                     }
+                }
+                else {
+
+                    ll_items.setVisibility(View.GONE);
+                    tv_no_items.setVisibility(View.VISIBLE);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

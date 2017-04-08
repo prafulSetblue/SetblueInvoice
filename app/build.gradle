@@ -30,6 +30,7 @@ dependencies {
     )
     compile 'com.googlecode.android-query:android-query:0.25.9'
     compile 'com.github.barteksc:android-pdf-viewer:2.4.0'
+    compile 'com.pnikosis:materialish-progress:1.7'
     compile files('libs/itextpdf-5.4.3.jar')
     compile files('libs/activation.jar')
     compile files('libs/additionnal.jar')

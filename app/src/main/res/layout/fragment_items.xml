@@ -61,6 +61,7 @@
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Qty"
                 android:singleLine="true"
+                android:inputType="number"
                 android:imeOptions="actionNext" />
 
         </android.support.design.widget.TextInputLayout>
@@ -78,6 +79,7 @@
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Rate"
                 android:singleLine="true"
+                android:inputType="number"
                 android:imeOptions="actionNext" />
 
         </android.support.design.widget.TextInputLayout>

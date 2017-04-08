@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/rounded_blue_button"
-            android:text="Next"
+            android:text="Add Items"
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_listing" />
