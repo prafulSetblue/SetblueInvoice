@@ -38,8 +38,8 @@ import java.util.ArrayList;
 public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemListAdapter.InvoiceHolder> {
 
 	private ArrayList<InvoiceItem> listInvoice;
-	private Context context;
-	AppCompatActivity activity = (AppCompatActivity) context;
+	//private Context context;
+	AppCompatActivity context;
 	private AdapterView.OnItemClickListener  onItemClickListener;
 	int pos;
 	AQuery aq;
@@ -47,7 +47,7 @@ public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemList
 	private CatLoadingView mView;
 
 
-	public InvoiceItemListAdapter(Context context, ArrayList<InvoiceItem> listInvoice) {
+	public InvoiceItemListAdapter(AppCompatActivity context, ArrayList<InvoiceItem> listInvoice) {
 		this.listInvoice = listInvoice;
 		this.context = context;
 	}
@@ -164,7 +164,7 @@ public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemList
 
 	private void itemRemove(int position) {
 		mView = new CatLoadingView();
-		mView.show(activity.getSupportFragmentManager(), "load");
+		mView.show(context.getSupportFragmentManager(), "load");
 		String url = Apis.RemoveInvoiceItem+"id="+listInvoice.get(position).getInvocieItemId();
 		//Make Asynchronous call using AJAX method
 		Log.d(CommonVariables.TAG,"Url: "+url);

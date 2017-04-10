@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.Fragments.InvoiceFragment;
 import com.setblue.invoice.adapter.ClientListAdapter;
 import com.setblue.invoice.adapter.InvoiceListAdapter;
 import com.setblue.invoice.components.CatLoadingView;
@@ -54,11 +58,14 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     RecyclerView listviewInvoice;
     ArrayList<Invoice> invoiceArrayList;
     InvoiceListAdapter invoiceListAdapter;
-    private SearchView search;
+    public SearchView search;
     AQuery aq;
     private ImageView addInvoice;
     private SwipeRefreshLayout swipeView;
     private CatLoadingView mView;
+    private InvoiceFragment fragment;
+    private FragmentManager fragmentManager;
+    public TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +90,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
 
         back = (ImageView) tb.findViewById(R.id.iv_back);
         back.setOnClickListener(this);
-
+        title = (TextView) tb.findViewById(R.id.tv_title);
         search=(SearchView) findViewById(R.id.iv_search);
         EditText searchEditText = (EditText)search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(getResources().getColor(android.R.color.white));
@@ -202,17 +209,35 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         }
         else if(v == addInvoice){
-            Intent i = new Intent(this,MainActivity.class);
+           /* Intent i = new Intent(this,MainActivity.class);
             i.putExtra("from","invoicelist");
             finish();
-            startActivity(i);
-           /* fragment = new CustomerFragment();
-            replaceFragment(fragment);*/
+            startActivity(i);*/
+             fragment = new InvoiceFragment(0,"invoicelist");
+            replaceFragment(fragment);
+        }
+    }
+
+    private void replaceFragment(Fragment fragment){
+        if (fragment != null) {
+            fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+            ft.replace(R.id.content_frame, fragment,"Invoice Fragment");
+            ft.addToBackStack(null);
+            ft.commit();
+            // fragmentManager.beginTransaction()
+            //         .replace(R.id.content_frame, fragment).setCustomAnimations(android.R.anim.fade_in,android.R.anim.fade_out).addToBackStack(null).commit();
+
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error in creating fragment");
         }
     }
     @Override
     protected void onResume() {
         super.onResume();
+        title.setText("Invoice List");
         if(!CommonMethods.knowInternetOn(this)){
             CommonMethods.showInternetAlert(this);
         }

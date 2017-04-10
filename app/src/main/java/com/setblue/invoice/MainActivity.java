@@ -53,26 +53,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setDrawer();
 
             from = getIntent().getStringExtra("from");
-            if(from.equalsIgnoreCase("clientlist")){
+            if (from.equalsIgnoreCase("clientlist")) {
                 fragment = new CustomerFragment(from);
                 replaceFragment(fragment);
             }
-            if (from.equalsIgnoreCase("invoicelist")){
+            if (from.equalsIgnoreCase("invoicelist")) {
                 newInvoice.performClick();
             }
-            if (from.equalsIgnoreCase("ClientDetail")){
+            if (from.equalsIgnoreCase("ClientDetail")) {
                 newInvoice.performClick();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
 
     private void init() {
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawerLayout);
-        navigationView = (NavigationView)findViewById(R.id.navigation_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         newCustomer = (LinearLayout) findViewById(R.id.ll_customer);
         newCustomer.setOnClickListener(this);
         newInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
         getSupportActionBar().setHomeButtonEnabled(false);
-       tb.setOnClickListener(this);
+        tb.setOnClickListener(this);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -97,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerToggle.syncState();
 
 
-
     }
 
     private void setDrawer() {
@@ -105,29 +103,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.addView(drawerView);
         drawerView.setMenuData();
     }
+
     @Override
     public void onClick(View v) {
-        if(v == newCustomer){
+        if (v == newCustomer) {
             fragment = new CustomerFragment(from);
             replaceFragment(fragment);
-        }
-        else if(v == newInvoice){
-            fragment = new InvoiceFragment(getIntent().getIntExtra("id",0),from);
+        } else if (v == newInvoice) {
+            fragment = new InvoiceFragment(getIntent().getIntExtra("id", 0), from);
             replaceFragment(fragment);
-        }
-        else if(v == tb){
-            Intent i  = new Intent(this,MainActivity.class);
+        } else if (v == tb) {
+            Intent i = new Intent(this, MainActivity.class);
             finish();
             startActivity(i);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
     }
-    private void replaceFragment(Fragment fragment){
+
+    private void replaceFragment(Fragment fragment) {
         if (fragment != null) {
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+            ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack("My Fragment");
             ft.commit();
@@ -184,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(!CommonMethods.knowInternetOn(this)){
+        if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
         }
     }

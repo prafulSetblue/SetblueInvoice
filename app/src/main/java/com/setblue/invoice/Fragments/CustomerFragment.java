@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -66,6 +67,7 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
     AQuery aq;
     String from = "";
     private CatLoadingView mView;
+    public TextView lbl;
 
 
     public CustomerFragment(String from) {
@@ -79,6 +81,18 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
         session = new MySessionManager(getActivity());
         aq = new AQuery(getActivity());
         init(view);
+        if(from == null){
+
+        }
+        else if(from.equalsIgnoreCase("clientlist")) {
+            ((ClientListActivity) getActivity()).title.setText("Create Client");
+            ((ClientListActivity) getActivity()).search.setVisibility(View.GONE);
+            lbl.setVisibility(View.GONE);
+
+        }
+        else{
+            lbl.setVisibility(View.VISIBLE);
+        }
 
         return view;
 
@@ -95,6 +109,7 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
         et_state = (EditText)v.findViewById(R.id.edt_state);
         et_country = (EditText)v.findViewById(R.id.edt_country);
         et_zip = (EditText)v.findViewById(R.id.edt_zip);
+        lbl = (TextView)v.findViewById(R.id.lbl_client);
         bt_save = (Button)v.findViewById(R.id.btn_save);
         bt_save.setOnClickListener(this);
     }
@@ -198,6 +213,8 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        //getFragmentManager().popBackStack();
                         if(from == null){
                             getFragmentManager().popBackStack();
                         }
@@ -205,11 +222,9 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
                            getFragmentManager().popBackStack();
                        }
                         else {
-                           Intent i = new Intent(getActivity(), ClientListActivity.class);
-                           i.putExtra("from", "Customer");
-                           getActivity().finish();
-                           startActivity(i);
-                           getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                            ((ClientListActivity) getActivity()).title.setText("Client List");
+                            ((ClientListActivity) getActivity()).search.setVisibility(View.VISIBLE);
+                            getFragmentManager().popBackStack();
                        }
                         return true;
                     }

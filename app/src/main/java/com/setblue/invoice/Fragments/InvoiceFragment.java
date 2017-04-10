@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -38,6 +40,7 @@ import com.setblue.invoice.MainActivity;
 import com.setblue.invoice.R;
 import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
+import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.MySessionManager;
 import com.setblue.invoice.utils.Validation;
@@ -96,6 +99,7 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     int id = 0;
     String from = "null";
     private CatLoadingView mView;
+    public TextView lbl;
 
     @SuppressLint("ValidFragment")
     public InvoiceFragment(int id, String from) {
@@ -110,8 +114,16 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         session = new MySessionManager(getActivity());
         aq = new AQuery(getActivity());
         init(view);
-        if(from != null ){
-            clientDetail();
+
+        if (from == null) {
+
+        } else if (from.equalsIgnoreCase("invoicelist")) {
+            ((InvoiceListActivity) getActivity()).title.setText("Create Invoice");
+            ((InvoiceListActivity) getActivity()).search.setVisibility(View.GONE);
+            lbl.setVisibility(View.GONE);
+
+        } else {
+            lbl.setVisibility(View.VISIBLE);
         }
 
         return view;
@@ -120,18 +132,18 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
 
     private void init(View v) {
         myCalendar = Calendar.getInstance();
-
-        invoice_date = (EditText)v.findViewById(R.id.edt_invoice_date);
-        client = (EditText)v.findViewById(R.id.edt_customer);
-        email = (EditText)v.findViewById(R.id.edt_Email);
-        invoiceNumber = (EditText)v.findViewById(R.id.edt_invoice_number);
-        due_date = (EditText)v.findViewById(R.id.edt_due_date);
-        term = (EditText)v.findViewById(R.id.edt_term);
-        note = (EditText)v.findViewById(R.id.edt_notes);
-        save = (Button)v.findViewById(R.id.btn_save);
+        lbl = (TextView) v.findViewById(R.id.lbl_client);
+        invoice_date = (EditText) v.findViewById(R.id.edt_invoice_date);
+        client = (EditText) v.findViewById(R.id.edt_customer);
+        email = (EditText) v.findViewById(R.id.edt_Email);
+        invoiceNumber = (EditText) v.findViewById(R.id.edt_invoice_number);
+        due_date = (EditText) v.findViewById(R.id.edt_due_date);
+        term = (EditText) v.findViewById(R.id.edt_term);
+        note = (EditText) v.findViewById(R.id.edt_notes);
+        save = (Button) v.findViewById(R.id.btn_save);
         save.setOnClickListener(this);
         client.setInputType(InputType.TYPE_NULL);
-        invoiceNumber.setText("V2"+session.getNumber());
+        invoiceNumber.setText("V2" + session.getNumber());
         //client.setOnFocusChangeListener(this);
         client.setOnClickListener(this);
         invoice_date.setOnClickListener(this);
@@ -147,12 +159,12 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-               // invoice_date.setText("");
-               // due_date.setText("");
+                // invoice_date.setText("");
+                // due_date.setText("");
                 if (!term.getText().toString().equalsIgnoreCase("")) {
 
                     String strDate = CurrentDate;
-                    if(!strDate.equalsIgnoreCase("")) {
+                    if (!strDate.equalsIgnoreCase("")) {
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                         Date date = null;
                         try {
@@ -222,27 +234,29 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
             }
         });*/
     }
+
     private void setDate() {
         invoice_date.setText(CurrentDate);
         //due_date.setText(dueDate);
 
     }
+
     public void clientDetail() {
         String url = Apis.ClientDetails + "id=" + id;
         Log.d(CommonVariables.TAG, "Url: " + url);
         aq.ajax(url, String.class, this, "jsonCallback");
 
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // myCalendar.set(Calendar.YEAR, year);
         // myCalendar.set(Calendar.MONTH, monthOfYear);
         // myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         // final String strDate = dayOfMonth + "/" + monthOfYear + "/" + year;
-        if(dpd.isShowing()) {
+        if (dpd.isShowing()) {
             dpd.cancel();
         }
-
 
 
         myCalendar.set(year, monthOfYear, dayOfMonth);
@@ -252,17 +266,18 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         CurrentDate = sdf.format(myCalendar.getTime());
         invoice_date.setText(CurrentDate);
         stTerm = term.getText().toString();
-        if(!stTerm.equalsIgnoreCase("")) {
+        if (!stTerm.equalsIgnoreCase("")) {
             myCalendar.add(Calendar.DATE, Integer.valueOf(term.getText().toString()));
         }// number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
         dueDate = sdf1.format(myCalendar.getTime());
         due_date.setText(dueDate);
-       // setDate();
+        // setDate();
     }
+
     public void getDate() {
 
-        dpd = new DatePickerDialog(getActivity(), R.style.DialogTheme,this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
+        dpd = new DatePickerDialog(getActivity(), R.style.DialogTheme, this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
         try {
             dpd.getDatePicker().setMinDate(new Date().getTime());
         } catch (Exception e) {
@@ -277,59 +292,51 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onClick(View v) {
 
-         if(v == save){
-             stClient = client.getText().toString();
-             stInvoiceNo = invoiceNumber.getText().toString();
-             stTerm = term.getText().toString();
-             CurrentDate = invoice_date.getText().toString();
-             dueDate = due_date.getText().toString();
-             stNote = note.getText().toString();
-             if(Validation.isEmptyEdittext(client) && Validation.isEmptyEdittext(email) && Validation.isEmptyEdittext(invoiceNumber)
-                     && Validation.isEmptyEdittext(term) && Validation.isEmptyEdittext(invoice_date) && Validation.isEmptyEdittext(due_date)
-                        && Validation.isEmptyEdittext(note)){
-                 client.setError("Enter Client Name");
-                 email.setError("Enter Email Address");
-                 invoiceNumber.setError("Enter Invoice Number");
-                 term.setError("Enter Term");
-                 invoice_date.setError("Enter Invoice Date");
-                 due_date.setError("Enter Due Date");
-                 note.setError("Enter Note");
-             }
-             else if(Validation.isEmptyEdittext(client)){
-                 client.setError("Enter Client Name");
-             }
-             else if(Validation.isEmptyEdittext(invoiceNumber)){
-                 invoiceNumber.setError("Enter Invoice Number");
-             }
-             else if(Validation.isEmptyEdittext(term)){
-                 term.setError("Enter Term");
-             }
-             else if(Validation.isEmptyEdittext(invoice_date)){
-                 invoice_date.setError("Enter Invoice Date");
-             }
-             else if(Validation.isEmptyEdittext(due_date)){
-                 due_date.setError("Enter Due Date");
-             }
-             else if(Validation.isEmptyEdittext(note)){
-                 note.setError("Enter Notes");
-             }
-             else {
-                 AddInvoice();
+        if (v == save) {
+            stClient = client.getText().toString();
+            stInvoiceNo = invoiceNumber.getText().toString();
+            stTerm = term.getText().toString();
+            CurrentDate = invoice_date.getText().toString();
+            dueDate = due_date.getText().toString();
+            stNote = note.getText().toString();
+            if (Validation.isEmptyEdittext(client) && Validation.isEmptyEdittext(email) && Validation.isEmptyEdittext(invoiceNumber)
+                    && Validation.isEmptyEdittext(term) && Validation.isEmptyEdittext(invoice_date) && Validation.isEmptyEdittext(due_date)
+                    && Validation.isEmptyEdittext(note)) {
+                client.setError("Enter Client Name");
+                email.setError("Enter Email Address");
+                invoiceNumber.setError("Enter Invoice Number");
+                term.setError("Enter Term");
+                invoice_date.setError("Enter Invoice Date");
+                due_date.setError("Enter Due Date");
+                note.setError("Enter Note");
+            } else if (Validation.isEmptyEdittext(client)) {
+                client.setError("Enter Client Name");
+            } else if (Validation.isEmptyEdittext(invoiceNumber)) {
+                invoiceNumber.setError("Enter Invoice Number");
+            } else if (Validation.isEmptyEdittext(term)) {
+                term.setError("Enter Term");
+            } else if (Validation.isEmptyEdittext(invoice_date)) {
+                invoice_date.setError("Enter Invoice Date");
+            } else if (Validation.isEmptyEdittext(due_date)) {
+                due_date.setError("Enter Due Date");
+            } else if (Validation.isEmptyEdittext(note)) {
+                note.setError("Enter Notes");
+            } else {
+                AddInvoice();
                 /* Intent i = new Intent(getActivity(), InvoiceItemActivity.class);
                  i.putExtra("InvoiceId",2);
                  getActivity().finish();
                  startActivity(i);
                  getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);*/
-             }
+            }
 
-        }else if(v == client){
+        } else if (v == client) {
 
             Intent i = new Intent(getActivity(), ClientListActivity.class);
-            i.putExtra("from","Invoice");
-            startActivityForResult(i,CommonVariables.KEY_CUSTOMER_LIST);
-            getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-        }
-        else if(v == invoice_date){
+            i.putExtra("from", "Invoice");
+            startActivityForResult(i, CommonVariables.KEY_CUSTOMER_LIST);
+            getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        } else if (v == invoice_date) {
             getDate();
         }
        /* else if(v == term){
@@ -356,11 +363,12 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         }*/
 
     }
-    private void replaceFragment(Fragment fragment){
+
+    private void replaceFragment(Fragment fragment) {
         if (fragment != null) {
             fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
+            ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
             ft.replace(R.id.content_frame, fragment);
             ft.addToBackStack(null);
             ft.commit();
@@ -377,26 +385,26 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     private void AddInvoice() {
         mView = new CatLoadingView();
         mView.show(getActivity().getSupportFragmentManager(), "load");
-        String url = Apis.AddInvoice+"ClientId="+clientId+"&"+"MobileNo="+stMobile+"&"+"CompanyAddress="+stAddress+"&"+"City="+stCity
-                +"&"+"State="+stState+"&"+"Country="+stCountry+"&"+"Pincode="+stPincode+"&"+"InvoiceDate="+ URLEncoder.encode(CurrentDate)+"&"+"DueDate="+ URLEncoder.encode(dueDate)+"&"+"Note="+stNote+"&"+"invoiceno="+stInvoiceNo+"&"+"AdminId="+Integer.parseInt(session.getUserId());
+        String url = Apis.AddInvoice + "ClientId=" + clientId + "&" + "MobileNo=" + stMobile + "&" + "CompanyAddress=" + stAddress + "&" + "City=" + stCity
+                + "&" + "State=" + stState + "&" + "Country=" + stCountry + "&" + "Pincode=" + stPincode + "&" + "InvoiceDate=" + URLEncoder.encode(CurrentDate) + "&" + "DueDate=" + URLEncoder.encode(dueDate) + "&" + "Note=" + stNote + "&" + "invoiceno=" + stInvoiceNo + "&" + "AdminId=" + Integer.parseInt(session.getUserId());
 
-        Log.d(CommonVariables.TAG,"url: "+ url);
+        Log.d(CommonVariables.TAG, "url: " + url);
         //Make Asynchronous call using AJAX method
-        aq.ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
-    public void jsonCallback(String url, String json, AjaxStatus status){
+    public void jsonCallback(String url, String json, AjaxStatus status) {
 
-        if(mView != null)
+        if (mView != null)
             mView.dismiss();
 
-        if(json != null){
+        if (json != null) {
             //successful ajax call
-            Log.d(CommonVariables.TAG,json.toString());
+            Log.d(CommonVariables.TAG, json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optString("api").equalsIgnoreCase("AddInvoice")) {
+                if (object.optString("api").equalsIgnoreCase("AddInvoice")) {
                     if (object.optInt("resid") > 0) {
                         //Toast.makeText(getActivity(), "Successfully create invoice", Toast.LENGTH_LONG).show();
                         session.setNumber(session.getNumber() + 1);
@@ -435,10 +443,10 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             //ajax error
-            Toast.makeText(getActivity(),"Something Wrong.",Toast.LENGTH_SHORT).show();
-            Log.d(CommonVariables.TAG,""+status.getCode());
+            Toast.makeText(getActivity(), "Something Wrong.", Toast.LENGTH_SHORT).show();
+            Log.d(CommonVariables.TAG, "" + status.getCode());
         }
     }
 
@@ -457,11 +465,11 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
                 stCountry = data.getExtras().getString("country");
                 client.setText(clientName);
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -473,30 +481,28 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        if(from == null){
+
+                        if (from == null) {
                             getFragmentManager().popBackStack();
-                        }
-                        else if(from.equalsIgnoreCase("null") ) {
+                        } else if (from.equalsIgnoreCase("null")) {
                             getFragmentManager().popBackStack();
-                        }else if(from.equalsIgnoreCase("ClientDetail")){
+                        } else if (from.equalsIgnoreCase("ClientDetail")) {
                             Intent i = new Intent(getActivity(), ClientDetailActivity.class);
-                            i.putExtra("from","ClientDetail");
-                            i.putExtra("id",id);
+                            i.putExtra("from", "ClientDetail");
+                            i.putExtra("id", id);
                             getActivity().finish();
                             startActivity(i);
                             getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        }
-                        else {
-                            Intent i = new Intent(getActivity(), InvoiceListActivity.class);
-                            i.putExtra("from","InvoiceList");
-                            getActivity().finish();
-                            startActivity(i);
-                            getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                        } else if (from.equalsIgnoreCase("invoicelist")) {
+                            getFragmentManager().popBackStack();
+                            ((InvoiceListActivity) getActivity()).title.setText("Invoice List");
+                            ((InvoiceListActivity) getActivity()).search.setVisibility(View.VISIBLE);
+
                         }
                         return true;
                     }
                 }
-                return false;
+                return true;
             }
         });
     }

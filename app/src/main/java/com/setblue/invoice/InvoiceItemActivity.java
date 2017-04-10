@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
@@ -57,6 +58,7 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout ll_items;
     private TextView tv_no_items;
     private CatLoadingView mView;
+    private JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,11 +113,16 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         }
         else  if(v == save){
-            Intent i = new Intent(this,InvoiceDetailActivity.class);
-            i.putExtra("invoiceID",getIntent().getIntExtra("InvoiceId",0));
-            finish();
-            startActivity(i);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            if (jsonArray.length() > 0) {
+                Intent i = new Intent(this,InvoiceDetailActivity.class);
+                i.putExtra("invoiceID",getIntent().getIntExtra("InvoiceId",0));
+                finish();
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }else {
+                Toast.makeText(this,"Please add at least one item into invoice",Toast.LENGTH_SHORT).show();
+            }
+
         }
         else  if(v == addItems){
             fragment = new AddItemsFragment(getIntent().getIntExtra("InvoiceId",0));
@@ -145,8 +152,8 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
             Log.d(CommonVariables.TAG,json.toString());
             try {
                 JSONObject object = new JSONObject(json);
+                jsonArray = object.optJSONArray("resData");
                 if(object.optInt("resid")>0) {
-                    JSONArray jsonArray = object.optJSONArray("resData");
                     if (jsonArray.length() > 0) {
                         ll_items.setVisibility(View.VISIBLE);
                         tv_no_items.setVisibility(View.GONE);
