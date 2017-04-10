@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
@@ -73,6 +74,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
     private String stNote;
     MySessionManager session;
     private String stEmail;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,29 +276,37 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
 
 
     public void clientDetail() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.ClientDetails + "id=" + getIntent().getIntExtra("clientID", 0);
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
     private void InvoiceDetail() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.InvoiceDetail + "id=" + getIntent().getIntExtra("id", 0);
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
     }
 
     private void UpdateInvoice() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.UpdateInvoice + "ClientId=" + getIntent().getIntExtra("clientID", 0) + "&" + "MobileNo=" + stMobile + "&" + "CompanyAddress=" + stAddress + "&" + "City=" + stCity
                 + "&" + "State=" + stState + "&" + "Country=" + stCountry + "&" + "Pincode=" + stPincode + "&" + "InvoiceDate=" + URLEncoder.encode(CurrentDate) + "&" + "DueDate=" + URLEncoder.encode(dueDate) + "&" + "Note=" + stNote + "&" + "invoiceno=" + stInvoiceNo + "&" + "AdminId=" + Integer.parseInt(session.getUserId()) + "&" + "id=" + getIntent().getIntExtra("id", 0);
 
         Log.d(CommonVariables.TAG, "url: " + url);
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status) {
+        if(mView != null)
+            mView.dismiss();
 
         if (json != null) {
             //successful ajax call
@@ -346,7 +356,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
                     if (object.optInt("resid") > 0) {
                         Intent i = new Intent(this, InvoiceItemActivity.class);
                         i.putExtra("InvoiceId", getIntent().getIntExtra("id", 0));
-                        finish();
+                        //finish();
                         startActivity(i);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

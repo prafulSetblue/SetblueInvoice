@@ -37,7 +37,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_toRightOf="@+id/iv_back"
                 android:textColor="@android:color/white"
-                android:textSize="15dp"
+                android:textSize="@dimen/text_size_biggest"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:text="Edit Invoice"/>
@@ -84,6 +84,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:hint="Customer"
+                        android:inputType="textCapSentences"
                         android:imeOptions="actionNext"
                         android:singleLine="true"
                         android:textColor="@color/black"
@@ -200,6 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Notes"
+                        android:inputType="textCapSentences"
                         android:imeOptions="actionNext"
                         android:singleLine="true"
                         android:textSize="@dimen/text_size_listing" />

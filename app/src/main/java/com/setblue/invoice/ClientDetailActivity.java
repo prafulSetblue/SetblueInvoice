@@ -22,6 +22,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.adapter.ClientListAdapter;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.model.Clients;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
@@ -51,6 +52,7 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     AQuery aq;
     private int clientID = 0;
     private Button invoice;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,13 +139,19 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void clientDetail() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.ClientDetails + "id=" + getIntent().getIntExtra("id", 0);
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status) {
+
+        if(mView != null)
+            mView.dismiss();
+
 
         if (json != null) {
             //successful ajax call

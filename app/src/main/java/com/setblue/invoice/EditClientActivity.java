@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.Fragments.CustomerFragment;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
@@ -66,6 +67,7 @@ public class EditClientActivity extends AppCompatActivity implements View.OnClic
     private String stCountry;
     private String stZip;
     MySessionManager session;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,20 +160,27 @@ public class EditClientActivity extends AppCompatActivity implements View.OnClic
         }
     }
     public void  clientDetail(){
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.ClientDetails+"id="+getIntent().getIntExtra("id",0);
         Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressBar(this)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
     public void  UpdateClient(){
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.UpdateClient+"FirstName="+stFname+"&LastName="+stLname+"&email="+stEmail+"&Company="+stCompany+"&mobile="+stMobile+"&address="+stAddress+"&pincode="+stZip+"&city="+stCity+"&state="+stState+"&Country="+stCountry+"&AdminId="+session.getUserId()+"&id="+getIntent().getIntExtra("id",0);
         //Make Asynchronous call using AJAX method
         Log.d(CommonVariables.TAG,url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
 
     }
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call

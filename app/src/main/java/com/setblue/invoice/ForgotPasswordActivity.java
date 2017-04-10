@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
@@ -37,6 +38,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private MySessionManager sessionManager;
     private AQuery aq;
     private EditText email;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,14 +106,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void Send() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
+
         String url = Apis.ForgotPassword+"email="+st_email;
         Log.d(CommonVariables.TAG,url);
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call

@@ -24,6 +24,7 @@ import com.setblue.invoice.Fragments.AddItemsFragment;
 import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.adapter.ClientListAdapter;
 import com.setblue.invoice.adapter.InvoiceItemListAdapter;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.model.Clients;
 import com.setblue.invoice.model.InvoiceItem;
 import com.setblue.invoice.utils.Apis;
@@ -55,6 +56,7 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
     private Button save;
     private LinearLayout ll_items;
     private TextView tv_no_items;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +118,6 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         }
         else  if(v == addItems){
-
             fragment = new AddItemsFragment(getIntent().getIntExtra("InvoiceId",0));
             replaceFragment(fragment);
 
@@ -125,14 +126,19 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void ItemList() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.InvoiceItemList+"InvoiceId="+getIntent().getIntExtra("InvoiceId",0);
         //Make Asynchronous call using AJAX method
         Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call
@@ -141,8 +147,9 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
                 JSONObject object = new JSONObject(json);
                 if(object.optInt("resid")>0) {
                     JSONArray jsonArray = object.optJSONArray("resData");
-                    if (jsonArray.length() != 0) {
-
+                    if (jsonArray.length() > 0) {
+                        ll_items.setVisibility(View.VISIBLE);
+                        tv_no_items.setVisibility(View.GONE);
                         clientsArrayList = new ArrayList<InvoiceItem>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.optJSONObject(i);
@@ -156,8 +163,8 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
                         listviewItems.addItemDecoration(new DividerItemDecoration(this));
                     } else {
 
-                        ll_items.setVisibility(View.VISIBLE);
-                        tv_no_items.setVisibility(View.GONE);
+                        ll_items.setVisibility(View.GONE);
+                        tv_no_items.setVisibility(View.VISIBLE);
                     }
                 }
                 else {

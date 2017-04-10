@@ -24,6 +24,7 @@ import com.androidquery.AbstractAQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.InvoiceItemActivity;
 import com.setblue.invoice.R;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.Validation;
@@ -54,6 +55,7 @@ public class AddItemsFragment extends Fragment implements View.OnClickListener {
     private String stRate;
     private AQuery aq;
     private int InvoiceId;
+    private CatLoadingView mView;
 
 
     public AddItemsFragment(int invoiceId) {
@@ -108,10 +110,12 @@ public class AddItemsFragment extends Fragment implements View.OnClickListener {
             }
             else {
 
+                mView = new CatLoadingView();
+                mView.show(getActivity().getSupportFragmentManager(), "load");
                String url = Apis.AddInvoiceItem+"InvoiceId="+InvoiceId+"&"+"ItemName="+ URLEncoder.encode(stName)+"&"+"Term="+Integer.parseInt(stTerm)+"&"+"Qty="+stQty+"&"+"Rate="+stRate;
                 Log.d(CommonVariables.TAG,"Url: "+url);
                 //Make Asynchronous call using AJAX method
-                aq.progress(new ProgressDialog(getActivity(),R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+                aq.ajax(url, String.class, this,"jsonCallback");
 
             }
         }
@@ -119,6 +123,9 @@ public class AddItemsFragment extends Fragment implements View.OnClickListener {
 
 
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call

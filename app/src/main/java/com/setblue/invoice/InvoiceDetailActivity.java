@@ -27,6 +27,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.adapter.InvoiceDetailItemListAdapter;
 import com.setblue.invoice.adapter.InvoiceItemListAdapter;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.mail.Mail;
 import com.setblue.invoice.model.InvoiceItem;
 import com.setblue.invoice.utils.Apis;
@@ -88,6 +89,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
     private Button preview;
     private AlertDialog.Builder builder;
     private EditText email;
+    private CatLoadingView mView;
 
 
     @Override
@@ -96,8 +98,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         try {
             int SDK_INT = android.os.Build.VERSION.SDK_INT;
-            if (SDK_INT > 8)
-            {
+            if (SDK_INT > 8) {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                         .permitAll().build();
                 StrictMode.setThreadPolicy(policy);
@@ -109,19 +110,16 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
             builder = new android.support.v7.app.AlertDialog.Builder(this);
 
 
-
             setUpActionBar();
             init();
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-
-
     }
+
     private void setUpActionBar() {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
@@ -136,60 +134,61 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         editClient.setOnClickListener(this);
 
     }
-    private void init(){
 
-        clientName = (TextView)findViewById(R.id.tv_client_name);
-        clientCompany = (TextView)findViewById(R.id.tv_client_company);
-        invoiceNumber = (TextView)findViewById(R.id.tv_invoice_number);
-        invoiceDate = (EditText)findViewById(R.id.edt_invoice_date);
-        email = (EditText)findViewById(R.id.edt_mail);
-        dueDate = (EditText)findViewById(R.id.edt_due_date);
-        billingAddress = (TextView)findViewById(R.id.edt_billing_address);
-        subTotal = (TextView)findViewById(R.id.tv_subtotal);
-        Tax = (TextView)findViewById(R.id.tv_tax);
-        Credit = (TextView)findViewById(R.id.tv_credit);
-        Total = (TextView)findViewById(R.id.tv_total);
-        tvTotal = (TextView)findViewById(R.id.tv_total1);
-        notes = (EditText)findViewById(R.id.edt_notes);
-        listviewItems = (RecyclerView)findViewById(R.id.lv_items);
+    private void init() {
+
+        clientName = (TextView) findViewById(R.id.tv_client_name);
+        clientCompany = (TextView) findViewById(R.id.tv_client_company);
+        invoiceNumber = (TextView) findViewById(R.id.tv_invoice_number);
+        invoiceDate = (EditText) findViewById(R.id.edt_invoice_date);
+        email = (EditText) findViewById(R.id.edt_mail);
+        dueDate = (EditText) findViewById(R.id.edt_due_date);
+        billingAddress = (TextView) findViewById(R.id.edt_billing_address);
+        subTotal = (TextView) findViewById(R.id.tv_subtotal);
+        Tax = (TextView) findViewById(R.id.tv_tax);
+        Credit = (TextView) findViewById(R.id.tv_credit);
+        Total = (TextView) findViewById(R.id.tv_total);
+        tvTotal = (TextView) findViewById(R.id.tv_total1);
+        notes = (EditText) findViewById(R.id.edt_notes);
+        listviewItems = (RecyclerView) findViewById(R.id.lv_items);
 
     }
-    private void setData(){
-        String url = Apis.InvoiceDetail+"id="+ getIntent().getIntExtra("invoiceID",0);
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+
+    private void setData() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
+        String url = Apis.InvoiceDetail + "id=" + getIntent().getIntExtra("invoiceID", 0);
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.ajax(url, String.class, this, "jsonCallback");
     }
 
 
     private void ItemList() {
-        String url = Apis.InvoiceItemList+"InvoiceId="+getIntent().getIntExtra("invoiceID",0);
+        String url = Apis.InvoiceItemList + "InvoiceId=" + getIntent().getIntExtra("invoiceID", 0);
         //Make Asynchronous call using AJAX method
-        Log.d(CommonVariables.TAG,"Url: "+url);
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
     @Override
     public void onClick(View v) {
-        if(v == back){
+        if (v == back) {
             finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-        }
-
-        else  if(v == editClient){
-            Intent i = new Intent(this,EditInvoiceActivity.class);
-            i.putExtra("id",getIntent().getIntExtra("invoiceID",0));
-            i.putExtra("clientID",clientId);
+        } else if (v == editClient) {
+            Intent i = new Intent(this, EditInvoiceActivity.class);
+            i.putExtra("id", getIntent().getIntExtra("invoiceID", 0));
+            i.putExtra("clientID", clientId);
             startActivity(i);
 
            /* fragment = new CustomerFragment();
             replaceFragment(fragment);*/
 
-        }
-        else  if(v == preview){
-            Intent i = new Intent(this,InvoicePreviewActivity.class);
-            i.putExtra("id",getIntent().getIntExtra("invoiceID",0));
+        } else if (v == preview) {
+            Intent i = new Intent(this, InvoicePreviewActivity.class);
+            i.putExtra("id", getIntent().getIntExtra("invoiceID", 0));
             startActivity(i);
 
         }
@@ -243,58 +242,67 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         }*/
     }
 
-    public void jsonCallback(String url, String json, AjaxStatus status){
+    public void jsonCallback(String url, String json, AjaxStatus status) {
 
-        if(json != null){
+        if(mView != null)
+            mView.dismiss();
+
+        if (json != null) {
             //successful ajax call
-            Log.d(CommonVariables.TAG,json.toString());
+            Log.d(CommonVariables.TAG, json.toString());
             try {
                 JSONObject object = new JSONObject(json);
 
-                    if(object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
-                        if(object.optInt("resid")>0) {
+
+                if (object.optString("api").equalsIgnoreCase("InvoiceDetail")) {
+                    if (object.optInt("resid") > 0) {
+                        JSONArray jsonArray = object.optJSONArray("resData");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject c = jsonArray.optJSONObject(i);
+                            String invoiceNo = c.optString("InvoiceNo");
+                            if (invoiceNo.equalsIgnoreCase("null")) {
+                                invoiceNo = "";
+                            }
+                            invoiceID = c.optInt("InvoiceId");
+                            clientId = c.optInt("ClientId");
+                            clientName.setText(c.optString("ClientName"));
+                            clientCompany.setText(c.optString("Company"));
+                            invoiceNumber.setText(invoiceNo);
+                            invoiceDate.setText(c.optString("InvoiceDate"));
+                            dueDate.setText(c.optString("DueDate"));
+                            billingAddress.setText(c.optString("CompanyAddress"));
+                            subTotal.setText("\u20b9 " + c.optInt("Subtotal"));
+                            Tax.setText("\u20b9 " + c.optInt("ServiceTax"));
+                            Total.setText("\u20b9 " + c.optInt("TotalAmount"));
+                            tvTotal.setText("\u20b9 " + c.optInt("TotalAmount"));
+                            notes.setText(c.optString("Note"));
+                            email.setText(c.optString("EmailId"));
+
+
+                        }
+                    }
+                }
+                if (object.optString("api").equalsIgnoreCase("InvoiceList")) {
+                    if (object.optInt("resid") > 0) {
+                        if (object.optJSONArray("resData").length() != 0) {
                             JSONArray jsonArray = object.optJSONArray("resData");
+                            clientsArrayList = new ArrayList<InvoiceItem>();
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject c = jsonArray.optJSONObject(i);
-                                invoiceID = c.optInt("InvoiceId");
-                                clientId = c.optInt("ClientId");
-                                clientName.setText(c.optString("ClientName"));
-                                clientCompany.setText(c.optString("Company"));
-                                invoiceNumber.setText(c.optString("InvoiceNo"));
-                                invoiceDate.setText(c.optString("InvoiceDate"));
-                                dueDate.setText(c.optString("DueDate"));
-                                billingAddress.setText(c.optString("CompanyAddress"));
-                                subTotal.setText("\u20b9 " + c.optInt("Subtotal"));
-                                Tax.setText("\u20b9 " + c.optInt("ServiceTax"));
-                                Total.setText("\u20b9 " + c.optInt("TotalAmount"));
-                                tvTotal.setText("\u20b9 " + c.optInt("TotalAmount"));
-                                notes.setText(c.optString("Note"));
-                                email.setText(c.optString("EmailId"));
-
-
+                                JSONObject jsonObject = jsonArray.optJSONObject(i);
+                                clientsArrayList.add(new InvoiceItem(jsonObject.optInt("InvocieItemId"), jsonObject.optInt("InvoiceId"), jsonObject.optString("ItemName")
+                                        , jsonObject.optString("Term"), jsonObject.optInt("Qty"), jsonObject.optInt("Rate"), jsonObject.optBoolean("IsDeleted")));
                             }
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+                            listviewItems.setLayoutManager(layoutManager);
+                            itemListAdapter = new InvoiceDetailItemListAdapter(this, clientsArrayList);
+                            listviewItems.setAdapter(itemListAdapter);
+                            listviewItems.addItemDecoration(new DividerItemDecoration(this));
+                        } else {
+                            //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
                         }
                     }
-                    if(object.optString("api").equalsIgnoreCase("InvoiceList")) {
-                        if(object.optInt("resid")>0) {
-                            if (object.optJSONArray("resData").length() != 0) {
-                                JSONArray jsonArray = object.optJSONArray("resData");
-                                clientsArrayList = new ArrayList<InvoiceItem>();
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject = jsonArray.optJSONObject(i);
-                                    clientsArrayList.add(new InvoiceItem(jsonObject.optInt("InvocieItemId"), jsonObject.optInt("InvoiceId"), jsonObject.optString("ItemName")
-                                            , jsonObject.optString("Term"), jsonObject.optInt("Qty"), jsonObject.optInt("Rate"), jsonObject.optBoolean("IsDeleted")));
-                                }
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-                                listviewItems.setLayoutManager(layoutManager);
-                                itemListAdapter = new InvoiceDetailItemListAdapter(this, clientsArrayList);
-                                listviewItems.setAdapter(itemListAdapter);
-                                listviewItems.addItemDecoration(new DividerItemDecoration(this));
-                            } else {
-                                //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
+                }
                     /*if(object.optString("api").equalsIgnoreCase("SendEmail")) {
                         if(object.optInt("resid")>0) {
                             Toast.makeText(this,"Mail sent successfully.",Toast.LENGTH_SHORT).show();
@@ -309,17 +317,18 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             //ajax error
-            Log.d(CommonVariables.TAG,""+status.getCode());
+            Log.d(CommonVariables.TAG, "" + status.getCode());
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(!CommonMethods.knowInternetOn(this)){
+        if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
-        }else {
+        } else {
             setData();
             ItemList();
         }

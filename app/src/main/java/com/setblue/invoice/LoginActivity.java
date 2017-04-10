@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 import com.androidquery.AbstractAQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private MySessionManager sessionManager;
     private AQuery aq;
     private TextView forgot;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,14 +139,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void Login() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.Login+"email="+st_username+"&"+"password="+st_password;
 
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null){
+            mView.dismiss();
+        }
 
         if(json != null){
             //successful ajax call

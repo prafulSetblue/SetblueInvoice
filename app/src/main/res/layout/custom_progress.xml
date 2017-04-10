@@ -2,14 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:gpb="http://schemas.android.com/apk/res-auto"
     android:background="#30000000">
 
-    <ProgressBar
+<!--    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
         android:id="@+id/mouse"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_centerInParent="true"
-        android:background ="@xml/progress"/>
+        android:layout_centerInParent="true"/>-->
 
+    <com.jpardogo.android.googleprogressbar.library.GoogleProgressBar
+        android:id="@+id/mouse"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        gpb:type="folding_circles"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

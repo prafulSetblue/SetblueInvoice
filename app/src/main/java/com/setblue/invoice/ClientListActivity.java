@@ -28,6 +28,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.adapter.ClientListAdapter;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.model.Clients;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
@@ -58,6 +59,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private FragmentManager fragmentManager;
     private CustomerFragment fragment;
     private SwipeRefreshLayout swipeView;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +173,8 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
         else if(v == addClient){
             Intent i = new Intent(this,MainActivity.class);
             i.putExtra("from","clientlist");
-            //finish();
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
             startActivity(i);
            /* fragment = new CustomerFragment();
             replaceFragment(fragment);*/
@@ -195,13 +198,16 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void ClientList() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.ClientList;
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
     public void jsonCallback(String url, String json, AjaxStatus status){
-
+        if (mView != null)
+            mView.dismiss();
         if(json != null){
             //successful ajax call
             Log.d(CommonVariables.TAG,json.toString());

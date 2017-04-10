@@ -36,6 +36,7 @@ import com.setblue.invoice.InvoiceItemActivity;
 import com.setblue.invoice.InvoiceListActivity;
 import com.setblue.invoice.MainActivity;
 import com.setblue.invoice.R;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.MySessionManager;
@@ -94,6 +95,7 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     private String stClient = "";
     int id = 0;
     String from = "null";
+    private CatLoadingView mView;
 
     @SuppressLint("ValidFragment")
     public InvoiceFragment(int id, String from) {
@@ -167,8 +169,6 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
                         }
                     }
                 }
-
-
             }
 
             @Override
@@ -230,7 +230,7 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
     public void clientDetail() {
         String url = Apis.ClientDetails + "id=" + id;
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(getActivity(), R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
     @Override
@@ -375,16 +375,21 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
 
 
     private void AddInvoice() {
+        mView = new CatLoadingView();
+        mView.show(getActivity().getSupportFragmentManager(), "load");
         String url = Apis.AddInvoice+"ClientId="+clientId+"&"+"MobileNo="+stMobile+"&"+"CompanyAddress="+stAddress+"&"+"City="+stCity
                 +"&"+"State="+stState+"&"+"Country="+stCountry+"&"+"Pincode="+stPincode+"&"+"InvoiceDate="+ URLEncoder.encode(CurrentDate)+"&"+"DueDate="+ URLEncoder.encode(dueDate)+"&"+"Note="+stNote+"&"+"invoiceno="+stInvoiceNo+"&"+"AdminId="+Integer.parseInt(session.getUserId());
 
         Log.d(CommonVariables.TAG,"url: "+ url);
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(getActivity(),R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call

@@ -36,7 +36,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_toRightOf="@+id/iv_back"
                 android:textColor="@android:color/white"
-                android:textSize="15dp"
+                android:textSize="@dimen/text_size_biggest"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:text="Edit Client"/>
@@ -73,6 +73,7 @@
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_listing"
+                android:inputType="textCapSentences"
                 android:imeOptions="actionNext" />
 
         </android.support.design.widget.TextInputLayout>
@@ -91,6 +92,7 @@
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_listing"
+                android:inputType="textCapSentences"
                 android:imeOptions="actionNext" />
 
         </android.support.design.widget.TextInputLayout>
@@ -108,6 +110,7 @@
                 android:hint="Client's Company Name"
                 android:textSize="@dimen/text_size_listing"
                 android:singleLine="true"
+                android:inputType="textCapSentences"
                 android:imeOptions="actionNext" />
 
         </android.support.design.widget.TextInputLayout>
@@ -166,6 +169,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Company Address"
+                android:inputType="textCapSentences"
                 android:singleLine="true"
                 android:imeOptions="actionNext" />
 
@@ -189,6 +193,7 @@
                     android:textSize="@dimen/text_size_listing"
                     android:hint="City"
                     android:singleLine="true"
+                    android:inputType="textCapSentences"
                     android:imeOptions="actionNext" />
 
             </android.support.design.widget.TextInputLayout>
@@ -204,6 +209,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_listing"
                     android:hint="State"
+                    android:inputType="textCapSentences"
                     android:singleLine="true"
                     android:imeOptions="actionNext" />
 
@@ -226,6 +232,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_listing"
                     android:hint="Country"
+                    android:inputType="textCapSentences"
                     android:singleLine="true"
                     android:imeOptions="actionNext" />
 

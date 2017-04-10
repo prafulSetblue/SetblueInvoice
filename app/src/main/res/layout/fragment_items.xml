@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Items Name"
+                android:inputType="textCapSentences"
                 android:singleLine="true"
                 android:imeOptions="actionNext" />
 

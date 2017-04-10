@@ -21,6 +21,7 @@ import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.InvoiceDetailActivity;
 import com.setblue.invoice.InvoiceItemActivity;
 import com.setblue.invoice.R;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.model.Invoice;
 import com.setblue.invoice.model.InvoiceItem;
 import com.setblue.invoice.utils.Apis;
@@ -43,6 +44,7 @@ public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemList
 	int pos;
 	AQuery aq;
 	private AlertDialog.Builder builder;
+	private CatLoadingView mView;
 
 
 	public InvoiceItemListAdapter(Context context, ArrayList<InvoiceItem> listInvoice) {
@@ -161,15 +163,19 @@ public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemList
 	}
 
 	private void itemRemove(int position) {
+		mView = new CatLoadingView();
+		mView.show(activity.getSupportFragmentManager(), "load");
 		String url = Apis.RemoveInvoiceItem+"id="+listInvoice.get(position).getInvocieItemId();
 		//Make Asynchronous call using AJAX method
 		Log.d(CommonVariables.TAG,"Url: "+url);
-		aq.progress(new ProgressDialog(context)).ajax(url, String.class, this,"jsonCallback");
+		aq.ajax(url, String.class, this,"jsonCallback");
 		//activity.overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
 	}
 
 	public void jsonCallback(String url, String json, AjaxStatus status){
 
+		if(mView != null)
+			mView.dismiss();
 		if(json != null){
 			//successful ajax call
 			Log.d(CommonVariables.TAG,json.toString());

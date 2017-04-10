@@ -1,6 +1,7 @@
 package com.setblue.invoice;
 
 
+import android.content.Intent;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -24,6 +25,7 @@ import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.Fragments.InvoiceFragment;
 import com.setblue.invoice.components.NavDrawerView;
 import com.setblue.invoice.utils.CommonMethods;
+import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.ExceptionHandler;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout newInvoice;
     String from = "null";
     private boolean exit = false;
+    private Toolbar tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (from.equalsIgnoreCase("ClientDetail")){
                 newInvoice.performClick();
             }
-
         }
         catch (Exception e){
 
@@ -80,9 +82,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setUpActionBar() {
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
         getSupportActionBar().setHomeButtonEnabled(false);
+       tb.setOnClickListener(this);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerToggle.syncState();
+
 
 
     }
@@ -110,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(v == newInvoice){
             fragment = new InvoiceFragment(getIntent().getIntExtra("id",0),from);
             replaceFragment(fragment);
+        }
+        else if(v == tb){
+            Intent i  = new Intent(this,MainActivity.class);
+            finish();
+            startActivity(i);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         }
 
     }
@@ -151,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }, 3 * 1000);
 
             }
-            super.onBackPressed();
+
         }
        /* if (exit) {
             //System.exit(0);

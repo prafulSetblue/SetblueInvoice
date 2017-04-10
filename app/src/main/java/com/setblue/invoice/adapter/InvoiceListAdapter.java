@@ -122,9 +122,17 @@ public class InvoiceListAdapter extends RecyclerView.Adapter<InvoiceListAdapter.
 				company.setVisibility(View.VISIBLE);
 				company.setText(item.getCompany());
 			}
+			String invoiceNo = item.getInvoice_number();
+			if (invoiceNo.equalsIgnoreCase("null")) {
+				invoiceNo = "";
+				invoice_number.setVisibility(View.GONE);
+			}
+			else {
+				invoice_number.setVisibility(View.VISIBLE);
+				invoice_number.setText(invoiceNo);
+			}
 			title.setText(item.getClient_name());
 			total.setText("\u20b9 "+item.getTotal());
-			invoice_number.setText(item.getInvoice_number());
 			invoice_date.setText(item.getDate().toString());
 
 		}

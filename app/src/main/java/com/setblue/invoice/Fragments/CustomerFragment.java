@@ -24,6 +24,7 @@ import com.setblue.invoice.ClientDetailActivity;
 import com.setblue.invoice.ClientListActivity;
 import com.setblue.invoice.MainActivity;
 import com.setblue.invoice.R;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
@@ -64,6 +65,7 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
     private String stEmail;
     AQuery aq;
     String from = "";
+    private CatLoadingView mView;
 
 
     public CustomerFragment(String from) {
@@ -147,12 +149,17 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
     }
 
     private void AddClient() {
+        mView = new CatLoadingView();
+        mView.show(getActivity().getSupportFragmentManager(), "load");
         String url = Apis.AddClient+"FirstName="+stFname+"&LastName="+stLname+"&email="+stEmail+"&Company="+stCompany+"&mobile="+stMobile+"&address="+stAddress+"&pincode="+stZip+"&city="+stCity+"&state="+stState+"&Country="+stCountry+"&AdminId="+session.getUserId();
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(getActivity(),R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call
@@ -163,7 +170,7 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getActivity(),"Customer added successfully",Toast.LENGTH_LONG).show();
                     i = new Intent(getActivity(), ClientDetailActivity.class);
                     i.putExtra("id",object.optInt("ClientId"));
-                    //getActivity().finish();
+                    getActivity().finish();
                     startActivity(i);
                     getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 }

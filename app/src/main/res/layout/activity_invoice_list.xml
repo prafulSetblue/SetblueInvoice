@@ -37,7 +37,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_toRightOf="@+id/iv_back"
                 android:textColor="@android:color/white"
-                android:textSize="15dp"
+                android:textSize="@dimen/text_size_biggest"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:text="Invoice"/>

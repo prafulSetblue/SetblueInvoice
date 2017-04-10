@@ -57,6 +57,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.setblue.invoice.adapter.InvoiceDetailItemListAdapter;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.mail.Mail;
 import com.setblue.invoice.model.InvoiceItem;
 import com.setblue.invoice.utils.Apis;
@@ -121,6 +122,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private String stMail;
     private String stClientName;
     String stBody;
+    private CatLoadingView mView;
 
 
     @Override
@@ -198,23 +200,25 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     }
 
     private void setData() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.InvoiceDetail + "id=" + getIntent().getIntExtra("id", 0);
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
     }
 
     private void ItemList() {
         String url = Apis.InvoiceItemList + "InvoiceId=" + getIntent().getIntExtra("id", 0);
         //Make Asynchronous call using AJAX method
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
     public void clientDetail() {
         String url = Apis.ClientDetails + "id=" + stClientID;
         Log.d(CommonVariables.TAG, "Url: " + url);
-        aq.progress(new ProgressDialog(this, R.style.CustomProgressDialog)).ajax(url, String.class, this, "jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
@@ -644,6 +648,9 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status) {
+
+        if (mView != null)
+            mView.dismiss();
 
         if (json != null) {
             //successful ajax call

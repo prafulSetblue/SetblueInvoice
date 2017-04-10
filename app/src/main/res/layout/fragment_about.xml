@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:fillViewport="true"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:layout_margin="10dp"
+            android:text="About Us"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/text_size_biggest"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:layout_margin="10dp"
+            android:text="SetBlue is India’s professional website design agency that looks to turn that practice on its ear. Whether you’re looking for a high quality corporate website design, web development, e-commerce web solutions, payment gateway solutions, or a reworked or original logo design, online website maintenance, backend programming or SEO services. "
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_listing" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
+</ScrollView>

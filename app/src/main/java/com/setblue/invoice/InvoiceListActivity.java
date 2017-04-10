@@ -31,6 +31,7 @@ import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.adapter.ClientListAdapter;
 import com.setblue.invoice.adapter.InvoiceListAdapter;
+import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.model.Clients;
 import com.setblue.invoice.model.Invoice;
 import com.setblue.invoice.utils.Apis;
@@ -57,6 +58,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     AQuery aq;
     private ImageView addInvoice;
     private SwipeRefreshLayout swipeView;
+    private CatLoadingView mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,12 +151,17 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
 
     }
     private void InvoiceList() {
+        mView = new CatLoadingView();
+        mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.InvoiceList;
         //Make Asynchronous call using AJAX method
-        aq.progress(new ProgressDialog(this,R.style.CustomProgressDialog)).ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this,"jsonCallback");
 
     }
     public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if(mView != null)
+            mView.dismiss();
 
         if(json != null){
             //successful ajax call
