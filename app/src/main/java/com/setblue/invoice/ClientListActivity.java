@@ -52,7 +52,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     RecyclerView listviewClient;
     ArrayList<Clients> clientsArrayList;
     ClientListAdapter clientListAdapter;
-    private SearchView search;
+    public SearchView search;
     AQuery aq;
     private String from = "";
     private ImageView addClient;
@@ -60,7 +60,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private CustomerFragment fragment;
     private SwipeRefreshLayout swipeView;
     private CatLoadingView mView;
-
+    public TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
@@ -85,6 +85,8 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(tb);
 
         back = (ImageView) tb.findViewById(R.id.iv_back);
+        title = (TextView) tb.findViewById(R.id.tv_title);
+
         back.setOnClickListener(this);
         search=(SearchView) findViewById(R.id.iv_search);
        // search.setQueryHint("Search");
@@ -130,6 +132,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private void init(){
         swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         listviewClient = (RecyclerView)findViewById(R.id.lv_clients);
+
         addClient = (ImageView)findViewById(R.id.fab);
         addClient.setOnClickListener(this);
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -167,17 +170,19 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if(v == back){
-            finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            //getFragmentManager().popBackStack();
+                finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }
         else if(v == addClient){
-            Intent i = new Intent(this,MainActivity.class);
+           /* Intent i = new Intent(this,MainActivity.class);
             i.putExtra("from","clientlist");
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
-            startActivity(i);
-           /* fragment = new CustomerFragment();
-            replaceFragment(fragment);*/
+            startActivity(i);*/
+            fragment = new CustomerFragment("clientlist");
+            replaceFragment(fragment);
         }
     }
     private void replaceFragment(Fragment fragment){
@@ -185,7 +190,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
-            ft.replace(R.id.content_frame, fragment);
+            ft.replace(R.id.content_frame, fragment,"Client Fragment");
             ft.addToBackStack(null);
             ft.commit();
             // fragmentManager.beginTransaction()
@@ -245,6 +250,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        title.setText("Client List");
         if(!CommonMethods.knowInternetOn(this)){
             CommonMethods.showInternetAlert(this);
         }

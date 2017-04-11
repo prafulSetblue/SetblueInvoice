@@ -101,6 +101,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             ContactFragment fragment = new ContactFragment();
                             replaceFragment(fragment);
                         } else if (item.text.equalsIgnoreCase("LOGOUT")) {
+                            activity.drawerLayout.closeDrawer(Gravity.LEFT);
                             builder.setTitle(CommonVariables.TAG);
                             builder.setMessage("Are You Sure to Logout?");
                             builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
