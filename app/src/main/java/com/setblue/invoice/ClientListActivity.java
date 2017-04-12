@@ -169,11 +169,22 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     }
     @Override
     public void onClick(View v) {
-        if(v == back){
+        if(v == back) {
             //getFragmentManager().popBackStack();
-                finish();
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
+            if (!(fragment != null && fragment.isVisible())) {
+                finish();
+
+            } else
+                title.setText("Client List");
+                search.setVisibility(View.VISIBLE);
+                super.onBackPressed();
+
+
+
+           /* finish();
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+*/
         }
         else if(v == addClient){
            /* Intent i = new Intent(this,MainActivity.class);

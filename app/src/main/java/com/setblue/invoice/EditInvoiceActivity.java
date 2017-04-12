@@ -356,7 +356,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
                     if (object.optInt("resid") > 0) {
                         Intent i = new Intent(this, InvoiceItemActivity.class);
                         i.putExtra("InvoiceId", getIntent().getIntExtra("id", 0));
-                        //finish();
+                        finish();
                         startActivity(i);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
@@ -451,7 +451,7 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         return ("" + (int) dayCount);
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
@@ -459,5 +459,5 @@ public class EditInvoiceActivity extends AppCompatActivity implements DatePicker
         else {
             super.onBackPressed();
         }
-    }
+    }*/
 }

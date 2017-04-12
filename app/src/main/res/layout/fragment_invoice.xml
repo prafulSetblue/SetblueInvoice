@@ -18,6 +18,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/lbl_client"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
@@ -93,7 +94,7 @@
                 android:id="@+id/edt_term"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Term (In Days)"
+                android:hint="Due Days"
                 android:imeOptions="actionNext"
                 android:inputType="number"
                 android:singleLine="true"

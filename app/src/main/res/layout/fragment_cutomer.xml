@@ -121,6 +121,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Mobile Number"
+                    android:inputType="number"
                     android:imeOptions="actionNext"
                     android:singleLine="true"
                     android:textSize="@dimen/text_size_listing" />
@@ -139,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Email Address"
                     android:imeOptions="actionNext"
-                    android:inputType=""
+                    android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:textSize="@dimen/text_size_listing" />
 
@@ -250,7 +251,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Zip Code"
-                        android:inputType="textCapSentences"
+                        android:inputType="number"
                         android:imeOptions="actionNext"
                         android:singleLine="true"
                         android:textSize="@dimen/text_size_listing" />

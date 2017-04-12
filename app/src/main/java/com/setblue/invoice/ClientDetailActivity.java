@@ -17,10 +17,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.Fragments.CustomerFragment;
+import com.setblue.invoice.Fragments.InvoiceFragment;
 import com.setblue.invoice.adapter.ClientListAdapter;
 import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.model.Clients;
@@ -46,6 +48,7 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     private FragmentManager fragmentManager;
     private TextView clientName;
     private TextView companyName;
+    public TextView title;
     private EditText email;
     private EditText mobile;
     private EditText address;
@@ -84,6 +87,7 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
 
     private void init() {
         clientName = (TextView) findViewById(R.id.tv_client_name);
+        title = (TextView) findViewById(R.id.tv_title);
         companyName = (TextView) findViewById(R.id.tv_client_company);
         email = (EditText) findViewById(R.id.edt_email);
         mobile = (EditText) findViewById(R.id.edt_mobile);
@@ -101,8 +105,14 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         if (v == back) {
-            finish();
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            if (!(fragment != null && fragment.isVisible())) {
+                finish();
+
+            } else
+                title.setText("Client Details");
+                editClient.setVisibility(View.VISIBLE);
+                super.onBackPressed();
+
 
 
         } else if (v == editClient) {
@@ -112,12 +122,16 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
             startActivity(i);
 
         } else if(v == invoice){
-            Intent i = new Intent(this, MainActivity.class);
+            fragment = new InvoiceFragment(clientID,"ClientDetail");
+            replaceFragment(fragment);
+          /*  Intent i = new Intent(this, MainActivity.class);
             i.putExtra("id", clientID);
             i.putExtra("from","ClientDetail");
             finish();
             startActivity(i);
 
+
+*/
         }
     }
 
@@ -188,6 +202,7 @@ public class ClientDetailActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
+        title.setText("Client Details");
         if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
         } else {

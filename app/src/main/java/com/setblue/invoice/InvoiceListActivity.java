@@ -58,13 +58,14 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     RecyclerView listviewInvoice;
     ArrayList<Invoice> invoiceArrayList;
     InvoiceListAdapter invoiceListAdapter;
-    private SearchView search;
+    public SearchView search;
     AQuery aq;
     private ImageView addInvoice;
     private SwipeRefreshLayout swipeView;
     private CatLoadingView mView;
     private InvoiceFragment fragment;
     private FragmentManager fragmentManager;
+    public TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
 
         back = (ImageView) tb.findViewById(R.id.iv_back);
         back.setOnClickListener(this);
-
+        title = (TextView) tb.findViewById(R.id.tv_title);
         search=(SearchView) findViewById(R.id.iv_search);
         EditText searchEditText = (EditText)search.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(getResources().getColor(android.R.color.white));
@@ -204,8 +205,13 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if(v == back){
-            finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            if (!(fragment != null && fragment.isVisible())) {
+                finish();
+
+            } else
+                title.setText("Invoice List");
+                search.setVisibility(View.VISIBLE);
+                super.onBackPressed();
         }
         else if(v == addInvoice){
            /* Intent i = new Intent(this,MainActivity.class);
@@ -222,7 +228,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left);
-            ft.replace(R.id.content_frame, fragment,"Client Fragment");
+            ft.replace(R.id.content_frame, fragment,"Invoice Fragment");
             ft.addToBackStack(null);
             ft.commit();
             // fragmentManager.beginTransaction()
@@ -236,6 +242,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
+        title.setText("Invoice List");
         if(!CommonMethods.knowInternetOn(this)){
             CommonMethods.showInternetAlert(this);
         }

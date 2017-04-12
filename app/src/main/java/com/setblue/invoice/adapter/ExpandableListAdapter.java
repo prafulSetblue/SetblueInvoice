@@ -208,7 +208,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-            ft.replace(R.id.content_frame, fragment);
+            ft.add(R.id.content_frame, fragment,"My Fragment");
             ft.addToBackStack("My Fragment");
             ft.commit();
             // fragmentManager.beginTransaction()

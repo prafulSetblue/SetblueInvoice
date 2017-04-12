@@ -146,6 +146,16 @@ public class EditClientActivity extends AppCompatActivity implements View.OnClic
             else if(Validation.isEmptyEdittext(et_lname)){
                 et_lname.setError("Enter Last Name");
             }
+            else if(Validation.isEmptyEdittext(et_mobile)){
+                et_address.setError("Enter Mobile Number");
+            }
+            else if(!Validation.isValidEmail(stEmail)){
+                et_email.setError("Enter Valid Email Address");
+            }
+            else if(stMobile.length() < 6){
+                et_mobile.setError("Enter Valid Mobile Number");
+
+            }
             else {
                 if(CommonMethods.knowInternetOn(this)){
                     UpdateClient();

@@ -149,6 +149,18 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             else if(Validation.isEmptyEdittext(et_address)){
                 et_address.setError("Enter Company Address");
             }
+            else if(Validation.isEmptyEdittext(et_mobile)){
+                et_address.setError("Enter Mobile Number");
+            }
+            else if(stMobile.length() < 6){
+                et_mobile.setError("Enter Valid Mobile Number");
+
+            }
+            else if(!Validation.isValidEmail(stEmail)){
+                et_email.setError("Enter Valid Email Address");
+            }
+
+
             else {
                     if(CommonMethods.knowInternetOn((AppCompatActivity) getActivity())){
                         AddClient();
@@ -183,9 +195,11 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
                 JSONObject object = new JSONObject(json);
                 if(object.optInt("resid")>0){
                     Toast.makeText(getActivity(),"Customer added successfully",Toast.LENGTH_LONG).show();
+
                     i = new Intent(getActivity(), ClientDetailActivity.class);
                     i.putExtra("id",object.optInt("ClientId"));
-                    getActivity().finish();
+                    //getActivity().finish();
+                    getFragmentManager().popBackStack();
                     startActivity(i);
                     getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 }

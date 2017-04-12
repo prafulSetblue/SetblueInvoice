@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.ClientDetailActivity;
 import com.setblue.invoice.InvoiceDetailActivity;
 import com.setblue.invoice.InvoiceItemActivity;
 import com.setblue.invoice.R;
@@ -199,5 +200,6 @@ public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemList
 	private void updateList(ArrayList<InvoiceItem> data) {
 		this.listInvoice = data;
 		notifyDataSetChanged();
+		((InvoiceItemActivity) context).onResume();
 	}
 }

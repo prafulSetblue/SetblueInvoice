@@ -59,6 +59,7 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
     private TextView tv_no_items;
     private CatLoadingView mView;
     private JSONArray jsonArray;
+    private boolean exit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
 
         if(v == back){
+
             finish();
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         }
@@ -216,4 +218,11 @@ public class InvoiceItemActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!(fragment != null && fragment.isVisible())) {
+           finish();
+        } else
+            super.onBackPressed();
+    }
 }

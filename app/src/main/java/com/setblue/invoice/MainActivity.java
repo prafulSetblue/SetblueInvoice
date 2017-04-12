@@ -1,6 +1,9 @@
 package com.setblue.invoice;
 
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.provider.Settings;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String from = "null";
     private boolean exit = false;
     private Toolbar tb;
+    AppCompatActivity activity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +117,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragment = new InvoiceFragment(getIntent().getIntExtra("id", 0), from);
             replaceFragment(fragment);
         } else if (v == tb) {
-            Intent i = new Intent(this, MainActivity.class);
-            finish();
-            startActivity(i);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            Fragment test = (Fragment) getSupportFragmentManager().findFragmentByTag("My Fragment");
+            if (test != null && test.isVisible()) {
+                Intent i = new Intent(this, MainActivity.class);
+                finish();
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+            else {
+                //Whatever
+            }
+
+           /* if ((fragment != null && fragment.isVisible())) {
+
+            }*/
+
+            /*ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+            Log.d(CommonVariables.TAG,cn.getClassName());*/
+
+
         }
 
     }
@@ -126,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-            ft.replace(R.id.content_frame, fragment);
+            ft.add(R.id.content_frame, fragment,"My Fragment");
             ft.addToBackStack("My Fragment");
             ft.commit();
             // fragmentManager.beginTransaction()
@@ -140,7 +160,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
+        if (!(fragment != null && fragment.isVisible())) {
+            if (exit) {
+                //System.exit(0);
+                finish();
+            } else {
+                Toast.makeText(this, "Press once again to exit app.",
+                        Toast.LENGTH_SHORT).show();
+                exit = true;
+            }
+        } else
+            super.onBackPressed();
+        /*if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
         } else {
             if (exit) {
@@ -160,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
-        }
+        }*/
        /* if (exit) {
             //System.exit(0);
             finish();

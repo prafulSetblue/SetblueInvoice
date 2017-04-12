@@ -127,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Mobile Number"
+                android:inputType="number"
                 android:singleLine="true"
                 android:imeOptions="actionNext" />
 
@@ -144,6 +145,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_listing"
                 android:hint="Email Address"
+                android:inputType="textEmailAddress"
                 android:singleLine="true"
                 android:imeOptions="actionNext" />
 
