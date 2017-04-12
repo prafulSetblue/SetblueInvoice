@@ -1,20 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="130dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blue"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:theme="@style/ThemeOverlay.AppCompat.Light">
 
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/sp_company"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Setblue Invoice"
-        android:textSize="@dimen/text_size_biggest"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"/>
-
+        android:layout_margin="10dp"
+        android:gravity="start"
+        android:hint="Select Company"
+        android:textSize="@dimen/text_size_listing"
+        app:met_baseColor="@color/blue"
+        app:met_primaryColor="@color/blue"
+        app:met_textColor="@android:color/white"
+        app:met_textColorHint="@android:color/white"
+        app:met_underlineColor="@color/blue"
+        />
 </LinearLayout>

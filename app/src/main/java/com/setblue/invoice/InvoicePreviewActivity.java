@@ -123,6 +123,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     private String stClientName;
     String stBody;
     private CatLoadingView mView;
+    boolean allow = true;
 
 
     @Override

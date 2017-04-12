@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +32,8 @@ import com.setblue.invoice.components.NavDrawerView;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.ExceptionHandler;
+import com.setblue.invoice.utils.MySessionManager;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,6 +48,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean exit = false;
     private Toolbar tb;
     AppCompatActivity activity = null;
+    private static final String[] COMPANY = new String[] {
+            "SETBLUE", "V2IDEAS", "SAREEBAZAR"
+    };
+    private int strCompanyId;
+    MySessionManager session;
+    private MaterialBetterSpinner spCompany
+            ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +85,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void init() {
+        session = new MySessionManager(this);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         newCustomer = (LinearLayout) findViewById(R.id.ll_customer);
         newCustomer.setOnClickListener(this);
         newInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         newInvoice.setOnClickListener(this);
+        spCompany = (MaterialBetterSpinner)  findViewById(R.id.sp_company);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, COMPANY);
 
+        spCompany.setAdapter(adapter);
+        /*spCompany.setOnItemClickListener((adapterView, view, i, l) -> {
+            strCompanyId = COMPANY[i];
+        });
+*/
+        if(session.getPosition() < 0){
+            spCompany.setText("");
+        }else {
+            spCompany.setText(COMPANY[session.getPosition()]);
+        }
+
+        spCompany.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //strCompanyId = COMPANY[position];
+                Log.d(CommonVariables.TAG,COMPANY[position]);
+                session.setCompanyID(position);
+                session.setPosition(position);
+            }
+        });
 
     }
 
@@ -157,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.e("MainActivity", "Error in creating fragment");
         }
     }
+
+
 
     @Override
     public void onBackPressed() {
