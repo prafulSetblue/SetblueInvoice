@@ -217,7 +217,8 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
         mView = new CatLoadingView();
         mView.show((this).getSupportFragmentManager(), "load");
         String url = Apis.ClientList;
-        //Make Asynchronous call using AJAX method
+
+
         aq.ajax(url, String.class, this,"jsonCallback");
 
     }

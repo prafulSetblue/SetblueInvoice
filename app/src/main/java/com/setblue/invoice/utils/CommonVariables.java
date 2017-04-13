@@ -14,6 +14,7 @@ public class CommonVariables {
     public static  final String KEY_CUSTOMER_INVOICE = "Customer_invoice";
     public static  final String KEY_COMPANY_ID = "Company_id";
     public static  final String KEY_POSITION = "Position";
+    public static  final String KEY_COMPANY_NAME = "Company_name";
 
     public static final int REQUEST_RECEIVE_MESSAGE = 10;
 

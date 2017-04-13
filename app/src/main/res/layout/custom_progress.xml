@@ -18,6 +18,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         gpb:type="folding_circles"
+        gpb:colors="@array/rainbow"
         android:layout_centerInParent="true"/>
 
 </RelativeLayout>

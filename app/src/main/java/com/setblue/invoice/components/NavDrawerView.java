@@ -1,6 +1,7 @@
 package com.setblue.invoice.components;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +10,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxStatus;
+import com.setblue.invoice.CreateCompanyActivity;
 import com.setblue.invoice.MainActivity;
 import com.setblue.invoice.R;
+import com.setblue.invoice.adapter.CompanyListAdapter;
 import com.setblue.invoice.adapter.ExpandableListAdapter;
+import com.setblue.invoice.model.Clients;
+import com.setblue.invoice.model.Company;
+import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.DividerItemDecoration;
 import com.setblue.invoice.utils.MySessionManager;
@@ -26,16 +36,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NavDrawerView extends LinearLayout {
+public class NavDrawerView extends LinearLayout implements View.OnClickListener {
 
 
     RecyclerView recyclerview;
     ArrayList<String> listCategory = new ArrayList<String>();
-    private MaterialBetterSpinner spCompany;
+    private Spinner spCompany;
+    AQuery aq;
     private static final String[] COMPANY = new String[] {
             "SETBLUE", "V2IDEAS", "SAREEBAZAR"
     };
     private MySessionManager session;
+    private CatLoadingView mView;
+    private ArrayList<Company> companyArrayList;
+    private CompanyListAdapter adapter;
+    public String st_company;
+    private int st_companyID = 0;
+    private ImageView add_company;
 
     public NavDrawerView(Context context) {
         super(context);
@@ -50,9 +67,13 @@ public class NavDrawerView extends LinearLayout {
     private void setup() {
 
         inflate(getContext(), R.layout.view_navigation, this);
+        aq = new AQuery(getContext());
         session = new MySessionManager(getContext());
         recyclerview = (RecyclerView)findViewById(R.id.recyclerview);
-        spCompany = (MaterialBetterSpinner)  findViewById(R.id.sp_company);
+        spCompany = (Spinner)  findViewById(R.id.sp_company);
+        add_company = (ImageView) findViewById(R.id.iv_add_company);
+        add_company.setOnClickListener(this);
+        CompanyList();
         setMenuData();
 
 
@@ -69,33 +90,78 @@ public class NavDrawerView extends LinearLayout {
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "LOGOUT"));
         recyclerview.setAdapter(new ExpandableListAdapter(data, (MainActivity) getContext()));
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext()));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_dropdown_item_1line, COMPANY);
 
-        spCompany.setAdapter(adapter);
+
         /*spCompany.setOnItemClickListener((adapterView, view, i, l) -> {
             strCompanyId = COMPANY[i];
         });
 */
-        if(session.getPosition() < 0){
-            spCompany.setText("");
-        }else {
-            spCompany.setText(COMPANY[session.getPosition()]);
-        }
 
-        spCompany.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //strCompanyId = COMPANY[position];
-                Log.d(CommonVariables.TAG,COMPANY[position]);
-                session.setCompanyID(position);
-                session.setPosition(position);
+
+
+    }
+    private void CompanyList() {
+        mView = new CatLoadingView();
+        mView.show(((MainActivity)getContext()).getSupportFragmentManager(), "load");
+        String url = Apis.GetCompanyList;
+        //Make Asynchronous call using AJAX method
+        aq.ajax(url, String.class, this,"jsonCallback");
+
+    }
+
+    public void jsonCallback(String url, String json, AjaxStatus status){
+
+        if (mView != null)
+            mView.dismiss();
+        try {
+            if(json != null){
+                Log.d(CommonVariables.TAG,json.toString());
+                JSONObject object = new JSONObject(json);
+                if(object.optInt("resid")>0) {
+                    if (object.optJSONArray("resData").length() != 0) {
+                        JSONArray jsonArray = object.optJSONArray("resData");
+                        Company company = null;
+                        companyArrayList = new ArrayList<Company>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.optJSONObject(i);
+                            company = new Company(jsonObject.optString("CompanyName"),jsonObject.optInt("CompanyId"));
+                            companyArrayList.add(company);
+
+                        }
+                        adapter = new CompanyListAdapter(getContext(),companyArrayList);
+                        spCompany.setAdapter(adapter);
+                        if(!session.getCompany_name().equalsIgnoreCase("")) {
+                            spCompany.setSelection(adapter.getPosition(session.getCompany_name()));
+                        }
+                        spCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                st_company = companyArrayList.get(position).getComapany_Name();
+                                st_companyID = companyArrayList.get(position).getCompany_ID();
+                                session.setCompany_name(st_company);
+                                session.setCompanyID(st_companyID);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    }
+                }
             }
-        });
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
 
-
+    @Override
+    public void onClick(View v) {
+        if(v == add_company){
+            Intent i = new Intent(getContext(), CreateCompanyActivity.class);
+            getContext().startActivity(i);
+        }
+    }
 }

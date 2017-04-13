@@ -393,7 +393,7 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
         mView = new CatLoadingView();
         mView.show(getActivity().getSupportFragmentManager(), "load");
         String url = Apis.AddInvoice + "ClientId=" + clientId + "&" + "MobileNo=" + stMobile + "&" + "CompanyAddress=" + stAddress + "&" + "City=" + stCity
-                + "&" + "State=" + stState + "&" + "Country=" + stCountry + "&" + "Pincode=" + stPincode + "&" + "InvoiceDate=" + URLEncoder.encode(CurrentDate) + "&" + "DueDate=" + URLEncoder.encode(dueDate) + "&" + "Note=" + stNote + "&" + "invoiceno=" + stInvoiceNo + "&" + "AdminId=" + Integer.parseInt(session.getUserId());
+                + "&" + "State=" + stState + "&" + "Country=" + stCountry + "&" + "Pincode=" + stPincode + "&" + "InvoiceDate=" + URLEncoder.encode(CurrentDate) + "&" + "DueDate=" + URLEncoder.encode(dueDate) + "&" + "Note=" + stNote + "&" + "invoiceno=" + stInvoiceNo + "&" + "AdminId=" + Integer.parseInt(session.getUserId())+"&CompanyId="+session.getCompanyID();
 
         Log.d(CommonVariables.TAG, "url: " + url);
         //Make Asynchronous call using AJAX method

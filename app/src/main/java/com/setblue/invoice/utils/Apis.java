@@ -14,7 +14,7 @@ public class Apis {
     public static String ClientList = STRING_SERVER_URL+"ClientList";
     public static String AddInvoice = STRING_SERVER_URL+"AddInvoice?";
     public static String AddInvoiceItem = STRING_SERVER_URL+"AddInvoiceItem?";
-    public static String InvoiceList = STRING_SERVER_URL+"InvoiceList";
+    public static String InvoiceList = STRING_SERVER_URL+"InvoiceList?";
     public static String InvoiceItemList = STRING_SERVER_URL+"InvoiceItemList?";
     public static String InvoiceDetail = STRING_SERVER_URL+"InvoiceDetail?";
     public static String RemoveInvoiceItem = STRING_SERVER_URL+"RemoveInvoiceItem?";
@@ -23,4 +23,5 @@ public class Apis {
     public static String UpdateClient = STRING_SERVER_URL+"UpdateClient?";
     public static String UpdateInvoice = STRING_SERVER_URL+"UpdateInvoice?";
     public static String SendEmail = STRING_SERVER_URL+"SendEmail?";
+    public static String GetCompanyList = STRING_SERVER_URL+"GetCompanyList";
 }

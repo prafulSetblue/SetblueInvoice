@@ -43,6 +43,7 @@ import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.DividerItemDecoration;
 import com.setblue.invoice.utils.ExceptionHandler;
+import com.setblue.invoice.utils.MySessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +67,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     private InvoiceFragment fragment;
     private FragmentManager fragmentManager;
     public TextView title;
+    MySessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
         try {
             setContentView(R.layout.activity_invoice_list);
             aq = new AQuery(this);
+            session = new MySessionManager(this);
             setUpActionBar();
             init();
             InvoiceList();
@@ -160,7 +163,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     private void InvoiceList() {
         mView = new CatLoadingView();
         mView.show((this).getSupportFragmentManager(), "load");
-        String url = Apis.InvoiceList;
+        String url = Apis.InvoiceList+"&CompanyId="+session.getCompanyID();
         //Make Asynchronous call using AJAX method
         aq.ajax(url, String.class, this,"jsonCallback");
 

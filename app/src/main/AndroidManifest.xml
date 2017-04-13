@@ -58,6 +58,9 @@
         <activity android:name=".EditInvoiceActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
+        <activity android:name=".CreateCompanyActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

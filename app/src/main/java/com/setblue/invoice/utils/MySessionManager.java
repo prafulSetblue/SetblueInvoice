@@ -27,6 +27,7 @@ public class MySessionManager
     private final String USER_INVOICE =CommonVariables.KEY_CUSTOMER_INVOICE;
     private final String COMPANY_ID =CommonVariables.KEY_COMPANY_ID;
     private final String POSITION =CommonVariables.KEY_POSITION;
+    private final String COMPANY_NAME =CommonVariables.KEY_COMPANY_NAME;
 
 
     public void setUserLogIn(boolean isLogin)
@@ -148,6 +149,30 @@ public class MySessionManager
 			return 0;
 		}
 	}
+	public void setCompany_name(String company_name)
+	{
+		if (context != null)
+		{
+			SharedPreferences LoginPref = context.getSharedPreferences(PREF_USER_INFO, context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = LoginPref.edit();
+			editor.putString(COMPANY_NAME, company_name);
+			editor.commit();
+		}
+	}
+
+	public String getCompany_name()
+	{
+		if (context != null)
+		{
+			SharedPreferences LoginPref = context.getSharedPreferences(PREF_USER_INFO, context.MODE_PRIVATE);
+			return LoginPref.getString(COMPANY_NAME, "");
+		}
+		else
+		{
+			return "";
+		}
+	}
+
 	public void Logout()
 	{
 		SharedPreferences LoginPref = context.getSharedPreferences(PREF_USER_INFO, context.MODE_PRIVATE);

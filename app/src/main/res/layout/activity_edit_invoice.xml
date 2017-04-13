@@ -115,7 +115,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="18dp"
-                    android:textColorHint="@color/black_border">
+                    android:textColorHint="@color/black_border"
+                    android:visibility="gone">
 
                     <EditText
                         android:id="@+id/edt_invoice_number"
