@@ -43,7 +43,7 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
     ArrayList<String> listCategory = new ArrayList<String>();
     private Spinner spCompany;
     AQuery aq;
-    private static final String[] COMPANY = new String[] {
+    private static final String[] COMPANY = new String[]{
             "SETBLUE", "V2IDEAS", "SAREEBAZAR"
     };
     private MySessionManager session;
@@ -69,12 +69,11 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
         inflate(getContext(), R.layout.view_navigation, this);
         aq = new AQuery(getContext());
         session = new MySessionManager(getContext());
-        recyclerview = (RecyclerView)findViewById(R.id.recyclerview);
-        spCompany = (Spinner)  findViewById(R.id.sp_company);
+        recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
+        spCompany = (Spinner) findViewById(R.id.sp_company);
         add_company = (ImageView) findViewById(R.id.iv_add_company);
         add_company.setOnClickListener(this);
-        CompanyList();
-        setMenuData();
+
 
 
     }
@@ -90,7 +89,7 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "LOGOUT"));
         recyclerview.setAdapter(new ExpandableListAdapter(data, (MainActivity) getContext()));
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext()));
-
+        CompanyList();
 
         /*spCompany.setOnItemClickListener((adapterView, view, i, l) -> {
             strCompanyId = COMPANY[i];
@@ -98,39 +97,40 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
 */
 
 
-
     }
-    private void CompanyList() {
+
+    public void CompanyList() {
         mView = new CatLoadingView();
-        mView.show(((MainActivity)getContext()).getSupportFragmentManager(), "load");
+        mView.show(((MainActivity) getContext()).getSupportFragmentManager(), "load");
         String url = Apis.GetCompanyList;
         //Make Asynchronous call using AJAX method
-        aq.ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
 
-    public void jsonCallback(String url, String json, AjaxStatus status){
+    public void jsonCallback(String url, String json, AjaxStatus status) {
 
-        if (mView != null)
+        if (mView != null) {
             mView.dismiss();
+        }
         try {
-            if(json != null){
-                Log.d(CommonVariables.TAG,json.toString());
+            if (json != null) {
+                Log.d(CommonVariables.TAG, json.toString());
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0) {
+                if (object.optInt("resid") > 0) {
                     if (object.optJSONArray("resData").length() != 0) {
                         JSONArray jsonArray = object.optJSONArray("resData");
                         Company company = null;
                         companyArrayList = new ArrayList<Company>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.optJSONObject(i);
-                            company = new Company(jsonObject.optString("CompanyName"),jsonObject.optInt("CompanyId"));
+                            company = new Company(jsonObject.optString("CompanyName"), jsonObject.optInt("CompanyId"));
                             companyArrayList.add(company);
 
                         }
-                        adapter = new CompanyListAdapter(getContext(),companyArrayList);
+                        adapter = new CompanyListAdapter(getContext(), companyArrayList);
                         spCompany.setAdapter(adapter);
-                        if(!session.getCompany_name().equalsIgnoreCase("")) {
+                        if (!session.getCompany_name().equalsIgnoreCase("")) {
                             spCompany.setSelection(adapter.getPosition(session.getCompany_name()));
                         }
                         spCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -150,7 +150,7 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -159,7 +159,7 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if(v == add_company){
+        if (v == add_company) {
             Intent i = new Intent(getContext(), CreateCompanyActivity.class);
             getContext().startActivity(i);
         }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.components.RoundedImageView;
 import com.setblue.invoice.utils.Apis;
@@ -48,10 +49,27 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
     private AQuery aq;
     private MySessionManager session;
     private ImageView edit_company_logo;
-    RoundedImageView company_logo;
+    ImageView company_logo;
 
     private int REQUEST_WRITE_PERMISSION = 786;
     private byte[] byteArray;
+    private MaterialEditText edt_company_name;
+    private MaterialEditText edt_mobile;
+    private MaterialEditText edt_email;
+    private MaterialEditText edt_address;
+    private MaterialEditText edt_city;
+    private MaterialEditText edt_state;
+    private MaterialEditText edt_country;
+    private MaterialEditText edt_zip;
+    private Button btn_save;
+    private String stCompanyName;
+    private String stMobile;
+    private String stEmail;
+    private String stAddress;
+    private String stCity;
+    private String stState;
+    private String stCountry;
+    private String stZip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +82,12 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
             setUpActionBar();
             init();
             setData();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     private void setUpActionBar() {
         Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tb);
@@ -78,30 +96,86 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
         back.setOnClickListener(this);
 
     }
-    private void init(){
 
-        edit_company_logo = (ImageView)findViewById(R.id.iv_company_image);
-        company_logo = (RoundedImageView)findViewById(R.id.company_logo);
+    private void init() {
+        edt_company_name = (MaterialEditText) findViewById(R.id.edt_company);
+        edt_mobile = (MaterialEditText) findViewById(R.id.edt_mobile);
+        edt_email = (MaterialEditText) findViewById(R.id.edt_email);
+        edt_address = (MaterialEditText) findViewById(R.id.edt_address);
+        edt_city = (MaterialEditText) findViewById(R.id.edt_city);
+        edt_state = (MaterialEditText) findViewById(R.id.edt_state);
+        edt_country = (MaterialEditText) findViewById(R.id.edt_country);
+        edt_zip = (MaterialEditText) findViewById(R.id.edt_zip);
+        btn_save = (Button) findViewById(R.id.btn_save);
+        btn_save.setOnClickListener(this);
+
+
+        edit_company_logo = (ImageView) findViewById(R.id.iv_company_image);
+        company_logo = (ImageView) findViewById(R.id.company_logo);
         edit_company_logo.setOnClickListener(this);
 
 
     }
-    private void setData(){
+
+    private void setData() {
 
     }
+
     @Override
     public void onClick(View v) {
-        if(v == back){
+        if (v == back) {
             finish();
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-        }
-        else if(v == edit_company_logo){
-
-                requestPermission();
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        } else if (v == edit_company_logo) {
+            requestPermission();
+        } else if (v == btn_save) {
+            stCompanyName  = edt_company_name.getText().toString();
+            stMobile  = edt_mobile.getText().toString();
+            stEmail  = edt_email.getText().toString();
+            stAddress  = edt_address.getText().toString();
+            stCity  = edt_city.getText().toString();
+            stState  = edt_state.getText().toString();
+            stCountry  = edt_country.getText().toString();
+            stZip  = edt_zip.getText().toString();
+            if (Validation.isEmptyEdittext(edt_company_name) && Validation.isEmptyEdittext(edt_mobile) && Validation.isEmptyEdittext(edt_email)
+                    && Validation.isEmptyEdittext(edt_address) && Validation.isEmptyEdittext(edt_city) && Validation.isEmptyEdittext(edt_state)
+                    && Validation.isEmptyEdittext(edt_country) && Validation.isEmptyEdittext(edt_zip)) {
+                edt_company_name.setError("Enter Company Name");
+                edt_mobile.setError("Enter Mobile Number");
+                edt_email.setError("Enter Email Address");
+                edt_address.setError("Enter Address");
+                edt_city.setError("Enter City");
+                edt_state.setError("Enter State");
+                edt_country.setError("Enter Country");
+                edt_zip.setError("Enter Pincode");
+            } else if (Validation.isEmptyEdittext(edt_company_name)) {
+                edt_company_name.setError("Enter Company Name");
+            } else if (Validation.isEmptyEdittext(edt_mobile)) {
+                edt_mobile.setError("Enter Mobile Number");
+            } else if (Validation.isEmptyEdittext(edt_mobile)) {
+                edt_email.setError("Enter Email Address");
+            } else if (Validation.isEmptyEdittext(edt_address)) {
+                edt_address.setError("Enter Address");
+            } else if (Validation.isEmptyEdittext(edt_city)) {
+                edt_city.setError("Enter City");
+            } else if (Validation.isEmptyEdittext(edt_state)) {
+                edt_state.setError("Enter State");
+            } else if (Validation.isEmptyEdittext(edt_country)) {
+                edt_country.setError("Enter Country");
+            } else if (Validation.isEmptyEdittext(edt_zip)) {
+                edt_zip.setError("Enter Pincode");
+            } else if(stMobile.length() < 6) {
+                edt_mobile.setError("Enter Valid Mobile Number");
+            } else if(!Validation.isValidEmail(stEmail)) {
+                edt_email.setError("Enter Valid Email Address");
+            } else {
+                Toast.makeText(this,"Created Company",Toast.LENGTH_SHORT).show();
+            }
 
         }
 
     }
+
     private void requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
@@ -111,6 +185,7 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
             startActivityForResult(intent, 0);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -125,7 +200,7 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             Uri targetUri = data.getData();
             //textTargetUri.setText(targetUri.toString());
             Bitmap bitmap;
@@ -143,7 +218,7 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void aync_multipart(){
+    private void aync_multipart() {
 
         String url = "https://graph.facebook.com/me/photos";
 
@@ -161,15 +236,16 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
         AQuery aq = new AQuery(getApplicationContext());
         aq.ajax(url, params, JSONObject.class, this, "photoCb");
     }
-    public void jsonCallback(String url, String json, AjaxStatus status){
 
-           }
+    public void jsonCallback(String url, String json, AjaxStatus status) {
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(!CommonMethods.knowInternetOn(this)){
+        if (!CommonMethods.knowInternetOn(this)) {
             CommonMethods.showInternetAlert(this);
         }
-
     }
 }

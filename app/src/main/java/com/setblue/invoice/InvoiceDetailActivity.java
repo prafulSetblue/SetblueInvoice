@@ -272,14 +272,12 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                             invoiceDate.setText(c.optString("InvoiceDate"));
                             dueDate.setText(c.optString("DueDate"));
                             billingAddress.setText(c.optString("CompanyAddress"));
-                            subTotal.setText("\u20b9 " + c.optInt("Subtotal"));
-                            Tax.setText("\u20b9 " + c.optInt("ServiceTax"));
-                            Total.setText("\u20b9 " + c.optInt("TotalAmount"));
-                            tvTotal.setText("\u20b9 " + c.optInt("TotalAmount"));
+                            subTotal.setText("\u20b9 " + c.optDouble("Subtotal"));
+                            Tax.setText("\u20b9 " + c.optDouble("ServiceTax"));
+                            Total.setText("\u20b9 " + c.optDouble("TotalAmount"));
+                            tvTotal.setText("\u20b9 " + c.optDouble("TotalAmount"));
                             notes.setText(c.optString("Note"));
                             email.setText(c.optString("EmailId"));
-
-
                         }
                     }
                 }

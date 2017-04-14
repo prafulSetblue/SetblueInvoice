@@ -124,6 +124,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     String stBody;
     private CatLoadingView mView;
     boolean allow = true;
+    private String fileName;
+    private boolean GRANTED;
 
 
     @Override
@@ -242,11 +244,10 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         @Override
         protected String doInBackground(String... params) {
             String[] toArr = {stMail};
-            // m = new Mail("praful@setblue.com","pflptl1010",toArr);
             stBody = "Dear " + stClientName + "\nWe are contacting you in regard to a new invoice #" + stInvoiceNo + " that has been created. You may find the invoice attached.";
             m = new Mail("noreply@setblue.com", "Setblue@123", toArr, "Invoice - " + stInvoiceNo + " from SetBlue", stBody);
             try {
-                m.addAttachment(file.toString(), stInvoiceNo + ".pdf");
+                m.addAttachment(file.toString(), fileName + ".pdf");
                 send = m.send();
 
             } catch (Exception e) {
@@ -335,7 +336,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //Create time stamp
         Date date = new Date();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        file = new File(pdfFolder, stInvoiceNo + ".pdf");
+        fileName = stInvoiceNo.replace("/","");
+        file = new File(pdfFolder, fileName + ".pdf");
         Log.i(CommonVariables.TAG, file.toString());
         OutputStream output = new FileOutputStream(file);
         document = new Document(PageSize.A4, 20, 20, 40, 40);
@@ -621,6 +623,10 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
 
             }
+
+
+        }else {
+
         }
     }
 

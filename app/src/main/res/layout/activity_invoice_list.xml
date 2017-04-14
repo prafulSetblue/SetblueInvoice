@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="@drawable/bottom_shadow"
         android:layout_height="?attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@drawable/bottom_shadow"
         app:layout_collapseMode="pin"
-        >
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingRight="15dp"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_arrow_back_black_24dp"/>
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
 
             <!-- This is a centered logo -->
@@ -32,61 +34,69 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
                 android:layout_toRightOf="@+id/iv_back"
+                android:gravity="center"
+                android:text="Invoice"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/text_size_biggest"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:text="Invoice"/>
+                android:textStyle="bold" />
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/iv_search"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 
 
     </android.support.v7.widget.Toolbar>
+
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe">
-    <RelativeLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lv_invoice"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
-        <ImageView
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="20dp"
-            android:padding="20dp"
-            android:src="@drawable/ic_plus"
-            android:background="@drawable/xml_ovel_white"/>
-    </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/tv_no_invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/text_size_listing"
+                    android:text="There are no Invoice on your list.\nTap + to add new Invoice."
+                    android:visibility="gone"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/lv_invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/xml_ovel_white"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_plus" />
+            </RelativeLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </FrameLayout>
 </LinearLayout>

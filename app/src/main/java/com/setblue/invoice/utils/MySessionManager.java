@@ -118,7 +118,7 @@ public class MySessionManager
 		if (context != null)
 		{
 			SharedPreferences LoginPref = context.getSharedPreferences(PREF_USER_INFO, context.MODE_PRIVATE);
-			return LoginPref.getInt(POSITION, -1);
+			return LoginPref.getInt(POSITION, 0);
 		}
 		else
 		{

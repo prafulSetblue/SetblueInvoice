@@ -10,6 +10,7 @@
     <color name="bg_color">#f5f5f5</color>
     <color name="divider">#dddddd</color>
     <color name="black_border">#414141</color>
+    <color name="hint_color">#9b9b9b</color>
 
 
 </resources>

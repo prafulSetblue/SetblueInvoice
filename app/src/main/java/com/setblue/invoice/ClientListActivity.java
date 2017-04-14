@@ -61,6 +61,8 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private SwipeRefreshLayout swipeView;
     private CatLoadingView mView;
     public TextView title;
+    private TextView no_client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
@@ -132,7 +134,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
     private void init(){
         swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         listviewClient = (RecyclerView)findViewById(R.id.lv_clients);
-
+        no_client = (TextView)findViewById(R.id.tv_no_client);
         addClient = (ImageView)findViewById(R.id.fab);
         addClient.setOnClickListener(this);
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -232,6 +234,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
                 JSONObject object = new JSONObject(json);
                 if(object.optInt("resid")>0) {
                     if (object.optJSONArray("resData").length() != 0) {
+                        no_client.setVisibility(View.GONE);
                         JSONArray jsonArray = object.optJSONArray("resData");
                         clientsArrayList = new ArrayList<Clients>();
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -246,6 +249,7 @@ public class ClientListActivity extends AppCompatActivity implements View.OnClic
                         listviewClient.setAdapter(clientListAdapter);
                        // listviewClient.addItemDecoration(new DividerItemDecoration(this));
                     } else {
+                        no_client.setVisibility(View.VISIBLE);
                         //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
                     }
                 }

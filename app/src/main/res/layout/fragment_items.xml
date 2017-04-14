@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_items_name"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_term"
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_qty"
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_rate"

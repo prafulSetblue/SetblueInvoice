@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NavDrawerView drawerView = new NavDrawerView(this);
         navigationView.addView(drawerView);
         drawerView.setMenuData();
+
     }
 
     @Override

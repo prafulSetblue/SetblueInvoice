@@ -13,8 +13,6 @@
     android:layout_gravity="center"
     android:orientation="horizontal">
 
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,8 +50,8 @@
             android:layout_gravity="center"
             android:padding="@dimen/padding_normal"
             android:layout_marginRight="@dimen/padding_normal"
-            android:src="@drawable/ic_plus"
-            android:visibility="gone"/>
+            android:src="@drawable/ic_add_circle_white"
+            android:visibility="visible"/>
 
 </LinearLayout>
 

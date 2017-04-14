@@ -68,6 +68,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     private FragmentManager fragmentManager;
     public TextView title;
     MySessionManager session;
+    private TextView no_invoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +142,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
     }
     private void init(){
         swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        no_invoice = (TextView) findViewById(R.id.tv_no_invoice);
         listviewInvoice = (RecyclerView)findViewById(R.id.lv_invoice);
         addInvoice = (ImageView)findViewById(R.id.fab);
         addInvoice.setOnClickListener(this);
@@ -180,6 +182,7 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
                 JSONObject object = new JSONObject(json);
                 if(object.optInt("resid")>0) {
                     if (object.optJSONArray("resData").length() != 0) {
+                        no_invoice.setVisibility(View.GONE);
                         JSONArray jsonArray = object.optJSONArray("resData");
                         invoiceArrayList = new ArrayList<Invoice>();
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -190,8 +193,10 @@ public class InvoiceListActivity extends AppCompatActivity implements View.OnCli
                         listviewInvoice.setLayoutManager(layoutManager);
                         invoiceListAdapter = new InvoiceListAdapter(this, invoiceArrayList);
                         listviewInvoice.setAdapter(invoiceListAdapter);
+
                        // listviewInvoice.addItemDecoration(new DividerItemDecoration(this));
                     } else {
+                        no_invoice.setVisibility(View.VISIBLE);
                         //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
                     }
                 }

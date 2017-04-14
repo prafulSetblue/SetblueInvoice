@@ -63,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color"
+            >
 
             <EditText
                 android:id="@+id/edt_fname"
@@ -82,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_lname"
@@ -101,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_company"
@@ -119,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_mobile"
@@ -137,7 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_email"
@@ -163,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:textColorHint="@color/black_border">
+            android:textColorHint="@color/hint_color">
 
             <EditText
                 android:id="@+id/edt_address"
@@ -186,7 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColorHint="@color/black_border">
+                android:textColorHint="@color/hint_color">
 
                 <EditText
                     android:id="@+id/edt_city"
@@ -203,7 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColorHint="@color/black_border">
+                android:textColorHint="@color/hint_color">
 
                 <EditText
                     android:id="@+id/edt_state"
@@ -226,7 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColorHint="@color/black_border">
+                android:textColorHint="@color/hint_color">
 
                 <EditText
                     android:id="@+id/edt_country"
@@ -243,7 +244,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColorHint="@color/black_border">
+                android:textColorHint="@color/hint_color">
 
                 <EditText
                     android:id="@+id/edt_zip"

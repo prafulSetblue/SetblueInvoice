@@ -152,8 +152,9 @@ public class InvoiceItemListAdapter extends RecyclerView.Adapter<InvoiceItemList
 		public void setDateToView(InvoiceItem item, int position) throws Exception {
 			Double duration = Double.parseDouble(item.getTerm())/12;
 			Double Total = item.getQty()*item.getRate()*duration;
+			double finalValue = Math.round( Total * 100.0 ) / 100.0;
 			title.setText(item.getItemName());
-			total.setText("\u20b9 "+new DecimalFormat("##.##").format(Total));
+			total.setText("\u20b9 "+new DecimalFormat("##.##").format(finalValue));
 			qty.setText(""+item.getQty());
 			rate.setText(""+item.getRate());
 			term.setText(item.getTerm());
