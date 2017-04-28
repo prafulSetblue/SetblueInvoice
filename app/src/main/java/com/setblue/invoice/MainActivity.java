@@ -18,7 +18,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -35,6 +37,8 @@ import com.setblue.invoice.utils.ExceptionHandler;
 import com.setblue.invoice.utils.MySessionManager;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView back;
@@ -48,13 +52,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean exit = false;
     private Toolbar tb;
     AppCompatActivity activity = null;
-    private static final String[] COMPANY = new String[] {
+    private static final String[] COMPANY = new String[]{
             "SETBLUE", "V2IDEAS", "SAREEBAZAR"
     };
     private int strCompanyId;
     MySessionManager session;
-    private MaterialBetterSpinner spCompany
-            ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +94,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         newCustomer.setOnClickListener(this);
         newInvoice = (LinearLayout) findViewById(R.id.ll_invoice);
         newInvoice.setOnClickListener(this);
-        spCompany = (MaterialBetterSpinner)  findViewById(R.id.sp_company);
+        /*spCompany = (MaterialBetterSpinner)  findViewById(R.id.sp_company);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, COMPANY);
 
         spCompany.setAdapter(adapter);
-        /*spCompany.setOnItemClickListener((adapterView, view, i, l) -> {
+        *//*spCompany.setOnItemClickListener((adapterView, view, i, l) -> {
             strCompanyId = COMPANY[i];
         });
-*/
+*//*
         if(session.getPosition() < 0){
             spCompany.setText("");
         }else {
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 session.setPosition(position);
             }
         });
-
+*/
     }
 
     private void setUpActionBar() {
@@ -133,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerToggle.syncState();
-
-
     }
 
     private void setDrawer() {
@@ -159,8 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-            else {
+            } else {
                 //Whatever
             }
 
@@ -182,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-            ft.add(R.id.content_frame, fragment,"My Fragment");
+            ft.add(R.id.content_frame, fragment, "My Fragment");
             ft.addToBackStack("My Fragment");
             ft.commit();
             // fragmentManager.beginTransaction()
@@ -195,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     @Override
     public void onBackPressed() {
         if (!(fragment != null && fragment.isVisible())) {
@@ -203,9 +201,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //System.exit(0);
                 finish();
             } else {
-                Toast.makeText(this, "Press once again to exit app.",
-                        Toast.LENGTH_SHORT).show();
+                CommonMethods.showCustomViewCrouton(this,"Press once again to exit app.");
+                //Toast.makeText(this, "Press once again to exit app.",Toast.LENGTH_SHORT).show();
                 exit = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        exit = false;
+                    }
+                }, 3 * 1000);
+
             }
         } else
             super.onBackPressed();
@@ -247,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }*/
     }
+
+
 
     @Override
     protected void onResume() {

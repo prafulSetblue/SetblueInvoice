@@ -417,8 +417,9 @@ public class InvoiceFragment extends Fragment implements DatePickerDialog.OnDate
                         session.setNumber(session.getNumber() + 1);
                         Intent i = new Intent(getActivity(), InvoiceItemActivity.class);
                         i.putExtra("InvoiceId", object.optInt("InvoiceId"));
-                        getActivity().finish();
+                        //getActivity().finish();
                         startActivity(i);
+                        getActivity().getSupportFragmentManager().popBackStack();
                         getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     } else {
                         Toast.makeText(getActivity(), object.optString("res"), Toast.LENGTH_LONG).show();

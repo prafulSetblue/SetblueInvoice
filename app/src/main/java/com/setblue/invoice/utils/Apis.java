@@ -24,4 +24,7 @@ public class Apis {
     public static String UpdateInvoice = STRING_SERVER_URL+"UpdateInvoice?";
     public static String SendEmail = STRING_SERVER_URL+"SendEmail?";
     public static String GetCompanyList = STRING_SERVER_URL+"GetCompanyList";
+    public static String GetInvoiceSummary = STRING_SERVER_URL+"GetInvoiceSummary?";
+    public static String GetCompanyFullList = STRING_SERVER_URL+"GetCompanyFullList";
+    public static String CompanyDetail = STRING_SERVER_URL+"CompanyDetail?";
 }

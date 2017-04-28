@@ -70,28 +70,7 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:gravity="center">
 
-                <ImageView
-                    android:id="@+id/company_logo"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:src="@mipmap/ic_company_logo"
-                    android:scaleType="fitCenter" />
-
-                <ImageView
-                    android:id="@+id/iv_company_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_create_black_24dp" />
-            </LinearLayout>
 
 
             <com.rengwuxian.materialedittext.MaterialEditText
@@ -152,7 +131,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:text="Address"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_size_listing"
@@ -160,10 +139,10 @@
 
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/edt_address"
+                    android:id="@+id/edt_address1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Company Address"
+                    android:hint="Address1"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:singleLine="true"
@@ -174,6 +153,22 @@
                     app:met_textColor="@color/black_border"
                     app:met_textColorHint="@color/hint_color"
                     app:met_underlineColor="@color/black_border" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_address2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address2"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:singleLine="true"
+                android:textSize="@dimen/text_size_listing"
+                app:met_baseColor="@color/black_border"
+                app:met_floatingLabel="highlight"
+                app:met_primaryColor="@color/blue"
+                app:met_textColor="@color/black_border"
+                app:met_textColorHint="@color/hint_color"
+                app:met_underlineColor="@color/black_border" />
 
 
             <LinearLayout
@@ -267,6 +262,36 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Company Stamp Logo"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/text_size_listing"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/company_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_company_logo"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/iv_company_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_create_black_24dp" />
+            </LinearLayout>
 
 
 

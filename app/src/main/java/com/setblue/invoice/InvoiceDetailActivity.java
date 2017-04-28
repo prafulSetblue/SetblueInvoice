@@ -27,9 +27,11 @@ import com.androidquery.callback.AjaxStatus;
 import com.setblue.invoice.Fragments.CustomerFragment;
 import com.setblue.invoice.adapter.InvoiceDetailItemListAdapter;
 import com.setblue.invoice.adapter.InvoiceItemListAdapter;
+import com.setblue.invoice.adapter.InvoiceSummaryAdapter;
 import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.mail.Mail;
 import com.setblue.invoice.model.InvoiceItem;
+import com.setblue.invoice.model.InvoiceSummary;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
@@ -90,6 +92,9 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
     private AlertDialog.Builder builder;
     private EditText email;
     private CatLoadingView mView;
+    private RecyclerView listviewSummary;
+    private ArrayList<InvoiceSummary> summaryArrayList;
+    private InvoiceSummaryAdapter invoiceSummaryAdapter;
 
 
     @Override
@@ -144,13 +149,10 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         email = (EditText) findViewById(R.id.edt_mail);
         dueDate = (EditText) findViewById(R.id.edt_due_date);
         billingAddress = (TextView) findViewById(R.id.edt_billing_address);
-        subTotal = (TextView) findViewById(R.id.tv_subtotal);
-        Tax = (TextView) findViewById(R.id.tv_tax);
-        Credit = (TextView) findViewById(R.id.tv_credit);
-        Total = (TextView) findViewById(R.id.tv_total);
         tvTotal = (TextView) findViewById(R.id.tv_total1);
         notes = (EditText) findViewById(R.id.edt_notes);
         listviewItems = (RecyclerView) findViewById(R.id.lv_items);
+        listviewSummary = (RecyclerView) findViewById(R.id.lv_summary);
 
     }
 
@@ -165,6 +167,13 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
 
     private void ItemList() {
         String url = Apis.InvoiceItemList + "InvoiceId=" + getIntent().getIntExtra("invoiceID", 0);
+        //Make Asynchronous call using AJAX method
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.ajax(url, String.class, this, "jsonCallback");
+
+    }
+    private void GetInvoiceSummary() {
+        String url = Apis.GetInvoiceSummary + "id=" + getIntent().getIntExtra("invoiceID", 0);
         //Make Asynchronous call using AJAX method
         Log.d(CommonVariables.TAG, "Url: " + url);
         aq.ajax(url, String.class, this, "jsonCallback");
@@ -272,10 +281,6 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                             invoiceDate.setText(c.optString("InvoiceDate"));
                             dueDate.setText(c.optString("DueDate"));
                             billingAddress.setText(c.optString("CompanyAddress"));
-                            subTotal.setText("\u20b9 " + c.optDouble("Subtotal"));
-                            Tax.setText("\u20b9 " + c.optDouble("ServiceTax"));
-                            Total.setText("\u20b9 " + c.optDouble("TotalAmount"));
-                            tvTotal.setText("\u20b9 " + c.optDouble("TotalAmount"));
                             notes.setText(c.optString("Note"));
                             email.setText(c.optString("EmailId"));
                         }
@@ -296,6 +301,28 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
                             itemListAdapter = new InvoiceDetailItemListAdapter(this, clientsArrayList);
                             listviewItems.setAdapter(itemListAdapter);
                             listviewItems.addItemDecoration(new DividerItemDecoration(this));
+                        } else {
+                            //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                if (object.optString("api").equalsIgnoreCase("GetInvoiceSummary")) {
+                    if (object.optInt("resid") > 0) {
+                        if (object.optJSONArray("resData").length() != 0) {
+                            JSONArray jsonArray = object.optJSONArray("resData");
+                            summaryArrayList = new ArrayList<InvoiceSummary>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.optJSONObject(i);
+                                summaryArrayList.add(new InvoiceSummary(jsonObject.optString("SummaryTitle"),jsonObject.optString("Amount"),jsonObject.optString("Currency")));
+
+                            }
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+                            listviewSummary.setLayoutManager(layoutManager);
+                            invoiceSummaryAdapter = new InvoiceSummaryAdapter(this, summaryArrayList);
+                            listviewSummary.setAdapter(invoiceSummaryAdapter);
+                           // listviewSummary.addItemDecoration(new DividerItemDecoration(this));
+
                         } else {
                             //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
                         }
@@ -329,6 +356,7 @@ public class InvoiceDetailActivity extends AppCompatActivity implements View.OnC
         } else {
             setData();
             ItemList();
+            GetInvoiceSummary();
         }
     }
 }

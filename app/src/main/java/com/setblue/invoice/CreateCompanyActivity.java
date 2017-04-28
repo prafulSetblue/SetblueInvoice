@@ -56,7 +56,8 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
     private MaterialEditText edt_company_name;
     private MaterialEditText edt_mobile;
     private MaterialEditText edt_email;
-    private MaterialEditText edt_address;
+    private MaterialEditText edt_address1;
+    private MaterialEditText edt_address2;
     private MaterialEditText edt_city;
     private MaterialEditText edt_state;
     private MaterialEditText edt_country;
@@ -65,7 +66,8 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
     private String stCompanyName;
     private String stMobile;
     private String stEmail;
-    private String stAddress;
+    private String stAddress1;
+    private String stAddress2;
     private String stCity;
     private String stState;
     private String stCountry;
@@ -101,7 +103,8 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
         edt_company_name = (MaterialEditText) findViewById(R.id.edt_company);
         edt_mobile = (MaterialEditText) findViewById(R.id.edt_mobile);
         edt_email = (MaterialEditText) findViewById(R.id.edt_email);
-        edt_address = (MaterialEditText) findViewById(R.id.edt_address);
+        edt_address1 = (MaterialEditText) findViewById(R.id.edt_address1);
+        edt_address2 = (MaterialEditText) findViewById(R.id.edt_address2);
         edt_city = (MaterialEditText) findViewById(R.id.edt_city);
         edt_state = (MaterialEditText) findViewById(R.id.edt_state);
         edt_country = (MaterialEditText) findViewById(R.id.edt_country);
@@ -132,18 +135,20 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
             stCompanyName  = edt_company_name.getText().toString();
             stMobile  = edt_mobile.getText().toString();
             stEmail  = edt_email.getText().toString();
-            stAddress  = edt_address.getText().toString();
+            stAddress1  = edt_address1.getText().toString();
+            stAddress2  = edt_address2.getText().toString();
             stCity  = edt_city.getText().toString();
             stState  = edt_state.getText().toString();
             stCountry  = edt_country.getText().toString();
             stZip  = edt_zip.getText().toString();
             if (Validation.isEmptyEdittext(edt_company_name) && Validation.isEmptyEdittext(edt_mobile) && Validation.isEmptyEdittext(edt_email)
-                    && Validation.isEmptyEdittext(edt_address) && Validation.isEmptyEdittext(edt_city) && Validation.isEmptyEdittext(edt_state)
+                    && Validation.isEmptyEdittext(edt_address1) && Validation.isEmptyEdittext(edt_address2) && Validation.isEmptyEdittext(edt_city) && Validation.isEmptyEdittext(edt_state)
                     && Validation.isEmptyEdittext(edt_country) && Validation.isEmptyEdittext(edt_zip)) {
                 edt_company_name.setError("Enter Company Name");
                 edt_mobile.setError("Enter Mobile Number");
                 edt_email.setError("Enter Email Address");
-                edt_address.setError("Enter Address");
+                edt_address1.setError("Enter Address");
+                edt_address2.setError("Enter Address");
                 edt_city.setError("Enter City");
                 edt_state.setError("Enter State");
                 edt_country.setError("Enter Country");
@@ -154,8 +159,10 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
                 edt_mobile.setError("Enter Mobile Number");
             } else if (Validation.isEmptyEdittext(edt_mobile)) {
                 edt_email.setError("Enter Email Address");
-            } else if (Validation.isEmptyEdittext(edt_address)) {
-                edt_address.setError("Enter Address");
+            } else if (Validation.isEmptyEdittext(edt_address1)) {
+                edt_address1.setError("Enter Address");
+            }  else if (Validation.isEmptyEdittext(edt_address2)) {
+                edt_address2.setError("Enter Address");
             } else if (Validation.isEmptyEdittext(edt_city)) {
                 edt_city.setError("Enter City");
             } else if (Validation.isEmptyEdittext(edt_state)) {
@@ -209,8 +216,13 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 80, out);
                 Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                Bitmap resized = Bitmap.createScaledBitmap(decoded, 120, 120, true);
+                int origWidth = resized.getWidth();
+                int origHeight = resized.getHeight();
+                Log.d(CommonVariables.TAG,"Height: "+origHeight);
+                Log.d(CommonVariables.TAG,"Width: "+origWidth);
                 byteArray = out.toByteArray();
-                company_logo.setImageBitmap(decoded);
+                company_logo.setImageBitmap(resized);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -233,11 +245,29 @@ public class CreateCompanyActivity extends AppCompatActivity implements View.OnC
 //File file = getImageFile();
 //params.put("source", file);
 
-        AQuery aq = new AQuery(getApplicationContext());
-        aq.ajax(url, params, JSONObject.class, this, "photoCb");
+
+        aq.ajax(url, params, JSONObject.class, this, "jsonCallback");
     }
 
     public void jsonCallback(String url, String json, AjaxStatus status) {
+        if (json != null) {
+
+            Log.d(CommonVariables.TAG, json.toString());
+            try {
+                JSONObject object = new JSONObject(json);
+                if (object.optInt("resid") > 0) {
+
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }else {
+            //ajax error
+            Log.d(CommonVariables.TAG, "" + status.getCode());
+        }
 
     }
 

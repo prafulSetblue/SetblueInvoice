@@ -34,6 +34,10 @@ dependencies {
     compile 'com.jpardogo.googleprogressbar:library:1.2.0'
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        // exclusion is not necessary, but generally a good idea.
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
     compile files('libs/itextpdf-5.4.3.jar')
     compile files('libs/activation.jar')
     compile files('libs/additionnal.jar')

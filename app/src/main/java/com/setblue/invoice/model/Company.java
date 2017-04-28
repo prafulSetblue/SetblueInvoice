@@ -7,10 +7,17 @@ package com.setblue.invoice.model;
 public class Company {
     String Comapany_Name;
     int Company_ID;
+    String Address;
 
     public Company(String comapany_Name, int company_ID) {
         Comapany_Name = comapany_Name;
         Company_ID = company_ID;
+    }
+
+    public Company(String comapany_Name, int company_ID, String address) {
+        Comapany_Name = comapany_Name;
+        Company_ID = company_ID;
+        Address = address;
     }
 
     public String getComapany_Name() {
@@ -27,5 +34,13 @@ public class Company {
 
     public void setCompany_ID(int company_ID) {
         Company_ID = company_ID;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 }

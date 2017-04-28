@@ -57,14 +57,17 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import com.itextpdf.text.pdf.codec.Base64;
 import com.setblue.invoice.adapter.InvoiceDetailItemListAdapter;
+import com.setblue.invoice.adapter.InvoiceSummaryAdapter;
 import com.setblue.invoice.components.CatLoadingView;
 import com.setblue.invoice.mail.Mail;
 import com.setblue.invoice.model.InvoiceItem;
+import com.setblue.invoice.model.InvoiceSummary;
 import com.setblue.invoice.utils.Apis;
 import com.setblue.invoice.utils.CommonMethods;
 import com.setblue.invoice.utils.CommonVariables;
 import com.setblue.invoice.utils.DividerItemDecoration;
 import com.setblue.invoice.utils.ExceptionHandler;
+import com.setblue.invoice.utils.MySessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -126,6 +129,18 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     boolean allow = true;
     private String fileName;
     private boolean GRANTED;
+    MySessionManager session;
+    private JSONArray summaryJsonArray;
+    private String companyName = "";
+    private String mobile = "";
+    private String address1 = "";
+    private String address2 = "";
+    private String City = "";
+    private String State = "";
+    private String PinCode = "";
+    private String ServiceTaxNo = "";
+    private String PANNumber = "";
+    private String PhoneNo = "";
 
 
     @Override
@@ -147,10 +162,11 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             }
             setContentView(R.layout.activity_invoive_preview);
             aq = new AQuery(this);
+            session = new MySessionManager(this);
             invoiceID = getIntent().getIntExtra("invoiceID", 0);
             setUpActionBar();
             init();
-            requestPermissionSMSReceive();
+            requestPermissionStorage();
             setData();
         } catch (Exception e) {
             e.printStackTrace();
@@ -225,6 +241,20 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
     }
 
+
+    private void GetInvoiceSummary() {
+        String url = Apis.GetInvoiceSummary + "id=" + getIntent().getIntExtra("id", 0);
+        //Make Asynchronous call using AJAX method
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.ajax(url, String.class, this, "jsonCallback");
+    }
+
+    public void CompanyDetail() {
+        String url = Apis.CompanyDetail + "id=" + session.getCompanyID();
+        Log.d(CommonVariables.TAG, "Url: " + url);
+        aq.ajax(url, String.class, this, "jsonCallback");
+
+    }
     private class SendMail extends AsyncTask<String, String, String> {
         private Mail m;
         private ProgressDialog progressDialog;
@@ -318,6 +348,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         }
     }
 
+
     private void createPdf(JSONArray jsonArray) throws FileNotFoundException, DocumentException, IOException {
 
         File pdfFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "setblue");
@@ -336,7 +367,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         //Create time stamp
         Date date = new Date();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        fileName = stInvoiceNo.replace("/","");
+        fileName = stInvoiceNo.replace("/", "");
         file = new File(pdfFolder, fileName + ".pdf");
         Log.i(CommonVariables.TAG, file.toString());
         OutputStream output = new FileOutputStream(file);
@@ -376,16 +407,16 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         document.open();
         //document.add(image);
 
-        document.addHeader("Setblue", "test");
+        //document.addHeader("Setblue", "test");
         //document.addTitle("Setblue");
 
-        Paragraph p = new Paragraph("V2IDEAS.COM", bold);
+        Paragraph p = new Paragraph(companyName, bold);
         p.setAlignment(Element.ALIGN_RIGHT);
-        Paragraph address = new Paragraph("801, Empire State builing,\nNear World Trade Center,\nUdhna Darwaja,Ring Road,\nSurat-395002 (GJ) India\nPh - 0261 4015401", normal);
+        Paragraph address = new Paragraph(address1+",\n"+address2+"\n"+City+" - "+PinCode+" "+State+".\nPh - "+ PhoneNo, normal);
         address.setAlignment(Element.ALIGN_RIGHT);
         address.setSpacingAfter(05.0f);
 
-        Paragraph serveceTax = new Paragraph("Service Tax No: ABAPT4600JSD001\nPan No: ABAPT4600J", normal);
+        Paragraph serveceTax = new Paragraph("Service Tax No: "+ServiceTaxNo+"\nPan No: "+PANNumber, normal);
         serveceTax.setAlignment(Element.ALIGN_RIGHT);
         serveceTax.setSpacingAfter(05.0f);
 
@@ -443,7 +474,6 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
         // t.setPadding(4);
         // t.setSpacing(4);
         // t.setBorderWidth(1);
-
         PdfPCell c1 = new PdfPCell(new Phrase("Description", bold));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         c1.setPadding(5.0f);
@@ -515,60 +545,27 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
 
     public void createTotalTable(Document doc)
             throws BadElementException {
-
-        PdfPTable table = new PdfPTable(6);
-
-        // t.setBorderColor(BaseColor.GRAY);
-        // t.setPadding(4);
-        // t.setSpacing(4);
-        // t.setBorderWidth(1);
-
-        PdfPCell c1 = new PdfPCell(new Phrase("Sub Total", normal));
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding(05.0f);
-        c1.setColspan(5);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase(stSubtotal, normal));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding(05.0f);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("15% New Service Tax(Nov-2015)", normal));
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding(05.0f);
-        c1.setColspan(5);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase(stServiceTax, normal));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding(05.0f);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Credit", normal));
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding(05.0f);
-        c1.setColspan(5);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("", normal));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding(05.0f);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("Total", bold));
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setPadding(05.0f);
-        c1.setColspan(5);
-        table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase(stTotalAmount, bold));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        c1.setPadding(05.0f);
-        table.addCell(c1);
-
-
         try {
+            PdfPTable table = new PdfPTable(6);
+
+            // t.setBorderColor(BaseColor.GRAY);
+            // t.setPadding(4);
+            // t.setSpacing(4);
+            // t.setBorderWidth(1);
+
+            for (int i = 0; i < summaryJsonArray.length(); i++) {
+                JSONObject jsonObject = summaryJsonArray.optJSONObject(i);
+                PdfPCell c1 = new PdfPCell(new Phrase(jsonObject.optString("SummaryTitle"), normal));
+                c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                c1.setPadding(05.0f);
+                c1.setColspan(5);
+                table.addCell(c1);
+
+                c1 = new PdfPCell(new Phrase(jsonObject.optString("Amount"), normal));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                c1.setPadding(05.0f);
+                table.addCell(c1);
+            }
             // table.setWidthPercentage  (new float[]{ 150, 100,100,100 },null);
             // table.setLockedWidth(true);
             table.setWidthPercentage(100);
@@ -582,9 +579,11 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     public byte[] convertImageToByte() {
         byte[] data = null;
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.stamp);
-        //Bitmap bitmap = getBitmapFromURL("http://theprintshop.ae/wp-content/uploads/2015/06/1.png");
+       // Bitmap bitmap = getBitmapFromURL("http://www.ascertia.com/siteimages/blogs/original/Signature-Appearance-3.JPG");
+        //bitmap.createScaledBitmap(bitmap, 60, 60, true);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
         data = baos.toByteArray();
         return data;
     }
@@ -605,7 +604,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
     }
 
 
-    private void requestPermissionSMSReceive() {
+    private void requestPermissionStorage() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
@@ -625,7 +624,7 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
             }
 
 
-        }else {
+        } else {
 
         }
     }
@@ -687,6 +686,8 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                         stComapany = c.optString("Company");
                         ItemList();
                         clientDetail();
+                        GetInvoiceSummary();
+                        CompanyDetail();
 
 
                     }
@@ -703,6 +704,38 @@ public class InvoicePreviewActivity extends AppCompatActivity implements View.On
                             stMail = c.optString("Email");
                         }
                     }
+                }
+
+                if (object.optString("api").equalsIgnoreCase("GetInvoiceSummary")) {
+                    if (object.optInt("resid") > 0) {
+                        if (object.optJSONArray("resData").length() != 0) {
+                            summaryJsonArray = object.optJSONArray("resData");
+                            // listviewSummary.addItemDecoration(new DividerItemDecoration(this));
+
+                        } else {
+                            //Toast.makeText(this,object.optString("res"),Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+                if (object.optString("Name").equalsIgnoreCase("CompanyDetail")) {
+                    if (object.optInt("resid") > 0) {
+
+
+                        JSONObject c = object.optJSONObject("resData");
+                       // String Address = c.optString("AddressLine1") + "," + c.optString("AddressLine2") + "," + c.optString("City");
+                        companyName = c.optString("CompanyName");
+                        mobile = c.optString("MobileNo");
+                        address1 = c.optString("AddressLine1");
+                        address2 = c.optString("AddressLine2");
+                        City = c.optString("City");
+                        State = c.optString("State");
+                        PinCode = c.optString("PinCode");
+                        ServiceTaxNo = c.optString("ServiceTaxNo");
+                        PANNumber = c.optString("PANNumber");
+                        PhoneNo = c.optString("PhoneNo");
+
+                    }
+
                 }
 
 

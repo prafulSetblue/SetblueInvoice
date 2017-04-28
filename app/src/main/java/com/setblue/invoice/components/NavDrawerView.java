@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import com.setblue.invoice.MainActivity;
 import com.setblue.invoice.R;
 import com.setblue.invoice.adapter.CompanyListAdapter;
 import com.setblue.invoice.adapter.ExpandableListAdapter;
+import com.setblue.invoice.application.App;
 import com.setblue.invoice.model.Clients;
 import com.setblue.invoice.model.Company;
 import com.setblue.invoice.utils.Apis;
@@ -53,9 +55,11 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
     public String st_company;
     private int st_companyID = 0;
     private ImageView add_company;
+    MainActivity activity;
 
-    public NavDrawerView(Context context) {
+    public NavDrawerView(MainActivity context) {
         super(context);
+        activity = context;
         setup();
     }
 
@@ -73,19 +77,16 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
         spCompany = (Spinner) findViewById(R.id.sp_company);
         add_company = (ImageView) findViewById(R.id.iv_add_company);
         add_company.setOnClickListener(this);
-
-
-
     }
 
     public void setMenuData() {
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         List<ExpandableListAdapter.Item> data = new ArrayList<>();
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "HOME"));
+        data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "COMPANY"));
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "CLIENTS"));
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "INVOICE"));
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "ABOUT US"));
-        data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "CONTACT US"));
         data.add(new ExpandableListAdapter.Item(ExpandableListAdapter.HEADER, 1, "LOGOUT"));
         recyclerview.setAdapter(new ExpandableListAdapter(data, (MainActivity) getContext()));
         recyclerview.addItemDecoration(new DividerItemDecoration(getContext()));
@@ -100,8 +101,8 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
     }
 
     public void CompanyList() {
-        mView = new CatLoadingView();
-        mView.show(((MainActivity) getContext()).getSupportFragmentManager(), "load");
+        //mView = new CatLoadingView();
+        //mView.show(((MainActivity) getContext()).getSupportFragmentManager(), "load");
         String url = Apis.GetCompanyList;
         //Make Asynchronous call using AJAX method
         aq.ajax(url, String.class, this, "jsonCallback");
@@ -110,9 +111,9 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
 
     public void jsonCallback(String url, String json, AjaxStatus status) {
 
-        if (mView != null) {
+        /*if (mView != null) {
             mView.dismiss();
-        }
+        }*/
         try {
             if (json != null) {
                 Log.d(CommonVariables.TAG, json.toString());
@@ -160,6 +161,7 @@ public class NavDrawerView extends LinearLayout implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if (v == add_company) {
+            activity.drawerLayout.closeDrawer(Gravity.LEFT);
             Intent i = new Intent(getContext(), CreateCompanyActivity.class);
             getContext().startActivity(i);
         }

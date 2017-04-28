@@ -81,16 +81,14 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
         session = new MySessionManager(getActivity());
         aq = new AQuery(getActivity());
         init(view);
-        if(from == null){
+        if (from == null) {
 
-        }
-        else if(from.equalsIgnoreCase("clientlist")) {
+        } else if (from.equalsIgnoreCase("clientlist")) {
             ((ClientListActivity) getActivity()).title.setText("Create Client");
             ((ClientListActivity) getActivity()).search.setVisibility(View.GONE);
             lbl.setVisibility(View.GONE);
 
-        }
-        else{
+        } else {
             lbl.setVisibility(View.VISIBLE);
         }
 
@@ -99,24 +97,24 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
     }
 
     private void init(View v) {
-        et_fname = (EditText)v.findViewById(R.id.edt_fname);
-        et_lname = (EditText)v.findViewById(R.id.edt_lname);
-        et_company = (EditText)v.findViewById(R.id.edt_company);
-        et_mobile = (EditText)v.findViewById(R.id.edt_mobile);
-        et_email = (EditText)v.findViewById(R.id.edt_email);
-        et_address = (EditText)v.findViewById(R.id.edt_address);
-        et_city = (EditText)v.findViewById(R.id.edt_city);
-        et_state = (EditText)v.findViewById(R.id.edt_state);
-        et_country = (EditText)v.findViewById(R.id.edt_country);
-        et_zip = (EditText)v.findViewById(R.id.edt_zip);
-        lbl = (TextView)v.findViewById(R.id.lbl_client);
-        bt_save = (Button)v.findViewById(R.id.btn_save);
+        et_fname = (EditText) v.findViewById(R.id.edt_fname);
+        et_lname = (EditText) v.findViewById(R.id.edt_lname);
+        et_company = (EditText) v.findViewById(R.id.edt_company);
+        et_mobile = (EditText) v.findViewById(R.id.edt_mobile);
+        et_email = (EditText) v.findViewById(R.id.edt_email);
+        et_address = (EditText) v.findViewById(R.id.edt_address);
+        et_city = (EditText) v.findViewById(R.id.edt_city);
+        et_state = (EditText) v.findViewById(R.id.edt_state);
+        et_country = (EditText) v.findViewById(R.id.edt_country);
+        et_zip = (EditText) v.findViewById(R.id.edt_zip);
+        lbl = (TextView) v.findViewById(R.id.lbl_client);
+        bt_save = (Button) v.findViewById(R.id.btn_save);
         bt_save.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if(v == bt_save) {
+        if (v == bt_save) {
             stFname = et_fname.getText().toString().trim();
             stLname = et_lname.getText().toString().trim();
             stCompany = et_company.getText().toString().trim();
@@ -127,49 +125,37 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
             stState = et_state.getText().toString().trim();
             stCountry = et_country.getText().toString().trim();
             stZip = et_zip.getText().toString().trim();
-            if(Validation.isEmptyEdittext(et_fname) && Validation.isEmptyEdittext(et_lname)&& Validation.isEmptyEdittext(et_email)&& Validation.isEmptyEdittext(et_company)&& Validation.isEmptyEdittext(et_address)){
+            if (Validation.isEmptyEdittext(et_fname) && Validation.isEmptyEdittext(et_lname) && Validation.isEmptyEdittext(et_email) && Validation.isEmptyEdittext(et_company) && Validation.isEmptyEdittext(et_address)) {
                 et_fname.setError("Enter First Name");
                 et_lname.setError("Enter Last Name");
                 et_email.setError("Enter Email");
                 et_company.setError("Enter Company Name");
                 et_address.setError("Enter Company Address");
-            }
-            else if(Validation.isEmptyEdittext(et_fname)){
+            } else if (Validation.isEmptyEdittext(et_fname)) {
                 et_fname.setError("Enter First Name");
-            }
-            else if(Validation.isEmptyEdittext(et_lname)){
+            } else if (Validation.isEmptyEdittext(et_lname)) {
                 et_lname.setError("Enter Last Name");
-            }
-            else if(Validation.isEmptyEdittext(et_email)){
+            } else if (Validation.isEmptyEdittext(et_email)) {
                 et_email.setError("Enter Email Address");
-            }
-            else if(Validation.isEmptyEdittext(et_company)){
+            } else if (Validation.isEmptyEdittext(et_company)) {
                 et_company.setError("Enter Company Name");
-            }
-            else if(Validation.isEmptyEdittext(et_address)){
+            } else if (Validation.isEmptyEdittext(et_address)) {
                 et_address.setError("Enter Company Address");
-            }
-            else if(Validation.isEmptyEdittext(et_mobile)){
+            } else if (Validation.isEmptyEdittext(et_mobile)) {
                 et_address.setError("Enter Mobile Number");
-            }
-            else if(stMobile.length() < 6){
+            } else if (stMobile.length() < 6) {
                 et_mobile.setError("Enter Valid Mobile Number");
 
-            }
-            else if(!Validation.isValidEmail(stEmail)){
+            } else if (!Validation.isValidEmail(stEmail)) {
                 et_email.setError("Enter Valid Email Address");
+            } else {
+                if (CommonMethods.knowInternetOn((AppCompatActivity) getActivity())) {
+                    AddClient();
+                } else {
+                    CommonMethods.showInternetAlert((AppCompatActivity) getActivity());
+                }
             }
-
-
-            else {
-                    if(CommonMethods.knowInternetOn((AppCompatActivity) getActivity())){
-                        AddClient();
-                    }
-                else {
-                        CommonMethods.showInternetAlert((AppCompatActivity) getActivity());
-                    }
-            }
-          //  i = new Intent(getActivity(), ClientDetailActivity.class);
+            //  i = new Intent(getActivity(), ClientDetailActivity.class);
             //getActivity().finish();
             //startActivity(i);
         }
@@ -178,41 +164,41 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
     private void AddClient() {
         mView = new CatLoadingView();
         mView.show(getActivity().getSupportFragmentManager(), "load");
-        String url = Apis.AddClient+"FirstName="+stFname+"&LastName="+stLname+"&email="+stEmail+"&Company="+stCompany+"&mobile="+stMobile+"&address="+stAddress+"&pincode="+stZip+"&city="+stCity+"&state="+stState+"&Country="+stCountry+"&AdminId="+session.getUserId();
+        String url = Apis.AddClient + "FirstName=" + stFname + "&LastName=" + stLname + "&email=" + stEmail + "&Company=" + stCompany + "&mobile=" + stMobile + "&address=" + stAddress + "&pincode=" + stZip + "&city=" + stCity + "&state=" + stState + "&Country=" + stCountry + "&AdminId=" + session.getUserId();
         //Make Asynchronous call using AJAX method
-        aq.ajax(url, String.class, this,"jsonCallback");
+        aq.ajax(url, String.class, this, "jsonCallback");
 
     }
-    public void jsonCallback(String url, String json, AjaxStatus status){
 
-        if(mView != null)
+    public void jsonCallback(String url, String json, AjaxStatus status) {
+
+        if (mView != null)
             mView.dismiss();
 
-        if(json != null){
+        if (json != null) {
             //successful ajax call
-            Log.d(CommonVariables.TAG,json.toString());
+            Log.d(CommonVariables.TAG, json.toString());
             try {
                 JSONObject object = new JSONObject(json);
-                if(object.optInt("resid")>0){
-                    Toast.makeText(getActivity(),"Customer added successfully",Toast.LENGTH_LONG).show();
+                if (object.optInt("resid") > 0) {
+                    Toast.makeText(getActivity(), "Customer added successfully", Toast.LENGTH_LONG).show();
 
                     i = new Intent(getActivity(), ClientDetailActivity.class);
-                    i.putExtra("id",object.optInt("ClientId"));
+                    i.putExtra("id", object.optInt("ClientId"));
                     //getActivity().finish();
                     getFragmentManager().popBackStack();
                     startActivity(i);
                     getActivity().overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                }
-                else {
-                    Toast.makeText(getActivity(),object.optString("res"),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), object.optString("res"), Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             //ajax error
-            Log.d(CommonVariables.TAG,""+status.getCode());
+            Log.d(CommonVariables.TAG, "" + status.getCode());
         }
     }
 
@@ -229,17 +215,15 @@ public class CustomerFragment extends Fragment implements View.OnClickListener {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
 
                         //getFragmentManager().popBackStack();
-                        if(from == null){
+                        if (from == null) {
                             getFragmentManager().popBackStack();
-                        }
-                       else if(from.equalsIgnoreCase("null")) {
-                           getFragmentManager().popBackStack();
-                       }
-                        else {
+                        } else if (from.equalsIgnoreCase("null")) {
+                            getFragmentManager().popBackStack();
+                        } else {
                             ((ClientListActivity) getActivity()).title.setText("Client List");
                             ((ClientListActivity) getActivity()).search.setVisibility(View.VISIBLE);
                             getFragmentManager().popBackStack();
-                       }
+                        }
                         return true;
                     }
                 }

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.setblue.invoice.ClientListActivity;
+import com.setblue.invoice.CompanyListActivity;
 import com.setblue.invoice.Fragments.AboutFragment;
 import com.setblue.invoice.Fragments.ContactFragment;
 import com.setblue.invoice.Fragments.CustomerFragment;
@@ -86,6 +87,9 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             activity.startActivity(new Intent(activity, MainActivity.class));
                             activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
+                        } else if (item.text.equalsIgnoreCase("COMPANY")) {
+                            activity.drawerLayout.closeDrawer(Gravity.LEFT);
+                            activity.startActivity(new Intent(activity, CompanyListActivity.class).putExtra("from", "home"));
                         } else if (item.text.equalsIgnoreCase("CLIENTS")) {
                             activity.drawerLayout.closeDrawer(Gravity.LEFT);
                             activity.startActivity(new Intent(activity, ClientListActivity.class).putExtra("from", "home"));
@@ -95,10 +99,6 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         } else if (item.text.equalsIgnoreCase("ABOUT US")) {
                             activity.drawerLayout.closeDrawer(Gravity.LEFT);
                             AboutFragment fragment = new AboutFragment();
-                            replaceFragment(fragment);
-                        } else if (item.text.equalsIgnoreCase("CONTACT US")) {
-                            activity.drawerLayout.closeDrawer(Gravity.LEFT);
-                            ContactFragment fragment = new ContactFragment();
                             replaceFragment(fragment);
                         } else if (item.text.equalsIgnoreCase("LOGOUT")) {
                             activity.drawerLayout.closeDrawer(Gravity.LEFT);
@@ -208,7 +208,7 @@ public class ExpandableListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-            ft.add(R.id.content_frame, fragment,"My Fragment");
+            ft.add(R.id.content_frame, fragment, "My Fragment");
             ft.addToBackStack("My Fragment");
             ft.commit();
             // fragmentManager.beginTransaction()
